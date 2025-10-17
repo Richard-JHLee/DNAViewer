@@ -1,0 +1,693 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		004F9FCC478710956D4C6DB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC54D377B007B7D3ABA58CD6 /* Assets.xcassets */; };
+		0121B14E5A0F71963BC17F86 /* HelixBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AEF53C2DE46CBC96CF69BA7 /* HelixBuilder.swift */; };
+		0DDBB838134C07AD58FCC3F4 /* RestrictionEnzymes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF284579B996092849B64A0F /* RestrictionEnzymes.swift */; };
+		0E3B597C91F9004788BAA13E /* ControlBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F071C072744C6294B834B29 /* ControlBar.swift */; };
+		133CEBC79FC9C5927B2DAE5D /* InfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5381E8D6B39638D9BED975 /* InfoSheet.swift */; };
+		17EC5917B00909022185D6CB /* SequenceBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CE7D66DB7A9BD25D28744B /* SequenceBar.swift */; };
+		219C9FAE10DBA54880459FF3 /* BallStickBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E683D38687B4203066DBC28 /* BallStickBuilder.swift */; };
+		238949F2F149851A01D027D7 /* SampleGenes.json in Resources */ = {isa = PBXBuildFile; fileRef = 9D72CC3BB9DAFC21904B1CB2 /* SampleGenes.json */; };
+		295EF9C24BF9289B522BBB00 /* NCBIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F0923B8138E15D75827BF8 /* NCBIService.swift */; };
+		2A455DFE61AEEFB15BC0A7E6 /* TranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1759BF0FCE2F4F158AC5547 /* TranslationSheet.swift */; };
+		31C16AF1001F9A0C3C5F9A72 /* RestrictionEnzymes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF284579B996092849B64A0F /* RestrictionEnzymes.swift */; };
+		3B9DE06A7A1F9F9D4626C269 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC54D377B007B7D3ABA58CD6 /* Assets.xcassets */; };
+		4053DC98783D8EA19A1090BD /* DNASequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */; };
+		4581269345B9FF02BD34A3E8 /* TranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1759BF0FCE2F4F158AC5547 /* TranslationSheet.swift */; };
+		49ED7795548935F2D3838D5B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B709C6609D5488C389FF46 /* ContentView.swift */; };
+		5ADB196E52A85B8B01A3BBA8 /* SequenceBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CE7D66DB7A9BD25D28744B /* SequenceBar.swift */; };
+		5C9DF7B1D3A728954F9D121F /* SequenceAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C435A58633CA370AC6D6E2E /* SequenceAnalyzer.swift */; };
+		5E851E8BCB1814AA41771E4C /* AnalysisSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828A016B73E89ACACABA0737 /* AnalysisSheet.swift */; };
+		5FD8E39930DC5C930B9DC932 /* SequenceAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C435A58633CA370AC6D6E2E /* SequenceAnalyzer.swift */; };
+		6167B5A8530EDB5BB77CFC41 /* MutationSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A075A54DE5086635EAB4625 /* MutationSimulator.swift */; };
+		68CA1C5E3A25C8C53EFC06C7 /* Codon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D009E29E5A7E85E5E87D474 /* Codon.swift */; };
+		6A523A250495A7881D47ACF2 /* DNASceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933C9A3D6A5A0E1C930132E /* DNASceneManager.swift */; };
+		6E419D245A3959A6FE5F8A64 /* MutationSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A075A54DE5086635EAB4625 /* MutationSimulator.swift */; };
+		7BB490E25768CC91B5B11D60 /* Codon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D009E29E5A7E85E5E87D474 /* Codon.swift */; };
+		7C36B970951DCD32E26A7B96 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28319BD6515EE4C2ACFAC43E /* SceneKit.framework */; };
+		7C8079EC5B3B5E0958AAA270 /* QuizData.json in Resources */ = {isa = PBXBuildFile; fileRef = F96361928E842CA4E6A5913C /* QuizData.json */; };
+		7D6DB0B74EDDFB6CEF3687C7 /* SampleGenes.json in Resources */ = {isa = PBXBuildFile; fileRef = 9D72CC3BB9DAFC21904B1CB2 /* SampleGenes.json */; };
+		7E8337DF6A829B0D3E6F711C /* MutationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C212B9C4559024BF4D14A21 /* MutationSheet.swift */; };
+		8125F61D5AD8E0078D4EDEDC /* PDBService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE727243006F5E24F6AB76F /* PDBService.swift */; };
+		83041FB103CBBD04B33D3FB5 /* RestrictionSites.json in Resources */ = {isa = PBXBuildFile; fileRef = 56A33F946973CB17ECD861D5 /* RestrictionSites.json */; };
+		8612F5CD17164B2C3C5EAF94 /* Mutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95688B2EC28FBD20191B2531 /* Mutation.swift */; };
+		8B314E4DB3C0C91B7D968102 /* AnalysisSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828A016B73E89ACACABA0737 /* AnalysisSheet.swift */; };
+		8B92C56D71DCA1CEB8DF0596 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B66D0384711A95DF556C897 /* Charts.framework */; };
+		8BFEE05B17E1BC71AC050A6D /* RestrictionSites.json in Resources */ = {isa = PBXBuildFile; fileRef = 56A33F946973CB17ECD861D5 /* RestrictionSites.json */; };
+		8C0ED9186B01D4AC2E0E96E2 /* Mutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95688B2EC28FBD20191B2531 /* Mutation.swift */; };
+		8D6F578C277C8DB6668612BB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B709C6609D5488C389FF46 /* ContentView.swift */; };
+		9708AD4136DC33B6B0D7C522 /* DNAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A96B5E1B0F288E95529D4A /* DNAViewModel.swift */; };
+		990122917E397A9C86163DC1 /* DNAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A96B5E1B0F288E95529D4A /* DNAViewModel.swift */; };
+		9BD5E3520A38911640FC9542 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BFEAA28899AF1E0762C8DA /* LibraryView.swift */; };
+		9FCCD305596BD4EA98E85671 /* ViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CB62E2F8F22E49B4747143 /* ViewerView.swift */; };
+		A091B012E79D1DE0F4C9BB06 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BFEAA28899AF1E0762C8DA /* LibraryView.swift */; };
+		A2B6D3D8FB914BBC30D75F29 /* DNAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F9B36B1D0C4758804D4AE7 /* DNAApp.swift */; };
+		A45E2F4068734F8D42BF43E5 /* PDBService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE727243006F5E24F6AB76F /* PDBService.swift */; };
+		A680BBF6C033AE71A736BD24 /* ControlBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F071C072744C6294B834B29 /* ControlBar.swift */; };
+		AD1463E925CE695622DF2D22 /* NCBIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F0923B8138E15D75827BF8 /* NCBIService.swift */; };
+		B22C39EEBB78673157AD5C09 /* FASTAParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FAF54CAB9CE1B8865DAD21 /* FASTAParser.swift */; };
+		B29B8E32C97F438394E7BC4B /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28319BD6515EE4C2ACFAC43E /* SceneKit.framework */; };
+		BA287B9F09C18621E3E8DE86 /* QuizData.json in Resources */ = {isa = PBXBuildFile; fileRef = F96361928E842CA4E6A5913C /* QuizData.json */; };
+		BB9D29D3B10E7F403B63903C /* LadderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1679AA03FAA750B9F540D3 /* LadderBuilder.swift */; };
+		BD98CA735664A1F4FB7D8112 /* LadderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1679AA03FAA750B9F540D3 /* LadderBuilder.swift */; };
+		BE405BA2F9206E8F7E968942 /* SearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2498359334561349104C5F4F /* SearchSheet.swift */; };
+		C152F07622843AFFD759A79A /* FASTAParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FAF54CAB9CE1B8865DAD21 /* FASTAParser.swift */; };
+		C2594DDD602EAA4DD109A0F6 /* DNASequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */; };
+		C86DFF47B88C25258F2AB1D4 /* BallStickBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E683D38687B4203066DBC28 /* BallStickBuilder.swift */; };
+		CE58C160B184BA5060881972 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0B9E25D6D068B4BD6DD3E8 /* HomeView.swift */; };
+		CE81C73E0E2C9A907B1E1002 /* GeneFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A29CACC152D5D9773D8012 /* GeneFeature.swift */; };
+		CF398146A66A3A0C7C080354 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0B9E25D6D068B4BD6DD3E8 /* HomeView.swift */; };
+		D1138289E9A51171E15EC608 /* ViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CB62E2F8F22E49B4747143 /* ViewerView.swift */; };
+		D970833C33052D6435AE0FD7 /* HelixBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AEF53C2DE46CBC96CF69BA7 /* HelixBuilder.swift */; };
+		DE1C6C7AB4A9DABDB2EDEC00 /* DNASceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933C9A3D6A5A0E1C930132E /* DNASceneManager.swift */; };
+		E75FB76CB65117D243D498D9 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B66D0384711A95DF556C897 /* Charts.framework */; };
+		E79C3643A7864EB2E88221D4 /* GeneFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A29CACC152D5D9773D8012 /* GeneFeature.swift */; };
+		E7CCF2FB4D6CD0D0EAE1C55E /* SearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2498359334561349104C5F4F /* SearchSheet.swift */; };
+		E959E349AB1467DCE30B309C /* MutationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C212B9C4559024BF4D14A21 /* MutationSheet.swift */; };
+		EF328673E2D1D19151031BBF /* DNAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F9B36B1D0C4758804D4AE7 /* DNAApp.swift */; };
+		F297202E6A4F21AC0A302A38 /* InfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5381E8D6B39638D9BED975 /* InfoSheet.swift */; };
+		F74B7C6CEB7610139476E074 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB614CFAF489AC2677E0CD4 /* CacheManager.swift */; };
+		F7E0020FAA68CA727CBC08F8 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB614CFAF489AC2677E0CD4 /* CacheManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		06F0923B8138E15D75827BF8 /* NCBIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCBIService.swift; sourceTree = "<group>"; };
+		1616514D0778128027F527B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Base; path = Base.lproj/DNAViewer.entitlements; sourceTree = "<group>"; };
+		1B66D0384711A95DF556C897 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = System/Library/Frameworks/Charts.framework; sourceTree = SDKROOT; };
+		1D009E29E5A7E85E5E87D474 /* Codon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Codon.swift; sourceTree = "<group>"; };
+		2498359334561349104C5F4F /* SearchSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSheet.swift; sourceTree = "<group>"; };
+		28319BD6515EE4C2ACFAC43E /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
+		2933C9A3D6A5A0E1C930132E /* DNASceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNASceneManager.swift; sourceTree = "<group>"; };
+		2AEF53C2DE46CBC96CF69BA7 /* HelixBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelixBuilder.swift; sourceTree = "<group>"; };
+		2C435A58633CA370AC6D6E2E /* SequenceAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceAnalyzer.swift; sourceTree = "<group>"; };
+		2CB614CFAF489AC2677E0CD4 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
+		2CE727243006F5E24F6AB76F /* PDBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDBService.swift; sourceTree = "<group>"; };
+		2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNASequence.swift; sourceTree = "<group>"; };
+		43FAF54CAB9CE1B8865DAD21 /* FASTAParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FASTAParser.swift; sourceTree = "<group>"; };
+		50B709C6609D5488C389FF46 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		56A33F946973CB17ECD861D5 /* RestrictionSites.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = RestrictionSites.json; sourceTree = "<group>"; };
+		56F9B36B1D0C4758804D4AE7 /* DNAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNAApp.swift; sourceTree = "<group>"; };
+		5C212B9C4559024BF4D14A21 /* MutationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutationSheet.swift; sourceTree = "<group>"; };
+		64BFEAA28899AF1E0762C8DA /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		65B8A4AD2F9C33F51C5870D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		66A96B5E1B0F288E95529D4A /* DNAViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNAViewModel.swift; sourceTree = "<group>"; };
+		78CB62E2F8F22E49B4747143 /* ViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerView.swift; sourceTree = "<group>"; };
+		7F071C072744C6294B834B29 /* ControlBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBar.swift; sourceTree = "<group>"; };
+		828A016B73E89ACACABA0737 /* AnalysisSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisSheet.swift; sourceTree = "<group>"; };
+		89A29CACC152D5D9773D8012 /* GeneFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneFeature.swift; sourceTree = "<group>"; };
+		8A075A54DE5086635EAB4625 /* MutationSimulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutationSimulator.swift; sourceTree = "<group>"; };
+		8A5381E8D6B39638D9BED975 /* InfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSheet.swift; sourceTree = "<group>"; };
+		95688B2EC28FBD20191B2531 /* Mutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutation.swift; sourceTree = "<group>"; };
+		9D70F032785EEC43927ECAB5 /* DNAViewer.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DNAViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D72CC3BB9DAFC21904B1CB2 /* SampleGenes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SampleGenes.json; sourceTree = "<group>"; };
+		9E1679AA03FAA750B9F540D3 /* LadderBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LadderBuilder.swift; sourceTree = "<group>"; };
+		9E683D38687B4203066DBC28 /* BallStickBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallStickBuilder.swift; sourceTree = "<group>"; };
+		A479AE70C57769B4966CA424 /* DNAViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DNAViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF0B9E25D6D068B4BD6DD3E8 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		C7CE7D66DB7A9BD25D28744B /* SequenceBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceBar.swift; sourceTree = "<group>"; };
+		CF284579B996092849B64A0F /* RestrictionEnzymes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionEnzymes.swift; sourceTree = "<group>"; };
+		D1759BF0FCE2F4F158AC5547 /* TranslationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationSheet.swift; sourceTree = "<group>"; };
+		DC54D377B007B7D3ABA58CD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F96361928E842CA4E6A5913C /* QuizData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = QuizData.json; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DE1CBC93C8C8AA61481B7BDF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7C36B970951DCD32E26A7B96 /* SceneKit.framework in Frameworks */,
+				E75FB76CB65117D243D498D9 /* Charts.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DF174164796690B1E4E4D6D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B29B8E32C97F438394E7BC4B /* SceneKit.framework in Frameworks */,
+				8B92C56D71DCA1CEB8DF0596 /* Charts.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0A01615EFA9B78CB64BFB180 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				50B709C6609D5488C389FF46 /* ContentView.swift */,
+				56F9B36B1D0C4758804D4AE7 /* DNAApp.swift */,
+				66A96B5E1B0F288E95529D4A /* DNAViewModel.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		15CFD545AFA5C47DADB1D935 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				8A075A54DE5086635EAB4625 /* MutationSimulator.swift */,
+				CF284579B996092849B64A0F /* RestrictionEnzymes.swift */,
+				2C435A58633CA370AC6D6E2E /* SequenceAnalyzer.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		1E477A88CD35301FB61A873F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1B66D0384711A95DF556C897 /* Charts.framework */,
+				28319BD6515EE4C2ACFAC43E /* SceneKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		749E0DDF7A4A6F3744025994 = {
+			isa = PBXGroup;
+			children = (
+				A841992A9C407C6A08FE9063 /* Sources */,
+				1E477A88CD35301FB61A873F /* Frameworks */,
+				970AFA11A421E0C55BC98F91 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		78D5D3545ECC4C1F47F721F0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DC54D377B007B7D3ABA58CD6 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		839650E6E2BB151DB60F390B /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				9E683D38687B4203066DBC28 /* BallStickBuilder.swift */,
+				2933C9A3D6A5A0E1C930132E /* DNASceneManager.swift */,
+				2AEF53C2DE46CBC96CF69BA7 /* HelixBuilder.swift */,
+				9E1679AA03FAA750B9F540D3 /* LadderBuilder.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		92CEDCF3F3FDFCE0043F700D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2CB614CFAF489AC2677E0CD4 /* CacheManager.swift */,
+				43FAF54CAB9CE1B8865DAD21 /* FASTAParser.swift */,
+				06F0923B8138E15D75827BF8 /* NCBIService.swift */,
+				2CE727243006F5E24F6AB76F /* PDBService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		970AFA11A421E0C55BC98F91 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D70F032785EEC43927ECAB5 /* DNAViewer.app */,
+				A479AE70C57769B4966CA424 /* DNAViewer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A841992A9C407C6A08FE9063 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				5819A33CD39269180D46DCD2 /* DNAViewer.entitlements */,
+				65B8A4AD2F9C33F51C5870D9 /* Info.plist */,
+				0A01615EFA9B78CB64BFB180 /* App */,
+				CEB3A58071B457FF625615C9 /* Data */,
+				E3A4F337839D596B0D3D6A07 /* Models */,
+				78D5D3545ECC4C1F47F721F0 /* Resources */,
+				839650E6E2BB151DB60F390B /* Scene */,
+				92CEDCF3F3FDFCE0043F700D /* Services */,
+				15CFD545AFA5C47DADB1D935 /* Utils */,
+				B8DF62BA9B09429A963092B0 /* Views */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		B8DF62BA9B09429A963092B0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				828A016B73E89ACACABA0737 /* AnalysisSheet.swift */,
+				7F071C072744C6294B834B29 /* ControlBar.swift */,
+				BF0B9E25D6D068B4BD6DD3E8 /* HomeView.swift */,
+				8A5381E8D6B39638D9BED975 /* InfoSheet.swift */,
+				64BFEAA28899AF1E0762C8DA /* LibraryView.swift */,
+				5C212B9C4559024BF4D14A21 /* MutationSheet.swift */,
+				2498359334561349104C5F4F /* SearchSheet.swift */,
+				C7CE7D66DB7A9BD25D28744B /* SequenceBar.swift */,
+				D1759BF0FCE2F4F158AC5547 /* TranslationSheet.swift */,
+				78CB62E2F8F22E49B4747143 /* ViewerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CEB3A58071B457FF625615C9 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				F96361928E842CA4E6A5913C /* QuizData.json */,
+				56A33F946973CB17ECD861D5 /* RestrictionSites.json */,
+				9D72CC3BB9DAFC21904B1CB2 /* SampleGenes.json */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		E3A4F337839D596B0D3D6A07 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1D009E29E5A7E85E5E87D474 /* Codon.swift */,
+				2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */,
+				89A29CACC152D5D9773D8012 /* GeneFeature.swift */,
+				95688B2EC28FBD20191B2531 /* Mutation.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		179E808C21DA7237672C80FC /* DNAViewer_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0EF94795FF7BFA8B2A5E1DF /* Build configuration list for PBXNativeTarget "DNAViewer_iOS" */;
+			buildPhases = (
+				0BD82BA478FBC24DF00FE5E1 /* Sources */,
+				A0DD2552B81602CC8B12AC63 /* Resources */,
+				DF174164796690B1E4E4D6D4 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DNAViewer_iOS;
+			packageProductDependencies = (
+			);
+			productName = DNAViewer_iOS;
+			productReference = 9D70F032785EEC43927ECAB5 /* DNAViewer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6C7963B1EF33A765C693AD20 /* DNAViewer_macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC599467DB65B6F76131DB73 /* Build configuration list for PBXNativeTarget "DNAViewer_macOS" */;
+			buildPhases = (
+				0017348F0DD9FEBBFBEC0E9B /* Sources */,
+				4DBAED6D3F4FE708D03F0398 /* Resources */,
+				DE1CBC93C8C8AA61481B7BDF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DNAViewer_macOS;
+			packageProductDependencies = (
+			);
+			productName = DNAViewer_macOS;
+			productReference = A479AE70C57769B4966CA424 /* DNAViewer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CF42C773C676F9D739F4DC47 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					179E808C21DA7237672C80FC = {
+						DevelopmentTeam = DDU65CBFSC;
+						ProvisioningStyle = Automatic;
+					};
+					6C7963B1EF33A765C693AD20 = {
+						DevelopmentTeam = DDU65CBFSC;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = CA1079750ED52E12E3F82A27 /* Build configuration list for PBXProject "DNAViewer" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 749E0DDF7A4A6F3744025994;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				179E808C21DA7237672C80FC /* DNAViewer_iOS */,
+				6C7963B1EF33A765C693AD20 /* DNAViewer_macOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4DBAED6D3F4FE708D03F0398 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B9DE06A7A1F9F9D4626C269 /* Assets.xcassets in Resources */,
+				BA287B9F09C18621E3E8DE86 /* QuizData.json in Resources */,
+				83041FB103CBBD04B33D3FB5 /* RestrictionSites.json in Resources */,
+				238949F2F149851A01D027D7 /* SampleGenes.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0DD2552B81602CC8B12AC63 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				004F9FCC478710956D4C6DB8 /* Assets.xcassets in Resources */,
+				7C8079EC5B3B5E0958AAA270 /* QuizData.json in Resources */,
+				8BFEE05B17E1BC71AC050A6D /* RestrictionSites.json in Resources */,
+				7D6DB0B74EDDFB6CEF3687C7 /* SampleGenes.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0017348F0DD9FEBBFBEC0E9B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B314E4DB3C0C91B7D968102 /* AnalysisSheet.swift in Sources */,
+				219C9FAE10DBA54880459FF3 /* BallStickBuilder.swift in Sources */,
+				F7E0020FAA68CA727CBC08F8 /* CacheManager.swift in Sources */,
+				7BB490E25768CC91B5B11D60 /* Codon.swift in Sources */,
+				49ED7795548935F2D3838D5B /* ContentView.swift in Sources */,
+				0E3B597C91F9004788BAA13E /* ControlBar.swift in Sources */,
+				A2B6D3D8FB914BBC30D75F29 /* DNAApp.swift in Sources */,
+				6A523A250495A7881D47ACF2 /* DNASceneManager.swift in Sources */,
+				C2594DDD602EAA4DD109A0F6 /* DNASequence.swift in Sources */,
+				990122917E397A9C86163DC1 /* DNAViewModel.swift in Sources */,
+				B22C39EEBB78673157AD5C09 /* FASTAParser.swift in Sources */,
+				E79C3643A7864EB2E88221D4 /* GeneFeature.swift in Sources */,
+				0121B14E5A0F71963BC17F86 /* HelixBuilder.swift in Sources */,
+				CF398146A66A3A0C7C080354 /* HomeView.swift in Sources */,
+				F297202E6A4F21AC0A302A38 /* InfoSheet.swift in Sources */,
+				BD98CA735664A1F4FB7D8112 /* LadderBuilder.swift in Sources */,
+				A091B012E79D1DE0F4C9BB06 /* LibraryView.swift in Sources */,
+				8C0ED9186B01D4AC2E0E96E2 /* Mutation.swift in Sources */,
+				E959E349AB1467DCE30B309C /* MutationSheet.swift in Sources */,
+				6E419D245A3959A6FE5F8A64 /* MutationSimulator.swift in Sources */,
+				295EF9C24BF9289B522BBB00 /* NCBIService.swift in Sources */,
+				8125F61D5AD8E0078D4EDEDC /* PDBService.swift in Sources */,
+				0DDBB838134C07AD58FCC3F4 /* RestrictionEnzymes.swift in Sources */,
+				BE405BA2F9206E8F7E968942 /* SearchSheet.swift in Sources */,
+				5FD8E39930DC5C930B9DC932 /* SequenceAnalyzer.swift in Sources */,
+				17EC5917B00909022185D6CB /* SequenceBar.swift in Sources */,
+				4581269345B9FF02BD34A3E8 /* TranslationSheet.swift in Sources */,
+				9FCCD305596BD4EA98E85671 /* ViewerView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BD82BA478FBC24DF00FE5E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E851E8BCB1814AA41771E4C /* AnalysisSheet.swift in Sources */,
+				C86DFF47B88C25258F2AB1D4 /* BallStickBuilder.swift in Sources */,
+				F74B7C6CEB7610139476E074 /* CacheManager.swift in Sources */,
+				68CA1C5E3A25C8C53EFC06C7 /* Codon.swift in Sources */,
+				8D6F578C277C8DB6668612BB /* ContentView.swift in Sources */,
+				A680BBF6C033AE71A736BD24 /* ControlBar.swift in Sources */,
+				EF328673E2D1D19151031BBF /* DNAApp.swift in Sources */,
+				DE1C6C7AB4A9DABDB2EDEC00 /* DNASceneManager.swift in Sources */,
+				4053DC98783D8EA19A1090BD /* DNASequence.swift in Sources */,
+				9708AD4136DC33B6B0D7C522 /* DNAViewModel.swift in Sources */,
+				C152F07622843AFFD759A79A /* FASTAParser.swift in Sources */,
+				CE81C73E0E2C9A907B1E1002 /* GeneFeature.swift in Sources */,
+				D970833C33052D6435AE0FD7 /* HelixBuilder.swift in Sources */,
+				CE58C160B184BA5060881972 /* HomeView.swift in Sources */,
+				133CEBC79FC9C5927B2DAE5D /* InfoSheet.swift in Sources */,
+				BB9D29D3B10E7F403B63903C /* LadderBuilder.swift in Sources */,
+				9BD5E3520A38911640FC9542 /* LibraryView.swift in Sources */,
+				8612F5CD17164B2C3C5EAF94 /* Mutation.swift in Sources */,
+				7E8337DF6A829B0D3E6F711C /* MutationSheet.swift in Sources */,
+				6167B5A8530EDB5BB77CFC41 /* MutationSimulator.swift in Sources */,
+				AD1463E925CE695622DF2D22 /* NCBIService.swift in Sources */,
+				A45E2F4068734F8D42BF43E5 /* PDBService.swift in Sources */,
+				31C16AF1001F9A0C3C5F9A72 /* RestrictionEnzymes.swift in Sources */,
+				E7CCF2FB4D6CD0D0EAE1C55E /* SearchSheet.swift in Sources */,
+				5C9DF7B1D3A728954F9D121F /* SequenceAnalyzer.swift in Sources */,
+				5ADB196E52A85B8B01A3BBA8 /* SequenceBar.swift in Sources */,
+				2A455DFE61AEEFB15BC0A7E6 /* TranslationSheet.swift in Sources */,
+				D1138289E9A51171E15EC608 /* ViewerView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		5819A33CD39269180D46DCD2 /* DNAViewer.entitlements */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1616514D0778128027F527B6 /* Base */,
+			);
+			name = DNAViewer.entitlements;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		20B096A1D5F791D7252C9F0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Sources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_NAME = DNAViewer;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		908F4C20181CA2E3915A8A41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Sources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_NAME = DNAViewer;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9A73321714BED550C75FDFF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Sources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_NAME = DNAViewer;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A3398151BF14E523C7CE71E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]" = NO;
+				"CODE_SIGNING_ALLOWED[sdk=macosx*]" = NO;
+				"CODE_SIGNING_REQUIRED[sdk=iphonesimulator*]" = NO;
+				"CODE_SIGNING_REQUIRED[sdk=macosx*]" = NO;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = DDU65CBFSC;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.avas.DNAViewer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		AA38DDE9E5F5C268D56D36BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Sources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_NAME = DNAViewer;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		FEDFEEF45C799603FB64F9C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]" = NO;
+				"CODE_SIGNING_ALLOWED[sdk=macosx*]" = NO;
+				"CODE_SIGNING_REQUIRED[sdk=iphonesimulator*]" = NO;
+				"CODE_SIGNING_REQUIRED[sdk=macosx*]" = NO;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = DDU65CBFSC;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.avas.DNAViewer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B0EF94795FF7BFA8B2A5E1DF /* Build configuration list for PBXNativeTarget "DNAViewer_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				908F4C20181CA2E3915A8A41 /* Debug */,
+				9A73321714BED550C75FDFF5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BC599467DB65B6F76131DB73 /* Build configuration list for PBXNativeTarget "DNAViewer_macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA38DDE9E5F5C268D56D36BA /* Debug */,
+				20B096A1D5F791D7252C9F0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CA1079750ED52E12E3F82A27 /* Build configuration list for PBXProject "DNAViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3398151BF14E523C7CE71E4 /* Debug */,
+				FEDFEEF45C799603FB64F9C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CF42C773C676F9D739F4DC47 /* Project object */;
+}

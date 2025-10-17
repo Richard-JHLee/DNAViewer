@@ -1,0 +1,78 @@
+name: DNAViewer
+options:
+  bundleIdPrefix: com.avas
+  deploymentTarget:
+    iOS: "15.0"
+    macOS: "12.0"
+
+settings:
+  PRODUCT_BUNDLE_IDENTIFIER: com.avas.DNAViewer
+  DEVELOPMENT_TEAM: DDU65CBFSC
+  SWIFT_VERSION: 5.9
+  IPHONEOS_DEPLOYMENT_TARGET: 15.0
+  MACOSX_DEPLOYMENT_TARGET: 12.0
+  CODE_SIGN_STYLE: Automatic
+  ALWAYS_SEARCH_USER_PATHS: NO
+  CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]: NO
+  CODE_SIGNING_REQUIRED[sdk=iphonesimulator*]: NO
+  CODE_SIGNING_ALLOWED[sdk=macosx*]: NO
+  CODE_SIGNING_REQUIRED[sdk=macosx*]: NO
+
+targets:
+  DNAViewer:
+    type: application
+    platform: [iOS, macOS]
+    sources:
+      - path: Sources
+    resources:
+      - path: Sources/Resources
+      - path: Sources/Data
+    dependencies:
+      - sdk: SceneKit.framework
+      - sdk: Charts.framework
+    info:
+      path: Sources/Info.plist
+      properties:
+        CFBundleDisplayName: DNA Viewer
+        LSApplicationCategoryType: "public.app-category.education"
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        UIRequiresFullScreen: false
+        UILaunchScreen: {}
+        CFBundleIcons:
+          CFBundlePrimaryIcon:
+            CFBundleIconName: AppIcon
+            CFBundleIconFiles:
+              - AppIcon
+        CFBundleIcons~ipad:
+          CFBundlePrimaryIcon:
+            CFBundleIconName: AppIcon
+            CFBundleIconFiles:
+              - AppIcon
+        UIRequiresPersistentWiFi: false
+        UIStatusBarStyle: UIStatusBarStyleDefault
+        UIViewControllerBasedStatusBarAppearance: true
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: false
+          NSExceptionDomains:
+            ncbi.nlm.nih.gov:
+              NSExceptionAllowsInsecureHTTPLoads: false
+              NSIncludesSubdomains: true
+            rcsb.org:
+              NSExceptionAllowsInsecureHTTPLoads: false
+              NSIncludesSubdomains: true
+        # macOS specific settings
+        NSPrincipalClass: NSApplication
+        NSMainNibFile: MainMenu
+        LSSupportsOpeningDocumentsInPlace: true
+        UIFileSharingEnabled: true
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: "FASTA Files"
+            CFBundleTypeRole: "Viewer"
+            LSItemContentTypes: ["public.data"]
+            CFBundleTypeExtensions: ["fasta", "fa", "fna"]
+          - CFBundleTypeName: "CIF Files"
+            CFBundleTypeRole: "Viewer"
+            LSItemContentTypes: ["public.data"]
+            CFBundleTypeExtensions: ["cif"]
+

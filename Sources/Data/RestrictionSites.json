@@ -1,0 +1,59 @@
+[
+  {
+    "name": "EcoRI",
+    "sequence": "GAATTC",
+    "cutPosition": 1,
+    "recognitionSite": "G^AATTC",
+    "overhang": "5' overhang"
+  },
+  {
+    "name": "BamHI",
+    "sequence": "GGATCC",
+    "cutPosition": 1,
+    "recognitionSite": "G^GATCC",
+    "overhang": "5' overhang"
+  },
+  {
+    "name": "HindIII",
+    "sequence": "AAGCTT",
+    "cutPosition": 1,
+    "recognitionSite": "A^AGCTT",
+    "overhang": "5' overhang"
+  },
+  {
+    "name": "PstI",
+    "sequence": "CTGCAG",
+    "cutPosition": 5,
+    "recognitionSite": "CTGCA^G",
+    "overhang": "3' overhang"
+  },
+  {
+    "name": "SmaI",
+    "sequence": "CCCGGG",
+    "cutPosition": 3,
+    "recognitionSite": "CCC^GGG",
+    "overhang": "blunt"
+  },
+  {
+    "name": "XbaI",
+    "sequence": "TCTAGA",
+    "cutPosition": 1,
+    "recognitionSite": "T^CTAGA",
+    "overhang": "5' overhang"
+  },
+  {
+    "name": "NotI",
+    "sequence": "GCGGCCGC",
+    "cutPosition": 2,
+    "recognitionSite": "GC^GGCCGC",
+    "overhang": "5' overhang"
+  },
+  {
+    "name": "SacI",
+    "sequence": "GAGCTC",
+    "cutPosition": 5,
+    "recognitionSite": "GAGCT^C",
+    "overhang": "3' overhang"
+  }
+]
+

@@ -1,0 +1,148 @@
+[
+  {
+    "id": "BRCA1",
+    "name": "BRCA1",
+    "accession": "NM_007294.4",
+    "pdbID": null,
+    "sequence": "ATGGATTTATCTGCTCTTCGCGTTGAAGAAGTACAAAATGTCATTAATGCTATGCAGAAAATCTTAGAGTGTCCCATCTGTCTGGAGTTGATCAAGGAACCTGTCTCCACAAAGTGTGACCACATATTTTGCAAATTTTGCATGCTGAAACTTCTCAACCAGAAGAAAGGGCCTTCACAGTGTCCTTTATGTAAGAATGATATAACCAAAAGGAGCCTACAAGAAAGTACGAGATTTAGTCAACTTGTTGAAGAGCTATTGAAAATCATTTGTGCTTTTCAGCTTGACACAGGTTTGGAGTATGCAAACAGCTA",
+    "chromosome": "17q21.31",
+    "startPos": 43044295,
+    "endPos": 43125483,
+    "strand": "minus",
+    "geneType": "coding",
+    "organism": "Homo sapiens",
+    "features": [],
+    "mutations": [
+      {
+        "id": "BRCA1_185delAG",
+        "position": 185,
+        "refBase": "AG",
+        "altBase": "-",
+        "type": "deletion",
+        "consequence": "Frameshift",
+        "clinicalSignificance": "pathogenic",
+        "disease": "Breast and Ovarian Cancer",
+        "description": "Common Ashkenazi Jewish founder mutation"
+      }
+    ],
+    "summary": "DNA repair protein involved in homologous recombination repair of DNA double-strand breaks. Mutations increase breast and ovarian cancer risk.",
+    "diseaseLinks": ["Breast Cancer", "Ovarian Cancer", "Hereditary Breast-Ovarian Cancer Syndrome"]
+  },
+  {
+    "id": "TP53",
+    "name": "TP53",
+    "accession": "NM_000546.6",
+    "pdbID": "1TSR",
+    "sequence": "ATGGAGGAGCCGCAGTCAGATCCTAGCGTCGAGCCCCCTCTGAGTCAGGAAACATTTTCAGACCTATGGAAACTACTTCCTGAAAACAACGTTCTGTCCCCCTTGCCGTCCCAAGCAATGGATGATTTGATGCTGTCCCCGGACGATATTGAACAATGGTTCACTGAAGACCCAGGTCCAGATGAAGCTCCCAGAATGCCAGAGGCTGCTCCCCCCGTGGCCCCTGCACCAGCAGCTCCTACACCGGCGGCCCCTGCACCAGCCCCCTCCTGGCCCCTGTCATCTTCTGTCCCTTCCCAGAAAACCTACCAGGGCAGCTACGGTTTCCGTCTGGGCTTCTTGCATT",
+    "chromosome": "17p13.1",
+    "startPos": 7668402,
+    "endPos": 7687550,
+    "strand": "minus",
+    "geneType": "coding",
+    "organism": "Homo sapiens",
+    "features": [],
+    "mutations": [
+      {
+        "id": "TP53_R175H",
+        "position": 524,
+        "refBase": "G",
+        "altBase": "A",
+        "type": "snp",
+        "consequence": "Missense (R175H)",
+        "clinicalSignificance": "pathogenic",
+        "disease": "Li-Fraumeni Syndrome",
+        "description": "DNA binding domain hotspot mutation"
+      }
+    ],
+    "summary": "Tumor suppressor protein that regulates cell cycle and functions as a transcription factor. Mutations are found in majority of human cancers.",
+    "diseaseLinks": ["Li-Fraumeni Syndrome", "Various Cancers", "Colorectal Cancer"]
+  },
+  {
+    "id": "CFTR",
+    "name": "CFTR",
+    "accession": "NM_000492.4",
+    "pdbID": "5UAK",
+    "sequence": "ATGCAGAGGTCGCCTCTGGAAACCATTAAAGAAAATATCATCTTTGGTGTTTCCTATGATGAATATAGATACAGAAGCGTCATCAAAGCATGCCAACTAGAAGAGGTAAGAAACTATGTGAAAACTTTTTGATTTTGTTTTTGCATCTTTTCACTTCTAATTATATTCCTTGGCTAAACACTGTCAAATTCATCTATTTGATACATAATGCTACTGATTATGGGAGAACTGGAGCCT",
+    "chromosome": "7q31.2",
+    "startPos": 117480025,
+    "endPos": 117668665,
+    "strand": "plus",
+    "geneType": "coding",
+    "organism": "Homo sapiens",
+    "features": [],
+    "mutations": [
+      {
+        "id": "CFTR_F508del",
+        "position": 1521,
+        "refBase": "CTT",
+        "altBase": "-",
+        "type": "deletion",
+        "consequence": "In-frame deletion (ΔF508)",
+        "clinicalSignificance": "pathogenic",
+        "disease": "Cystic Fibrosis",
+        "description": "Most common CF mutation (70% of CF alleles)"
+      }
+    ],
+    "summary": "Chloride channel that regulates fluid transport across epithelial cells. Mutations cause cystic fibrosis.",
+    "diseaseLinks": ["Cystic Fibrosis", "Congenital Bilateral Absence of Vas Deferens"]
+  },
+  {
+    "id": "HBB",
+    "name": "HBB",
+    "accession": "NM_000518.5",
+    "pdbID": "1HBS",
+    "sequence": "ATGGTGCACCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTGAACGTGGATGAAGTTGGTGGTGAGGCCCTGGGCAGGCTGCTGGTGGTCTACCCTTGGACCCAGAGGTTCTTTGAGTCCTTTGGGGATCTGTCCACTCCTGATGCTGTTATGGGCAACCCTAAGGTGAAGGCTCATGGCAAGAAAGTGCTCGGTGCCTTTAGTGATGGCCTGGCTCACCTGGACAACCTCAAGGGCACCTTTGCCACACTGAGTGAGCTGCACTGTGACAAGCTGCACGTGGATCCTGAGAACTTCAGGCTCCTGGGCAACGTGCTGGTCTGTGTGCTGGCCCATCACTTTGGCAAAGAATTCACCCCACCAGTGCAGGCTGCCTATCAGAAAGTGGTGGCTGGTGTGGCTAATGCCCTGGCCCACAAGTATCACTAA",
+    "chromosome": "11p15.4",
+    "startPos": 5225464,
+    "endPos": 5227071,
+    "strand": "minus",
+    "geneType": "coding",
+    "organism": "Homo sapiens",
+    "features": [],
+    "mutations": [
+      {
+        "id": "HBB_E6V",
+        "position": 17,
+        "refBase": "A",
+        "altBase": "T",
+        "type": "snp",
+        "consequence": "Missense (E6V)",
+        "clinicalSignificance": "pathogenic",
+        "disease": "Sickle Cell Disease",
+        "description": "Causes hemoglobin S polymerization"
+      }
+    ],
+    "summary": "Beta chain of hemoglobin protein. Mutations cause sickle cell disease and beta-thalassemia.",
+    "diseaseLinks": ["Sickle Cell Disease", "Beta-Thalassemia"]
+  },
+  {
+    "id": "APOE",
+    "name": "APOE",
+    "accession": "NM_000041.4",
+    "pdbID": "1BZ4",
+    "sequence": "ATGAAGGTTCTGTGGGCTGCGTTGCTGGTCACATTCCTGGCAGGATGCCAGGCCAAGGTGGTACACTGCCAGGCCCAGGCCCAGGTGCGGGTGCGCAGGCCCTGGCTCCCCAGCATGCCCCTCACCCTCTGCCACTGCAGGTGGAGCTGCCCATGCTGCGCGACTTCGACGCCCGCCTGCGCAAGCTGCGTAAGCGGCTCCTCCGCGATGCCGATGACCTGCAGAAGCGCCTGGCAGTGTACCAGGCCGGGGCCCGCGAGGGCGCCGAGCGCGGCCTCAGCGCCATCCGCGAGCGCCTGGGGAATGTGCGCGGCCGCTTCGCGCAGGCCGCGCGCGAGGCCGCGGACGCGGCCCGTCGCGGCCGCCTGCGCGAGCCGCTGCAGGCGCGCGCGGTGCAGGCCGCGCTGGCGCGGCAGAAGCGCACCCGCCACGTGACCGTGGAGGAGATGCGCGATGCCAACCGCCTGCGCGAGGCCCAGGAG",
+    "chromosome": "19q13.32",
+    "startPos": 44905791,
+    "endPos": 44909393,
+    "strand": "plus",
+    "geneType": "coding",
+    "organism": "Homo sapiens",
+    "features": [],
+    "mutations": [
+      {
+        "id": "APOE_E4",
+        "position": 388,
+        "refBase": "T",
+        "altBase": "C",
+        "type": "snp",
+        "consequence": "Missense (C112R)",
+        "clinicalSignificance": "likelyPathogenic",
+        "disease": "Alzheimer's Disease",
+        "description": "Major genetic risk factor for late-onset AD"
+      }
+    ],
+    "summary": "Lipoprotein involved in cholesterol metabolism. The E4 variant increases Alzheimer's disease risk.",
+    "diseaseLinks": ["Alzheimer's Disease", "Cardiovascular Disease", "Type III Hyperlipoproteinemia"]
+  }
+]
+

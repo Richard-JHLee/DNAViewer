@@ -1,0 +1,103 @@
+[
+  {
+    "id": "Q1",
+    "question": "다음 중 DNA를 구성하는 염기가 아닌 것은?",
+    "type": "multipleChoice",
+    "options": ["Adenine", "Uracil", "Guanine", "Cytosine"],
+    "correctAnswer": "Uracil",
+    "explanation": "Uracil은 RNA에만 존재하는 염기입니다. DNA는 Adenine, Thymine, Guanine, Cytosine으로 구성됩니다.",
+    "difficulty": "beginner",
+    "category": "structure"
+  },
+  {
+    "id": "Q2",
+    "question": "서열 5'-ATCG-3'의 상보적 서열은 무엇인가요?",
+    "type": "multipleChoice",
+    "options": ["5'-CGAT-3'", "5'-TAGC-3'", "3'-TAGC-5'", "3'-ATCG-5'"],
+    "correctAnswer": "3'-TAGC-5'",
+    "explanation": "상보적 서열은 A와 T, G와 C가 쌍을 이루며, 방향이 반대입니다.",
+    "difficulty": "beginner",
+    "category": "structure"
+  },
+  {
+    "id": "Q3",
+    "question": "코돈 ATG가 코딩하는 아미노산은?",
+    "type": "multipleChoice",
+    "options": ["Alanine", "Methionine", "Glycine", "Valine"],
+    "correctAnswer": "Methionine",
+    "explanation": "ATG는 Methionine(M)을 코딩하며, 동시에 번역의 시작 코돈(start codon)입니다.",
+    "difficulty": "intermediate",
+    "category": "translation"
+  },
+  {
+    "id": "Q4",
+    "question": "BRCA1 유전자의 돌연변이는 주로 어떤 암과 관련이 있나요?",
+    "type": "multipleChoice",
+    "options": ["폐암", "유방암 및 난소암", "대장암", "피부암"],
+    "correctAnswer": "유방암 및 난소암",
+    "explanation": "BRCA1 유전자는 DNA 복구에 관여하며, 돌연변이 시 유방암과 난소암의 위험이 크게 증가합니다.",
+    "difficulty": "intermediate",
+    "category": "disease"
+  },
+  {
+    "id": "Q5",
+    "question": "Watson-Crick 염기쌍 규칙에서 Adenine과 쌍을 이루는 염기는?",
+    "type": "multipleChoice",
+    "options": ["Cytosine", "Guanine", "Thymine", "Uracil"],
+    "correctAnswer": "Thymine",
+    "explanation": "DNA에서 Adenine(A)은 Thymine(T)과 2개의 수소결합으로 쌍을 이룹니다.",
+    "difficulty": "beginner",
+    "category": "structure"
+  },
+  {
+    "id": "Q6",
+    "question": "B-DNA의 1회전은 몇 개의 염기쌍으로 이루어져 있나요?",
+    "type": "multipleChoice",
+    "options": ["8 bp", "10.5 bp", "12 bp", "15 bp"],
+    "correctAnswer": "10.5 bp",
+    "explanation": "표준 B-DNA는 약 10.5개의 염기쌍으로 1회전을 이루며, 나선의 피치는 약 3.4nm입니다.",
+    "difficulty": "advanced",
+    "category": "structure"
+  },
+  {
+    "id": "Q7",
+    "question": "TP53 유전자의 주요 기능은 무엇인가요?",
+    "type": "multipleChoice",
+    "options": ["에너지 생산", "종양 억제", "면역 반응", "호르몬 조절"],
+    "correctAnswer": "종양 억제",
+    "explanation": "TP53은 종양 억제 유전자(tumor suppressor)로 세포 주기를 조절하고, DNA 손상 시 세포 사멸을 유도합니다.",
+    "difficulty": "intermediate",
+    "category": "function"
+  },
+  {
+    "id": "Q8",
+    "question": "겸상적혈구 빈혈증(Sickle Cell Disease)의 원인이 되는 유전자는?",
+    "type": "multipleChoice",
+    "options": ["BRCA1", "TP53", "HBB", "CFTR"],
+    "correctAnswer": "HBB",
+    "explanation": "HBB 유전자의 특정 돌연변이(E6V)는 헤모글로빈의 구조를 변화시켜 겸상적혈구를 만듭니다.",
+    "difficulty": "intermediate",
+    "category": "disease"
+  },
+  {
+    "id": "Q9",
+    "question": "Stop codon이 아닌 것은?",
+    "type": "multipleChoice",
+    "options": ["TAA", "TAG", "TGA", "ATG"],
+    "correctAnswer": "ATG",
+    "explanation": "ATG는 start codon입니다. Stop codon은 TAA, TAG, TGA 세 가지입니다.",
+    "difficulty": "intermediate",
+    "category": "translation"
+  },
+  {
+    "id": "Q10",
+    "question": "낭포성 섬유증(Cystic Fibrosis)과 관련된 유전자는?",
+    "type": "multipleChoice",
+    "options": ["BRCA1", "CFTR", "HBB", "APOE"],
+    "correctAnswer": "CFTR",
+    "explanation": "CFTR 유전자는 염소 이온 채널을 코딩하며, 가장 흔한 돌연변이는 F508del입니다.",
+    "difficulty": "intermediate",
+    "category": "disease"
+  }
+]
+
