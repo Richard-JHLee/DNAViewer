@@ -12,6 +12,10 @@ struct LibraryView: View {
     @State private var sampleGenes: [GeneInfo] = []
     @State private var selectedGene: GeneInfo?
     @State private var showViewer = false
+    @State private var isLoadingSequence = false
+    @State private var loadingProgress = ""
+    @State private var loadedSequence: DNASequence?
+    @State private var errorMessage: String?
     
     var body: some View {
         NavigationView {
@@ -19,12 +23,32 @@ struct LibraryView: View {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 16) {
                     ForEach(sampleGenes) { gene in
                         GeneCard(gene: gene) {
-                            selectedGene = gene
-                            showViewer = true
+                            loadGeneFromNCBI(gene)
                         }
                     }
                 }
                 .padding()
+            }
+            .overlay {
+                if isLoadingSequence {
+                    ZStack {
+                        Color.black.opacity(0.3)
+                            .ignoresSafeArea()
+                        
+                        VStack(spacing: 16) {
+                            ProgressView()
+                                .scaleEffect(1.5)
+                                .tint(.white)
+                            
+                            Text(loadingProgress)
+                                .font(.headline)
+                                .foregroundColor(.white)
+                        }
+                        .padding(32)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(16)
+                    }
+                }
             }
             .navigationTitle("Gene Library")
             #if !os(macOS)
@@ -51,17 +75,26 @@ struct LibraryView: View {
         }
         #if os(macOS)
         .sheet(isPresented: $showViewer) {
-            if let gene = selectedGene {
-                ViewerView(sequence: createSequence(from: gene))
+            if let sequence = loadedSequence {
+                ViewerView(sequence: sequence)
             }
         }
         #else
         .fullScreenCover(isPresented: $showViewer) {
-            if let gene = selectedGene {
-                ViewerView(sequence: createSequence(from: gene))
+            if let sequence = loadedSequence {
+                ViewerView(sequence: sequence)
             }
         }
         #endif
+        .alert("Error", isPresented: .constant(errorMessage != nil)) {
+            Button("OK") {
+                errorMessage = nil
+            }
+        } message: {
+            if let error = errorMessage {
+                Text(error)
+            }
+        }
     }
     
     private func loadSampleGenes() {
@@ -86,16 +119,119 @@ struct LibraryView: View {
         ]
     }
     
-    private func createSequence(from gene: GeneInfo) -> DNASequence {
-        // For demo, create a sample sequence
-        return DNASequence(
-            name: gene.name,
-            sequence: String(repeating: "ATGC", count: 100),
-            chromosome: gene.chromosome,
-            summary: gene.description,
-            diseaseLinks: gene.diseases
-        )
+    private func loadGeneFromNCBI(_ gene: GeneInfo) {
+        selectedGene = gene
+        isLoadingSequence = true
+        loadingProgress = "Loading \(gene.symbol) from NCBI..."
+        errorMessage = nil
+        
+        Task {
+            do {
+                print("🌐 Fetching \(gene.symbol) from NCBI...")
+                
+                // SampleGenes.json에서 accession 가져오기
+                guard let jsonGene = try? loadGeneFromJSON(id: gene.id),
+                      let accession = jsonGene.accession else {
+                    throw NCBIService.NCBIError.invalidURL
+                }
+                
+                print("📡 Accession: \(accession)")
+                loadingProgress = "Downloading from NCBI (\(accession))..."
+                
+                // NCBI API로 실제 데이터 가져오기
+                let sequence = try await NCBIService.shared.fetchSequence(accession: accession)
+                
+                print("✅ Loaded \(sequence.sequence.count)bp from NCBI")
+                
+                // JSON의 추가 정보와 병합
+                let strand: Strand = jsonGene.strand.lowercased() == "plus" ? .plus : .minus
+                let geneType: GeneType = jsonGene.geneType.lowercased() == "coding" ? .coding : .nonCoding
+                
+                // Mutation 변환
+                let mutations = jsonGene.mutations.map { mutJson -> Mutation in
+                    Mutation(
+                        position: mutJson.position,
+                        refBase: mutJson.refBase,
+                        altBase: mutJson.altBase,
+                        type: MutationType(rawValue: mutJson.type) ?? .substitution,
+                        consequence: mutJson.consequence ?? "",
+                        clinicalSignificance: ClinicalSignificance(rawValue: mutJson.clinicalSignificance) ?? .uncertain,
+                        disease: mutJson.disease,
+                        description: mutJson.description
+                    )
+                }
+                
+                let enhancedSequence = DNASequence(
+                    name: jsonGene.name,
+                    accession: accession,
+                    pdbID: jsonGene.pdbID,
+                    sequence: sequence.sequence,
+                    chromosome: jsonGene.chromosome,
+                    startPos: jsonGene.startPos,
+                    endPos: jsonGene.endPos,
+                    strand: strand,
+                    geneType: geneType,
+                    organism: jsonGene.organism,
+                    features: jsonGene.features,
+                    mutations: mutations,
+                    summary: jsonGene.summary,
+                    diseaseLinks: jsonGene.diseaseLinks
+                )
+                
+                await MainActor.run {
+                    self.loadedSequence = enhancedSequence
+                    self.isLoadingSequence = false
+                    self.showViewer = true
+                }
+            } catch {
+                await MainActor.run {
+                    self.isLoadingSequence = false
+                    self.errorMessage = "Failed to load \(gene.symbol): \(error.localizedDescription)"
+                    print("❌ Error loading gene: \(error)")
+                }
+            }
+        }
     }
+    
+    private func loadGeneFromJSON(id: String) throws -> DNASequenceJSON? {
+        guard let url = Bundle.main.url(forResource: "SampleGenes", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let genes = try? JSONDecoder().decode([DNASequenceJSON].self, from: data) else {
+            return nil
+        }
+        return genes.first { $0.id == id }
+    }
+}
+
+// JSON 디코딩용 구조체
+struct DNASequenceJSON: Codable {
+    let id: String
+    let name: String
+    let accession: String?
+    let pdbID: String?
+    let sequence: String
+    let chromosome: String?
+    let startPos: Int?
+    let endPos: Int?
+    let strand: String
+    let geneType: String
+    let organism: String
+    let features: [GeneFeature]
+    let mutations: [MutationJSON]
+    let summary: String?
+    let diseaseLinks: [String]?
+}
+
+struct MutationJSON: Codable {
+    let id: String
+    let position: Int
+    let refBase: String
+    let altBase: String
+    let type: String
+    let consequence: String?
+    let clinicalSignificance: String
+    let disease: String?
+    let description: String?
 }
 
 struct GeneInfo: Identifiable, Codable {
