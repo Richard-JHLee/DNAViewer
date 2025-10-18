@@ -23,6 +23,8 @@ class NCBIService {
     private init() {}
     
     func fetchSequence(accession: String) async throws -> DNASequence {
+        print("🌐 NCBIService.fetchSequence called with: \(accession)")
+        
         var components = URLComponents(string: baseURL)
         components?.queryItems = [
             URLQueryItem(name: "db", value: "nuccore"),
@@ -32,28 +34,51 @@ class NCBIService {
         ]
         
         guard let url = components?.url else {
+            print("❌ Invalid URL")
             throw NCBIError.invalidURL
         }
         
-        let (data, response) = try await URLSession.shared.data(from: url)
+        print("📡 Requesting: \(url.absoluteString)")
         
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else {
-            throw NCBIError.invalidResponse
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("❌ Invalid response type")
+                throw NCBIError.invalidResponse
+            }
+            
+            print("📥 HTTP Status: \(httpResponse.statusCode)")
+            
+            guard httpResponse.statusCode == 200 else {
+                print("❌ HTTP Error: \(httpResponse.statusCode)")
+                throw NCBIError.invalidResponse
+            }
+            
+            guard let fastaString = String(data: data, encoding: .utf8) else {
+                print("❌ Failed to decode response data")
+                throw NCBIError.parsingError
+            }
+            
+            print("📄 Received FASTA data (\(data.count) bytes)")
+            print("📄 First 200 chars: \(String(fastaString.prefix(200)))")
+            
+            let record = try FASTAParser.parse(fastaString)
+            print("✅ Parsed: \(record.sequence.count)bp, accession: \(record.accession ?? "N/A")")
+            
+            return DNASequence(
+                name: record.accession ?? "Unknown",
+                accession: record.accession,
+                sequence: record.sequence,
+                summary: record.description
+            )
+        } catch let error as NCBIError {
+            print("❌ NCBIError: \(error)")
+            throw error
+        } catch {
+            print("❌ Network error: \(error.localizedDescription)")
+            throw NCBIError.networkError(error)
         }
-        
-        guard let fastaString = String(data: data, encoding: .utf8) else {
-            throw NCBIError.parsingError
-        }
-        
-        let record = try FASTAParser.parse(fastaString)
-        
-        return DNASequence(
-            name: record.accession ?? "Unknown",
-            accession: record.accession,
-            sequence: record.sequence,
-            summary: record.description
-        )
     }
     
     func searchGene(term: String) async throws -> [String] {

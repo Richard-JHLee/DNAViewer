@@ -98,18 +98,33 @@ struct LibraryView: View {
     }
     
     private func loadSampleGenes() {
+        print("📚 Loading sample genes...")
+        
         // Load from JSON
-        guard let url = Bundle.main.url(forResource: "SampleGenes", withExtension: "json"),
-              let data = try? Data(contentsOf: url),
-              let genes = try? JSONDecoder().decode([GeneInfo].self, from: data) else {
+        guard let url = Bundle.main.url(forResource: "SampleGenes", withExtension: "json") else {
+            print("⚠️ SampleGenes.json not found, using defaults")
             loadDefaultGenes()
             return
         }
         
+        guard let data = try? Data(contentsOf: url) else {
+            print("⚠️ Failed to read SampleGenes.json, using defaults")
+            loadDefaultGenes()
+            return
+        }
+        
+        guard let genes = try? JSONDecoder().decode([GeneInfo].self, from: data) else {
+            print("⚠️ Failed to decode SampleGenes.json, using defaults")
+            loadDefaultGenes()
+            return
+        }
+        
+        print("✅ Loaded \(genes.count) genes from JSON")
         sampleGenes = genes
     }
     
     private func loadDefaultGenes() {
+        print("⚠️ Using default hardcoded genes (5 genes)")
         sampleGenes = [
             GeneInfo(id: "BRCA1", name: "BRCA1", symbol: "BRCA1", description: "Breast cancer susceptibility gene", chromosome: "17q21.31", diseases: ["Breast Cancer", "Ovarian Cancer"]),
             GeneInfo(id: "TP53", name: "TP53", symbol: "TP53", description: "Tumor suppressor protein", chromosome: "17p13.1", diseases: ["Li-Fraumeni Syndrome"]),
@@ -117,17 +132,22 @@ struct LibraryView: View {
             GeneInfo(id: "HBB", name: "HBB", symbol: "HBB", description: "Hemoglobin subunit beta", chromosome: "11p15.4", diseases: ["Sickle Cell Disease"]),
             GeneInfo(id: "APOE", name: "APOE", symbol: "APOE", description: "Apolipoprotein E", chromosome: "19q13.32", diseases: ["Alzheimer's Disease"])
         ]
+        print("✅ Default genes loaded: \(sampleGenes.map { $0.symbol })")
     }
     
     private func loadGeneFromNCBI(_ gene: GeneInfo) {
+        print("👆 loadGeneFromNCBI called for: \(gene.symbol)")
+        
         selectedGene = gene
         isLoadingSequence = true
         loadingProgress = "Loading \(gene.symbol) from NCBI..."
         errorMessage = nil
         
+        print("⏳ isLoadingSequence = true, loadingProgress = \(loadingProgress)")
+        
         Task {
             do {
-                print("🌐 Fetching \(gene.symbol) from NCBI...")
+                print("🌐 Task started - Fetching \(gene.symbol) from NCBI...")
                 
                 // SampleGenes.json에서 accession 가져오기
                 guard let jsonGene = try? loadGeneFromJSON(id: gene.id),
@@ -248,7 +268,10 @@ struct GeneCard: View {
     let action: () -> Void
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            print("🎯 GeneCard tapped: \(gene.symbol)")
+            action()
+        }) {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Image(systemName: "dna")

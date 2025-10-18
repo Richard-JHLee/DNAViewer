@@ -23,19 +23,29 @@ class FASTAParser {
     }
     
     static func parse(_ fastaString: String) throws -> FASTARecord {
+        print("🧬 FASTAParser.parse called")
+        
         let lines = fastaString.components(separatedBy: .newlines)
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
         
+        print("📋 Total lines: \(lines.count)")
+        
         guard let firstLine = lines.first, firstLine.hasPrefix(">") else {
+            print("❌ Invalid FASTA format - no header line starting with '>'")
             throw FASTAError.invalidFormat
         }
         
         let header = String(firstLine.dropFirst())
+        print("📝 Header: \(String(header.prefix(100)))...")
+        
         let sequenceLines = lines.dropFirst()
         let sequence = sequenceLines.joined().uppercased()
         
+        print("🧬 Sequence length: \(sequence.count)bp")
+        
         guard !sequence.isEmpty else {
+            print("❌ Empty sequence")
             throw FASTAError.emptySequence
         }
         
@@ -43,11 +53,13 @@ class FASTAParser {
         let validBases = CharacterSet(charactersIn: "ATGCN")
         let sequenceSet = CharacterSet(charactersIn: sequence)
         guard sequenceSet.isSubset(of: validBases) else {
+            print("❌ Invalid characters in sequence")
             throw FASTAError.invalidCharacters
         }
         
         // Try to extract accession from header
         let accession = extractAccession(from: header)
+        print("🏷️ Extracted accession: \(accession ?? "N/A")")
         
         return FASTARecord(
             header: header,
