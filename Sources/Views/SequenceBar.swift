@@ -14,13 +14,23 @@ struct SequenceBar: View {
     
     @State private var scrollPosition: Int = 0
     
+    // 현재 그룹의 시퀀스만 추출
+    private var currentGroupSequence: String {
+        let start = sceneManager.displayStart
+        let end = min(start + sceneManager.displayLength, sequence.count)
+        let startIndex = sequence.index(sequence.startIndex, offsetBy: start)
+        let endIndex = sequence.index(sequence.startIndex, offsetBy: end)
+        return String(sequence[startIndex..<endIndex])
+    }
+    
     var body: some View {
         let _ = print("🎨 SequenceBar rendering: currentGroup=\(sceneManager.currentGroup), groupSize=\(sceneManager.groupSize)")
+        let _ = print("🎨 Current group sequence length: \(currentGroupSequence.count)")
         
         return VStack(spacing: 4) {
             // Position indicator
             HStack {
-                Text("Position: \(scrollPosition)")
+                Text("Position: \(sceneManager.displayStart)")
                     .font(.caption2)
                     .foregroundColor(.white)
                 
@@ -32,66 +42,53 @@ struct SequenceBar: View {
             }
             .padding(.horizontal)
             
-            // Sequence scroll view with group buttons on top
+            // Group navigation buttons (horizontal scroll)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(1...sceneManager.totalGroups, id: \.self) { groupNumber in
+                        GroupButton(
+                            groupNumber: groupNumber,
+                            isSelected: groupNumber == sceneManager.currentGroup,
+                            onTap: { group in
+                                sceneManager.loadGroup(group)
+                            }
+                        )
+                    }
+                }
+                .padding(.horizontal)
+            }
+            .frame(height: 40)
+            
+            // Current group sequence
             ScrollView(.horizontal, showsIndicators: true) {
                 HStack(spacing: 2) {
-                    ForEach(Array(sequence.enumerated()), id: \.offset) { index, base in
-                        VStack(spacing: 2) {
-                            // Group button at the start of each group
-                            if shouldShowGroupButton(at: index) {
-                                GroupButton(
-                                    groupNumber: getGroupNumber(for: index),
-                                    isSelected: getGroupNumber(for: index) == sceneManager.currentGroup,
-                                    onTap: { group in
-                                        sceneManager.loadGroup(group)
-                                    }
-                                )
-                            } else {
-                                Spacer()
-                                    .frame(height: 40)
-                            }
+                    ForEach(Array(currentGroupSequence.enumerated()), id: \.offset) { localIndex, base in
+                        let globalIndex = sceneManager.displayStart + localIndex
+                        
+                        // Base cell
+                        BaseCell(
+                            base: base,
+                            index: globalIndex,
+                            isSelected: isSelected(globalIndex),
+                            isInCurrentGroup: true  // All bases in current group are in current group
+                        )
+                        .onTapGesture {
+                            print("👉 BaseCell tapped at global index: \(globalIndex), local index: \(localIndex), base: \(base)")
                             
-                            // Base cell
-                            BaseCell(
-                                base: base,
-                                index: index,
-                                isSelected: isSelected(index),
-                                isInCurrentGroup: isInCurrentGroup(index)
-                            )
-                            .onTapGesture {
-                                print("👉 BaseCell tapped at index: \(index), base: \(base)")
+                            // Toggle selection
+                            if let range = selectedRange, range.contains(globalIndex) {
+                                // Already selected - deselect
+                                print("🔓 Deselecting base at index: \(globalIndex)")
+                                selectedRange = nil
+                                sceneManager.selectedBaseIndex = nil
+                                sceneManager.clearHighlights()
+                            } else {
+                                // Select new base
+                                print("🔒 Selecting base at index: \(globalIndex)")
                                 
-                                // Toggle selection
-                                if let range = selectedRange, range.contains(index) {
-                                    // Already selected - deselect
-                                    print("🔓 Deselecting base at index: \(index)")
-                                    selectedRange = nil
-                                    sceneManager.selectedBaseIndex = nil
-                                    sceneManager.clearHighlights()
-                                } else {
-                                    // Select new base
-                                    print("🔒 Selecting base at index: \(index)")
-                                    
-                                    // Calculate which group this base belongs to
-                                    let targetGroup = getGroupNumber(for: index)
-                                    print("📍 Base at index \(index) belongs to group \(targetGroup)")
-                                    
-                                    // Switch to the target group if needed
-                                    if targetGroup != sceneManager.currentGroup {
-                                        print("🔄 Switching from group \(sceneManager.currentGroup) to group \(targetGroup)")
-                                        sceneManager.loadGroup(targetGroup)
-                                        
-                                        // Wait a bit for the scene to rebuild, then select the base
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                            selectedRange = index..<(index + 1)
-                                            sceneManager.selectBase(at: index)
-                                        }
-                                    } else {
-                                        // Same group - select immediately
-                                        selectedRange = index..<(index + 1)
-                                        sceneManager.selectBase(at: index)
-                                    }
-                                }
+                                // Same group - select immediately
+                                selectedRange = globalIndex..<(globalIndex + 1)
+                                sceneManager.selectBase(at: globalIndex)
                             }
                         }
                     }
@@ -106,21 +103,6 @@ struct SequenceBar: View {
     private func isSelected(_ index: Int) -> Bool {
         guard let range = selectedRange else { return false }
         return range.contains(index)
-    }
-    
-    private func shouldShowGroupButton(at index: Int) -> Bool {
-        // Show group button only at the start of each group
-        return index % sceneManager.groupSize == 0
-    }
-    
-    private func getGroupNumber(for index: Int) -> Int {
-        // Calculate which group this index belongs to
-        return (index / sceneManager.groupSize) + 1
-    }
-    
-    private func isInCurrentGroup(_ index: Int) -> Bool {
-        // Check if this index belongs to the current group
-        return getGroupNumber(for: index) == sceneManager.currentGroup
     }
 }
 

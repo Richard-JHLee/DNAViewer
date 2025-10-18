@@ -135,13 +135,13 @@ struct SearchSheet: View {
         #if os(macOS)
         .sheet(isPresented: $showViewer) {
             if let sequence = loadedSequence {
-                ViewerView(sequence: sequence)
+                ViewerView(sequence: sequence, viewModel: DNAViewModel())
             }
         }
         #else
         .fullScreenCover(isPresented: $showViewer) {
             if let sequence = loadedSequence {
-                ViewerView(sequence: sequence)
+                ViewerView(sequence: sequence, viewModel: DNAViewModel())
             }
         }
         #endif
@@ -160,7 +160,8 @@ struct SearchSheet: View {
                     sequence = try await NCBIService.shared.fetchSequence(accession: searchText)
                     
                 case .pdbID:
-                    let cifString = try await PDBService.shared.fetchStructure(pdbID: searchText)
+                    _ = try await PDBService.shared
+                        .fetchStructure(pdbID: searchText)
                     // For now, create a placeholder sequence
                     sequence = DNASequence(
                         name: searchText,

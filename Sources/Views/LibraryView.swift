@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LibraryView: View {
     @Environment(\.dismiss) var dismiss
+    @ObservedObject var viewModel: DNAViewModel
     @State private var sampleGenes: [GeneInfo] = []
     @State private var selectedGene: GeneInfo?
     @State private var showViewer = false
@@ -73,19 +74,6 @@ struct LibraryView: View {
         .onAppear {
             loadSampleGenes()
         }
-        #if os(macOS)
-        .sheet(isPresented: $showViewer) {
-            if let sequence = loadedSequence {
-                ViewerView(sequence: sequence)
-            }
-        }
-        #else
-        .fullScreenCover(isPresented: $showViewer) {
-            if let sequence = loadedSequence {
-                ViewerView(sequence: sequence)
-            }
-        }
-        #endif
         .alert("Error", isPresented: .constant(errorMessage != nil)) {
             Button("OK") {
                 errorMessage = nil
@@ -201,7 +189,12 @@ struct LibraryView: View {
                 await MainActor.run {
                     self.loadedSequence = enhancedSequence
                     self.isLoadingSequence = false
-                    self.showViewer = true
+                    
+                    // ViewModel에 새로운 시퀀스 설정
+                    self.viewModel.currentSequence = enhancedSequence
+                    
+                    // LibraryView 닫기
+                    self.dismiss()
                 }
             } catch {
                 await MainActor.run {
@@ -318,6 +311,6 @@ struct GeneCard: View {
 }
 
 #Preview {
-    LibraryView()
+    LibraryView(viewModel: DNAViewModel())
 }
 

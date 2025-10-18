@@ -13,8 +13,10 @@ struct ViewerView: View {
     @StateObject private var sceneManager = DNASceneManager()
     
     let sequence: DNASequence
+    @ObservedObject var viewModel: DNAViewModel
     
     @State private var showInfo = false
+    @State private var showLibrary = false
     @State private var showTranslation = false
     @State private var showMutation = false
     @State private var showSequenceBar = true
@@ -28,7 +30,7 @@ struct ViewerView: View {
                 sequenceName: extractFullName(from: sequence.name),
                 sequenceId: extractGeneId(from: sequence.name),
                 onDismiss: { dismiss() },
-                onLibrary: { showInfo = true },
+                onLibrary: { showLibrary = true },
                 onToggleControls: {
                     withAnimation {
                         showStyleAndColor.toggle()
@@ -103,8 +105,14 @@ struct ViewerView: View {
         .onAppear {
             sceneManager.loadSequence(sequence)
         }
+        .onChange(of: sequence) { newSequence in
+            sceneManager.loadSequence(newSequence)
+        }
         .sheet(isPresented: $showInfo) {
             InfoSheet(sequence: sequence)
+        }
+        .sheet(isPresented: $showLibrary) {
+            LibraryView(viewModel: viewModel)
         }
         .sheet(isPresented: $showTranslation) {
             TranslationSheet(sequence: sequence)
@@ -208,6 +216,6 @@ struct DNAViewerTopBar: View {
         name: "Sample Gene",
         sequence: "ATGCGATCGATCGATCGATCGATCG",
         summary: "A sample DNA sequence"
-    ))
+    ), viewModel: DNAViewModel())
 }
 

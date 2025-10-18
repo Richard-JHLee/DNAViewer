@@ -125,15 +125,15 @@ class DNASceneManager: ObservableObject {
     private func calculateGroups(for sequence: DNASequence) {
         let sequenceId = sequence.name.lowercased()
         
-        // ID별로 적절한 그룹 크기 결정
+        // ID별로 적절한 그룹 크기 결정 (메모리 절약을 위해 더 작게)
         if sequenceId.contains("brca1") {
-            groupSize = 40  // BRCA1: 445개 -> 11개 그룹
+            groupSize = 20  // BRCA1: 7088개 -> 355개 그룹 (각 그룹당 20개)
         } else if sequenceId.contains("tp53") {
-            groupSize = 35  // TP53: 393개 -> 12개 그룹
+            groupSize = 20  // TP53: 393개 -> 20개 그룹
         } else if sequenceId.contains("cftr") {
-            groupSize = 50  // CFTR: 1480개 -> 30개 그룹
+            groupSize = 25  // CFTR: 1480개 -> 60개 그룹
         } else if sequenceId.contains("huntingtin") {
-            groupSize = 60  // Huntingtin: 3144개 -> 53개 그룹
+            groupSize = 30  // Huntingtin: 3144개 -> 105개 그룹
         } else {
             // 기본값: 시퀀스 길이에 따라 동적 계산
             if sequence.length > 1000 {
@@ -229,6 +229,8 @@ class DNASceneManager: ObservableObject {
         
         print("🧬 Building double helix with sequence: \(displaySeq)")
         print("🧬 Sequence length: \(displaySeq.count)")
+        print("🧬 Display start: \(displayStart), display length: \(displayLength)")
+        print("🧬 Full sequence length: \(sequence.length)")
         
         let nodes = helixBuilder.buildHelix(
             sequence: displaySeq,

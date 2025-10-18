@@ -50,8 +50,8 @@ class SequenceAnalyzer {
     
     static func findORFs(_ sequence: String, minLength: Int = 75) -> [ORF] {
         var orfs: [ORF] = []
-        let startCodon = "ATG"
-        let stopCodons = ["TAA", "TAG", "TGA"]
+        _ = "ATG"
+        _ = ["TAA", "TAG", "TGA"]
         
         // Search in all 6 frames (3 forward, 3 reverse)
         for frame in 0..<3 {

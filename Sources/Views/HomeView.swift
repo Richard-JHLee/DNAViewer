@@ -8,104 +8,110 @@
 import SwiftUI
 
 struct HomeView: View {
+    @StateObject private var viewModel = DNAViewModel()
     @State private var showSearchSheet = false
     @State private var showLibrary = false
     @State private var selectedSequence: DNASequence?
     @State private var recentItems: [RecentItem] = []
+    @State private var showViewer = false
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
-                // Top Bar (ProteinApp style)
-                DNAHomeTopBar()
-                
-                // Main Content
-                ScrollView {
-                    VStack(spacing: 24) {
-                        // Header
-                        VStack(spacing: 8) {
-                            Image(systemName: "dna")
-                                .font(.system(size: 60))
-                                .foregroundColor(.blue)
-                            
-                            Text("DNA Viewer")
-                                .font(.system(size: 36, weight: .bold))
-                            
-                            Text("Explore DNA sequences and genetic information")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                                .multilineTextAlignment(.center)
-                        }
-                        .padding(.top, 20)
+        if showViewer, let sequence = selectedSequence {
+            ViewerView(sequence: sequence, viewModel: viewModel)
+        } else {
+            NavigationView {
+                VStack(spacing: 0) {
+                    // Top Bar (ProteinApp style)
+                    DNAHomeTopBar()
                     
-                    // Main Actions
-                    VStack(spacing: 16) {
-                        ActionCard(
-                            icon: "books.vertical.fill",
-                            title: "Sample Genes Library",
-                            description: "Explore 10 important human genes",
-                            color: .purple
-                        ) {
-                            showLibrary = true
-                        }
+                    // Main Content
+                    ScrollView {
+                        VStack(spacing: 24) {
+                            // Header
+                            VStack(spacing: 8) {
+                                Image(systemName: "dna")
+                                    .font(.system(size: 60))
+                                    .foregroundColor(.blue)
+                                
+                                Text("DNA Viewer")
+                                    .font(.system(size: 36, weight: .bold))
+                                
+                                Text("Explore DNA sequences and genetic information")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .padding(.top, 20)
                         
-                        ActionCard(
-                            icon: "magnifyingglass",
-                            title: "Load New Sequence",
-                            description: "Search by accession or PDB ID",
-                            color: .blue
-                        ) {
-                            showSearchSheet = true
-                        }
-                        
-                        ActionCard(
-                            icon: "graduationcap.fill",
-                            title: "Learning Mode",
-                            description: "Take quizzes and learn about DNA",
-                            color: .green
-                        ) {
-                            // Navigate to learning mode
-                        }
-                    }
-                    .padding(.horizontal)
-                    
-                    // Recent Items
-                    if !recentItems.isEmpty {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Recently Viewed")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .padding(.horizontal)
+                            // Main Actions
+                            VStack(spacing: 16) {
+                                ActionCard(
+                                    icon: "books.vertical.fill",
+                                    title: "Sample Genes Library",
+                                    description: "Explore 10 important human genes",
+                                    color: .purple
+                                ) {
+                                    showLibrary = true
+                                }
+                                
+                                ActionCard(
+                                    icon: "magnifyingglass",
+                                    title: "Load New Sequence",
+                                    description: "Search by accession or PDB ID",
+                                    color: .blue
+                                ) {
+                                    showSearchSheet = true
+                                }
+                                
+                                ActionCard(
+                                    icon: "graduationcap.fill",
+                                    title: "Learning Mode",
+                                    description: "Take quizzes and learn about DNA",
+                                    color: .green
+                                ) {
+                                    // Navigate to learning mode
+                                }
+                            }
+                            .padding(.horizontal)
                             
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 16) {
-                                    ForEach(recentItems) { item in
-                                        RecentItemCard(item: item) {
-                                            // Load sequence
+                            // Recent Items
+                            if !recentItems.isEmpty {
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text("Recently Viewed")
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                        .padding(.horizontal)
+                                    
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack(spacing: 16) {
+                                            ForEach(recentItems) { item in
+                                                RecentItemCard(item: item) {
+                                                    // Load sequence
+                                                }
+                                            }
                                         }
+                                        .padding(.horizontal)
                                     }
                                 }
-                                .padding(.horizontal)
                             }
+                            
+                            Spacer(minLength: 40)
                         }
                     }
-                    
-                        Spacer(minLength: 40)
-                    }
+                }
+                #if !os(macOS)
+                .navigationBarHidden(true)
+                #endif
+                .sheet(isPresented: $showSearchSheet) {
+                    SearchSheet()
+                }
+                .sheet(isPresented: $showLibrary) {
+                    LibraryView(viewModel: viewModel)
+                }
+                .onAppear {
+                    loadRecentItems()
                 }
             }
-            #if !os(macOS)
-            .navigationBarHidden(true)
-            #endif
-            .sheet(isPresented: $showSearchSheet) {
-                SearchSheet()
-            }
-            .sheet(isPresented: $showLibrary) {
-                LibraryView()
-            }
-        }
-        .onAppear {
-            loadRecentItems()
         }
     }
     
@@ -247,4 +253,3 @@ struct RecentItemCard: View {
 #Preview {
     HomeView()
 }
-
