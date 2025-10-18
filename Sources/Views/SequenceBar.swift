@@ -17,7 +17,7 @@ struct SequenceBar: View {
     // 현재 그룹의 시퀀스만 추출
     private var currentGroupSequence: String {
         let start = sceneManager.displayStart
-        let end = min(start + sceneManager.displayLength, sequence.count)
+        let end = min(start + sceneManager.actualDisplayLength, sequence.count)
         let startIndex = sequence.index(sequence.startIndex, offsetBy: start)
         let endIndex = sequence.index(sequence.startIndex, offsetBy: end)
         return String(sequence[startIndex..<endIndex])
@@ -25,7 +25,10 @@ struct SequenceBar: View {
     
     var body: some View {
         let _ = print("🎨 SequenceBar rendering: currentGroup=\(sceneManager.currentGroup), groupSize=\(sceneManager.groupSize)")
+        let _ = print("🎨 Display length: \(sceneManager.displayLength), actual display length: \(sceneManager.actualDisplayLength)")
+        let _ = print("🎨 Sequence name: '\(sequence.prefix(20))...' (length: \(sequence.count))")
         let _ = print("🎨 Current group sequence length: \(currentGroupSequence.count)")
+        let _ = print("🎨 Sequence start: \(sceneManager.displayStart), end: \(sceneManager.displayStart + sceneManager.actualDisplayLength)")
         
         return VStack(spacing: 4) {
             // Position indicator
@@ -159,11 +162,12 @@ struct BaseCell: View {
     }
     
     private func colorForBase(_ base: Character) -> Color {
+        let colorSettings = ColorSettings.shared
         switch base {
-        case "A": return .orange  // 3D 모형과 일치 (주황색)
-        case "T": return .green   // 3D 모형과 일치 (초록색)
-        case "G": return .red     // 3D 모형과 일치 (빨간색)
-        case "C": return .yellow  // 3D 모형과 일치 (노란색)
+        case "A": return colorSettings.adenineColor
+        case "T": return colorSettings.thymineColor
+        case "G": return colorSettings.guanineColor
+        case "C": return colorSettings.cytosineColor
         default: return .gray
         }
     }

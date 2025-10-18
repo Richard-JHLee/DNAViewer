@@ -7,6 +7,50 @@
 
 import SwiftUI
 
+enum GeneCategory: String, CaseIterable, Identifiable {
+    case all = "All"
+    case proteinCoding = "Protein Coding"
+    case oncogenes = "Oncogenes"
+    case tumorSuppressors = "Tumor Suppressors"
+    case nonCodingRNA = "Non-coding RNA"
+    case dnaRepair = "DNA Repair"
+    case transcriptionFactors = "Transcription Factors"
+    case immune = "Immune/HLA"
+    case mitochondrial = "Mitochondrial"
+    case cellCycle = "Cell Cycle"
+    case apoptosis = "Apoptosis"
+    
+    var id: String { rawValue }
+    
+    var esearchTerm: String {
+        switch self {
+        case .all:
+            return "Homo sapiens[Organism]"
+        case .proteinCoding:
+            // We will filter by ESummary genetype later to avoid fragile term
+            return "Homo sapiens[Organism]"
+        case .oncogenes:
+            return "Homo sapiens[Organism] AND (oncogene[All Fields] OR proto-oncogene[All Fields])"
+        case .tumorSuppressors:
+            return "Homo sapiens[Organism] AND (\"tumor suppressor\"[All Fields] OR \"tumour suppressor\"[All Fields])"
+        case .nonCodingRNA:
+            return "Homo sapiens[Organism] AND (non-coding RNA OR lncRNA OR microRNA OR miRNA OR snoRNA OR snRNA)"
+        case .dnaRepair:
+            return "Homo sapiens[Organism] AND \"DNA repair\""
+        case .transcriptionFactors:
+            return "Homo sapiens[Organism] AND \"transcription factor\""
+        case .immune:
+            return "Homo sapiens[Organism] AND (immune OR HLA)"
+        case .mitochondrial:
+            return "Homo sapiens[Organism] AND mitochondr*"
+        case .cellCycle:
+            return "Homo sapiens[Organism] AND \"cell cycle\""
+        case .apoptosis:
+            return "Homo sapiens[Organism] AND apoptosis"
+        }
+    }
+}
+
 struct LibraryView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var viewModel: DNAViewModel
@@ -17,18 +61,91 @@ struct LibraryView: View {
     @State private var loadingProgress = ""
     @State private var loadedSequence: DNASequence?
     @State private var errorMessage: String?
+    @State private var selectedCategory: GeneCategory = .all
+    @State private var isLoadingList: Bool = false
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 16) {
-                    ForEach(sampleGenes) { gene in
-                        GeneCard(gene: gene) {
-                            loadGeneFromNCBI(gene)
+            VStack(spacing: 8) {
+                Picker("Category", selection: $selectedCategory) {
+                    ForEach(GeneCategory.allCases) { cat in
+                        Text(cat.rawValue).tag(cat)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding([.horizontal, .top])
+
+                if selectedCategory == .all {
+                    // Show category selection grid
+                    ScrollView {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 16) {
+                            ForEach(GeneCategory.allCases.filter { $0 != .all }) { cat in
+                                Button {
+                                    selectedCategory = cat
+                                } label: {
+                                    VStack(alignment: .leading, spacing: 12) {
+                                        HStack {
+                                            Image(systemName: "books.vertical.fill")
+                                                .font(.largeTitle)
+                                                .foregroundColor(.blue)
+                                            Spacer()
+                                        }
+                                        Text(cat.rawValue)
+                                            .font(.title3)
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(.primary)
+                                        Text("Tap to view genes")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding()
+                                    #if os(macOS)
+                                    .background(Color(NSColor.controlBackgroundColor))
+                                    #else
+                                    .background(Color(.systemBackground))
+                                    #endif
+                                    .cornerRadius(16)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                            }
+                        }
+                        .padding()
+                    }
+                } else {
+                    // Show genes for selected category
+                    ScrollView {
+                        if isLoadingList {
+                            VStack(spacing: 12) {
+                                ProgressView()
+                                Text("Loading...")
+                                    .foregroundColor(.secondary)
+                            }
+                            .frame(maxWidth: .infinity, minHeight: 200)
+                        } else if sampleGenes.isEmpty {
+                            VStack(spacing: 8) {
+                                Image(systemName: "tray")
+                                    .font(.system(size: 44))
+                                    .foregroundColor(.secondary)
+                                Text("No results")
+                                    .font(.headline)
+                                Text("Try another category or refine your query.")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            .frame(maxWidth: .infinity, minHeight: 200)
+                        } else {
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 16) {
+                                ForEach(sampleGenes) { gene in
+                                    GeneCard(gene: gene) {
+                                        loadGeneFromNCBI(gene)
+                                    }
+                                }
+                            }
+                            .padding()
                         }
                     }
                 }
-                .padding()
             }
             .overlay {
                 if isLoadingSequence {
@@ -74,6 +191,9 @@ struct LibraryView: View {
         .onAppear {
             loadSampleGenes()
         }
+        .onChange(of: selectedCategory) { _ in
+            loadSampleGenes()
+        }
         .alert("Error", isPresented: .constant(errorMessage != nil)) {
             Button("OK") {
                 errorMessage = nil
@@ -86,29 +206,79 @@ struct LibraryView: View {
     }
     
     private func loadSampleGenes() {
-        print("📚 Loading sample genes...")
-        
-        // Load from JSON
-        guard let url = Bundle.main.url(forResource: "SampleGenes", withExtension: "json") else {
-            print("⚠️ SampleGenes.json not found, using defaults")
-            loadDefaultGenes()
+        // In All mode we only show the category grid; skip API
+        if selectedCategory == .all {
+            sampleGenes = []
             return
         }
-        
-        guard let data = try? Data(contentsOf: url) else {
-            print("⚠️ Failed to read SampleGenes.json, using defaults")
-            loadDefaultGenes()
-            return
+        // Debounce concurrent loads
+        if isLoadingList { return }
+        isLoadingList = true
+        print("📚 Loading sample genes (category=\(selectedCategory.rawValue))...")
+        Task {
+            defer { Task { @MainActor in isLoadingList = false } }
+            // Build disjoint terms by excluding previous categories (fixed order)
+            let base = "Homo sapiens[Organism]"
+            func not(_ term: String) -> String { return "NOT (\(term))" }
+            let qOnco = "(oncogene[All Fields] OR proto-oncogene[All Fields])"
+            let qTS = "(\"tumor suppressor\"[All Fields] OR \"tumour suppressor\"[All Fields])"
+            let qNonCoding = "(non-coding RNA OR lncRNA OR microRNA OR miRNA OR snoRNA OR snRNA)"
+            let qDNARepair = "(\"DNA repair\")"
+            let qTF = "(\"transcription factor\")"
+            let qImmune = "(immune OR HLA)"
+            let qMito = "(mitochondr*)"
+            let qCellCycle = "(\"cell cycle\")"
+            let qApoptosis = "(apoptosis)"
+
+            // Fixed priority: ProteinCoding -> Oncogenes -> TumorSuppressors -> NonCodingRNA -> DNARepair -> TF -> Immune -> Mito -> CellCycle -> Apoptosis
+            let excludeOnco = [qNonCoding, qDNARepair, qTF, qImmune, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
+            let excludeTS = [qOnco, qNonCoding, qDNARepair, qTF, qImmune, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
+            let excludeNonCoding = [qOnco, qTS, qDNARepair, qTF, qImmune, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
+            let excludeDNARepair = [qOnco, qTS, qNonCoding, qTF, qImmune, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
+            let excludeTF = [qOnco, qTS, qNonCoding, qDNARepair, qImmune, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
+            let excludeImmune = [qOnco, qTS, qNonCoding, qDNARepair, qTF, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
+            let excludeMito = [qOnco, qTS, qNonCoding, qDNARepair, qTF, qImmune, qCellCycle, qApoptosis].joined(separator: " OR ")
+            let excludeCellCycle = [qOnco, qTS, qNonCoding, qDNARepair, qTF, qImmune, qMito, qApoptosis].joined(separator: " OR ")
+            let excludeApoptosis = [qOnco, qTS, qNonCoding, qDNARepair, qTF, qImmune, qMito, qCellCycle].joined(separator: " OR ")
+
+            var term: String = selectedCategory.esearchTerm
+            switch selectedCategory {
+            case .proteinCoding:
+                // Use ESummary-driven protein-coding UIDs as disjoint base (exclude others via NOT keywords)
+                if let uids = try? await NCBIService.shared.proteinCodingUIDs(retmax: 20), let list = try? await NCBIService.shared.esummaryGeneInfos(uids: uids) {
+                    print("✅ Loaded \(list.count) genes from NCBI API for category: Protein Coding (disjoint)")
+                    await MainActor.run { sampleGenes = list }
+                    return
+                }
+            case .oncogenes:
+                term = "\(base) AND \(qOnco) AND \(not(excludeOnco))"
+            case .tumorSuppressors:
+                term = "\(base) AND \(qTS) AND \(not(excludeTS))"
+            case .nonCodingRNA:
+                term = "\(base) AND \(qNonCoding) AND \(not(excludeNonCoding))"
+            case .dnaRepair:
+                term = "\(base) AND \(qDNARepair) AND \(not(excludeDNARepair))"
+            case .transcriptionFactors:
+                term = "\(base) AND \(qTF) AND \(not(excludeTF))"
+            case .immune:
+                term = "\(base) AND \(qImmune) AND \(not(excludeImmune))"
+            case .mitochondrial:
+                term = "\(base) AND \(qMito) AND \(not(excludeMito))"
+            case .cellCycle:
+                term = "\(base) AND \(qCellCycle) AND \(not(excludeCellCycle))"
+            case .apoptosis:
+                term = "\(base) AND \(qApoptosis) AND \(not(excludeApoptosis))"
+            case .all:
+                term = base
+            }
+
+            if let uids = try? await NCBIService.shared.esearchUIDs(term: term, retmax: 20), let list = try? await NCBIService.shared.esummaryGeneInfos(uids: uids) {
+                print("✅ Loaded \(list.count) genes from NCBI API for category: \(selectedCategory.rawValue) (disjoint)")
+                await MainActor.run { sampleGenes = list }
+            } else {
+                await MainActor.run { sampleGenes = [] }
+            }
         }
-        
-        guard let genes = try? JSONDecoder().decode([GeneInfo].self, from: data) else {
-            print("⚠️ Failed to decode SampleGenes.json, using defaults")
-            loadDefaultGenes()
-            return
-        }
-        
-        print("✅ Loaded \(genes.count) genes from JSON")
-        sampleGenes = genes
     }
     
     private func loadDefaultGenes() {
@@ -137,26 +307,32 @@ struct LibraryView: View {
             do {
                 print("🌐 Task started - Fetching \(gene.symbol) from NCBI...")
                 
-                // SampleGenes.json에서 accession 가져오기
-                guard let jsonGene = try? loadGeneFromJSON(id: gene.id),
-                      let accession = jsonGene.accession else {
-                    throw NCBIService.NCBIError.invalidURL
+                // Resolve accession from API using elink gene->nuccore; fallback to esearch by symbol
+                var accession: String?
+                let linked = try? await NCBIService.shared.resolveAccessionsFromGeneUID(gene.id, retmax: 1)
+                accession = linked?.first
+                if accession == nil {
+                    let hits = try await NCBIService.shared.searchGene(term: "\(gene.symbol)[Gene] AND Homo sapiens[orgn]")
+                    accession = hits.first
                 }
-                
-                print("📡 Accession: \(accession)")
-                loadingProgress = "Downloading from NCBI (\(accession))..."
-                
-                // NCBI API로 실제 데이터 가져오기
-                let sequence = try await NCBIService.shared.fetchSequence(accession: accession)
+
+                guard let acc = accession else { throw NCBIService.NCBIError.invalidURL }
+
+                print("📡 Accession: \(acc)")
+                loadingProgress = "Downloading from NCBI (\(acc))..."
+
+                // Fetch sequence by accession
+                let sequence = try await NCBIService.shared.fetchSequence(accession: acc)
                 
                 print("✅ Loaded \(sequence.sequence.count)bp from NCBI")
                 
                 // JSON의 추가 정보와 병합
-                let strand: Strand = jsonGene.strand.lowercased() == "plus" ? .plus : .minus
-                let geneType: GeneType = jsonGene.geneType.lowercased() == "coding" ? .coding : .nonCoding
+                let jsonGene = try? loadGeneFromJSON(id: gene.id)
+                let strand: Strand = (jsonGene?.strand.lowercased() == "plus") ? .plus : .minus
+                let geneType: GeneType = (jsonGene?.geneType.lowercased() == "coding") ? .coding : .nonCoding
                 
                 // Mutation 변환
-                let mutations = jsonGene.mutations.map { mutJson -> Mutation in
+                let mutations = (jsonGene?.mutations ?? []).map { mutJson -> Mutation in
                     Mutation(
                         position: mutJson.position,
                         refBase: mutJson.refBase,
@@ -170,20 +346,20 @@ struct LibraryView: View {
                 }
                 
                 let enhancedSequence = DNASequence(
-                    name: jsonGene.name,
-                    accession: accession,
-                    pdbID: jsonGene.pdbID,
+                    name: jsonGene?.name ?? gene.symbol,
+                    accession: acc,
+                    pdbID: jsonGene?.pdbID,
                     sequence: sequence.sequence,
-                    chromosome: jsonGene.chromosome,
-                    startPos: jsonGene.startPos,
-                    endPos: jsonGene.endPos,
+                    chromosome: jsonGene?.chromosome,
+                    startPos: jsonGene?.startPos,
+                    endPos: jsonGene?.endPos,
                     strand: strand,
                     geneType: geneType,
-                    organism: jsonGene.organism,
-                    features: jsonGene.features,
+                    organism: jsonGene?.organism ?? "Homo sapiens",
+                    features: jsonGene?.features ?? [],
                     mutations: mutations,
-                    summary: jsonGene.summary,
-                    diseaseLinks: jsonGene.diseaseLinks
+                    summary: jsonGene?.summary,
+                    diseaseLinks: jsonGene?.diseaseLinks
                 )
                 
                 await MainActor.run {

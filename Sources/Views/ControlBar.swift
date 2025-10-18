@@ -12,102 +12,129 @@ struct ControlBar: View {
     @Binding var showStyleAndColor: Bool
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 16) {
             
             // Representation Controls (collapsible)
             if showStyleAndColor {
-                HStack(spacing: 8) {
-                    Text("Style:")
-                        .font(.caption)
-                        .foregroundColor(.white)
+                VStack(spacing: 16) {
+                    // Style Section
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Style")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .fontWeight(.bold)
+                        
+                        LazyVGrid(columns: [
+                            GridItem(.flexible(), spacing: 8),
+                            GridItem(.flexible(), spacing: 8),
+                            GridItem(.flexible(), spacing: 8)
+                        ], spacing: 8) {
+                            ForEach(DNARepresentation.allCases, id: \.self) { rep in
+                                Button(action: {
+                                    sceneManager.currentRepresentation = rep
+                                    sceneManager.rebuildScene()
+                                }) {
+                                    Text(rep.rawValue)
+                                        .font(.body)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.white)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 44)
+                                        .background(
+                                            sceneManager.currentRepresentation == rep ?
+                                                Color.blue : Color.gray.opacity(0.3)
+                                        )
+                                        .cornerRadius(12)
+                                        .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
+                                }
+                            }
+                        }
+                    }
                     
-                    ForEach(DNARepresentation.allCases, id: \.self) { rep in
-                        Button(action: {
-                            sceneManager.currentRepresentation = rep
-                            sceneManager.rebuildScene()
-                        }) {
-                            Text(rep.rawValue)
-                                .font(.caption)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
-                                .background(
-                                    sceneManager.currentRepresentation == rep ?
-                                        Color.blue : Color.black.opacity(0.5)
-                                )
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
+                    // Color Section
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Color")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .fontWeight(.bold)
+                        
+                        LazyVGrid(columns: [
+                            GridItem(.flexible(), spacing: 8),
+                            GridItem(.flexible(), spacing: 8),
+                            GridItem(.flexible(), spacing: 8)
+                        ], spacing: 8) {
+                            ForEach(DNAColorScheme.allCases, id: \.self) { scheme in
+                                Button(action: {
+                                    sceneManager.colorScheme = scheme
+                                    sceneManager.rebuildScene()
+                                }) {
+                                    Text(scheme.rawValue)
+                                        .font(.body)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.white)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 44)
+                                        .background(
+                                            sceneManager.colorScheme == scheme ?
+                                                Color.green : Color.gray.opacity(0.3)
+                                        )
+                                        .cornerRadius(12)
+                                        .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
+                                }
+                            }
                         }
                     }
                 }
-                .transition(.opacity)
-                
-                // Color Scheme Controls (collapsible)
-                HStack(spacing: 8) {
-                    Text("Color:")
-                        .font(.caption)
-                        .foregroundColor(.white)
-                    
-                    ForEach(DNAColorScheme.allCases, id: \.self) { scheme in
-                        Button(action: {
-                            sceneManager.colorScheme = scheme
-                            sceneManager.rebuildScene()
-                        }) {
-                            Text(scheme.rawValue)
-                                .font(.caption)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
-                                .background(
-                                    sceneManager.colorScheme == scheme ?
-                                        Color.green : Color.black.opacity(0.5)
-                                )
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
-                        }
-                    }
-                }
-                .transition(.opacity)
+                .transition(.opacity.combined(with: .scale(scale: 0.95)))
             }
             
-            // Group Navigation (for sequences with multiple groups)
-            if sceneManager.totalGroups > 1 {
-                HStack(spacing: 12) {
-                    Button(action: {
-                        sceneManager.previousGroup()
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .font(.title2)
-                            .foregroundColor(.white)
-                            .frame(width: 36, height: 36)
-                            .background(Color.blue.opacity(0.7))
-                            .clipShape(Circle())
-                    }
-                    .disabled(sceneManager.currentGroup <= 1)
+            // Group Navigation (for sequences with multiple groups) - disabled
+            // if sceneManager.totalGroups > 1 {
+            //     HStack(spacing: 8) {
+            //         Button(action: {
+            //             sceneManager.previousGroup()
+            //         }) {
+            //             Image(systemName: "chevron.left")
+            //                 .font(.title2)
+            //                 .foregroundColor(.white)
+            //                 .frame(width: 36, height: 36)
+            //                 .background(Color.blue.opacity(0.7))
+            //                 .clipShape(Circle())
+            //         }
+            //         .disabled(sceneManager.currentGroup <= 1)
                     
-                    Text("Group \(sceneManager.currentGroup) of \(sceneManager.totalGroups)")
-                        .font(.caption)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(Color.black.opacity(0.6))
-                        .cornerRadius(16)
+            //         // Decorative spacer with subtle indicator
+            //         HStack(spacing: 4) {
+            //             ForEach(0..<3, id: \.self) { _ in
+            //                 Circle()
+            //                     .fill(Color.white.opacity(0.3))
+            //                     .frame(width: 4, height: 4)
+            //             }
+            //         }
+            //         .padding(.horizontal, 8)
                     
-                    Button(action: {
-                        sceneManager.nextGroup()
-                    }) {
-                        Image(systemName: "chevron.right")
-                            .font(.title2)
-                            .foregroundColor(.white)
-                            .frame(width: 36, height: 36)
-                            .background(Color.blue.opacity(0.7))
-                            .clipShape(Circle())
-                    }
-                    .disabled(sceneManager.currentGroup >= sceneManager.totalGroups)
-                }
-            }
+            //         Button(action: {
+            //             sceneManager.nextGroup()
+            //         }) {
+            //             Image(systemName: "chevron.right")
+            //                 .font(.title2)
+            //                 .foregroundColor(.white)
+            //                 .frame(width: 36, height: 36)
+            //                 .background(Color.blue.opacity(0.7))
+            //                 .clipShape(Circle())
+            //         }
+            //         .disabled(sceneManager.currentGroup >= sceneManager.totalGroups)
+            //     }
+            // }
         }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.black.opacity(0.85))
+                .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 4)
+        )
         .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(Color.black.opacity(0.8))
     }
 }
 

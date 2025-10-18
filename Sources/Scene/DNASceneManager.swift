@@ -38,6 +38,7 @@ class DNASceneManager: ObservableObject {
     @Published var highlightedFeatures: [GeneFeature] = []
     @Published var isAnimating = false
     @Published var selectedBaseIndex: Int?
+    @Published var colorSettings = ColorSettings.shared
     
     var scene: SCNScene
     private var cameraNode: SCNNode
@@ -49,7 +50,17 @@ class DNASceneManager: ObservableObject {
     var displayLength: Int = 100 // Show only subset for performance
     var currentGroup: Int = 1
     var totalGroups: Int = 1
-    var groupSize: Int = 40
+    var groupSize: Int = 15  // Reduced for memory safety
+    
+    // 실제 표시되는 염기서열 수 (안전장치 적용 후)
+    var actualDisplayLength: Int {
+        guard let sequence = currentSequence else { return displayLength }
+        let isAPOE = sequence.name.lowercased().contains("apoe")
+        let maxDisplayLength = isAPOE ? 200 : 20
+        let safeLength = min(displayLength, maxDisplayLength)
+        print("🔍 actualDisplayLength: displayLength=\(displayLength), maxDisplayLength=\(maxDisplayLength), safeLength=\(safeLength)")
+        return safeLength
+    }
     
     init() {
         scene = SCNScene()
@@ -66,8 +77,8 @@ class DNASceneManager: ObservableObject {
         cameraNode.camera = SCNCamera()
         cameraNode.camera?.wantsHDR = true
         cameraNode.camera?.bloomIntensity = 0.3
-        cameraNode.position = SCNVector3(x: 0, y: 10, z: 20)  // Better viewing angle
-        cameraNode.look(at: SCNVector3(x: 0, y: 0, z: 0))    // Look at center
+        cameraNode.position = SCNVector3(x: 0, y: 2, z: 15)  // Closer and flatter camera position
+        cameraNode.look(at: SCNVector3(x: 0, y: 0, z: 0))    // Look straight at the center
         scene.rootNode.addChildNode(cameraNode)
         
         // Setup lighting
@@ -125,23 +136,32 @@ class DNASceneManager: ObservableObject {
     private func calculateGroups(for sequence: DNASequence) {
         let sequenceId = sequence.name.lowercased()
         
+        print("🔍 Calculating groups for sequence: '\(sequence.name)' (lowercased: '\(sequenceId)')")
+        
         // ID별로 적절한 그룹 크기 결정 (메모리 절약을 위해 더 작게)
         if sequenceId.contains("brca1") {
-            groupSize = 20  // BRCA1: 7088개 -> 355개 그룹 (각 그룹당 20개)
+            groupSize = 15  // BRCA1: 7088개 -> 473개 그룹 (각 그룹당 15개)
         } else if sequenceId.contains("tp53") {
-            groupSize = 20  // TP53: 393개 -> 20개 그룹
+            groupSize = 15  // TP53: 393개 -> 27개 그룹
         } else if sequenceId.contains("cftr") {
-            groupSize = 25  // CFTR: 1480개 -> 60개 그룹
+            groupSize = 15  // CFTR: 1480개 -> 99개 그룹
         } else if sequenceId.contains("huntingtin") {
-            groupSize = 30  // Huntingtin: 3144개 -> 105개 그룹
+            groupSize = 15  // Huntingtin: 3144개 -> 210개 그룹
+        } else if sequenceId.contains("apoe") {
+            groupSize = 100  // APOE gene: ~6.7kb -> 67개 그룹 (각 그룹당 100개)
+            print("✅ APOE detected, setting groupSize to 100")
+        } else if sequence.length > 1000000 {
+            groupSize = 3   // 100만 bp 이상: 극도로 작게
         } else {
-            // 기본값: 시퀀스 길이에 따라 동적 계산
-            if sequence.length > 1000 {
-                groupSize = 50
+            // 기본값: 시퀀스 길이에 따라 동적 계산 (메모리 안전을 위해 더 작게)
+            if sequence.length > 10000 {
+                groupSize = 10  // 매우 큰 시퀀스
+            } else if sequence.length > 1000 {
+                groupSize = 15  // 큰 시퀀스
             } else if sequence.length > 500 {
-                groupSize = 40
+                groupSize = 20  // 중간 시퀀스
             } else if sequence.length > 100 {
-                groupSize = 30
+                groupSize = 25  // 작은 시퀀스
             } else {
                 groupSize = sequence.length
             }
@@ -160,7 +180,19 @@ class DNASceneManager: ObservableObject {
             displayLength = min(groupSize, sequence.length)
         }
         
+        // 안전장치 적용 (APOE는 200개, 다른 시퀀스는 20개로 제한)
+        let isAPOE = sequenceId.contains("apoe")
+        let maxDisplayLength = isAPOE ? 200 : 20
+        let safeDisplayLength = min(displayLength, maxDisplayLength)
+        if safeDisplayLength < displayLength {
+            print("⚠️ calculateGroups: Limiting display from \(displayLength) to \(safeDisplayLength) for stability")
+            displayLength = safeDisplayLength
+        }
+        
         print("🧬 \(sequence.name): \(sequence.length) bases -> \(totalGroups) groups (size: \(groupSize))")
+        
+        // UI 업데이트를 강제하여 SequenceBar가 새로운 값을 반영하도록 함
+        objectWillChange.send()
     }
     
     func loadGroup(_ group: Int) {
@@ -175,19 +207,46 @@ class DNASceneManager: ObservableObject {
         
         print("🔄 Loading group \(group) (was: \(currentGroup))")
         
+        // Calculate start/length with safety checks
+        let newStart = (group - 1) * self.groupSize
+        guard newStart < sequence.length else {
+            print("❌ loadGroup: start \(newStart) >= sequence length \(sequence.length)")
+            return
+        }
+        
+        let newLength = min(self.groupSize, sequence.length - newStart)
+        guard newLength > 0 else {
+            print("❌ loadGroup: computed length <= 0")
+            return
+        }
+        
         // UI 업데이트를 명시적으로 트리거
         objectWillChange.send()
         
         // 즉시 currentGroup 업데이트 (UI가 바로 반응하도록)
         self.currentGroup = group
-        self.displayStart = (group - 1) * self.groupSize
-        self.displayLength = min(self.groupSize, sequence.length - self.displayStart)
+        self.displayStart = newStart
+        self.displayLength = newLength
+        
+        // 안전장치 적용 (APOE는 200개, 다른 시퀀스는 20개로 제한)
+        let isAPOE = sequence.name.lowercased().contains("apoe")
+        let maxDisplayLength = isAPOE ? 200 : 20
+        let safeDisplayLength = min(self.displayLength, maxDisplayLength)
+        if safeDisplayLength < self.displayLength {
+            print("⚠️ loadGroup: Limiting display from \(self.displayLength) to \(safeDisplayLength) for stability")
+            self.displayLength = safeDisplayLength
+        }
+        
         print("📊 Group \(group): start=\(self.displayStart), length=\(self.displayLength)")
         print("✅ currentGroup updated to: \(self.currentGroup)")
         
-        // Scene 재구성은 비동기로
-        DispatchQueue.main.async { [weak self] in
-            self?.rebuildScene()
+        // Scene 재구성은 비동기로 (메인 스레드에서만)
+        if Thread.isMainThread {
+            rebuildScene()
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.rebuildScene()
+            }
         }
     }
     
@@ -204,28 +263,69 @@ class DNASceneManager: ObservableObject {
     }
     
     func rebuildScene() {
-        // Clear existing nodes
-        helixNodes.forEach { $0.removeFromParentNode() }
-        helixNodes.removeAll()
-        
-        guard let sequence = currentSequence else { return }
-        
-        // Build according to current representation
-        switch currentRepresentation {
-        case .doubleHelix:
-            buildDoubleHelix(sequence: sequence)
-        case .ladder:
-            buildLadder(sequence: sequence)
-        case .ballAndStick:
-            buildBallAndStick(sequence: sequence)
-        case .sequenceOnly:
-            break // 2D view, no 3D rendering
+        // Clear existing nodes first to free memory
+        print("🧹 Clearing \(helixNodes.count) existing nodes...")
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.helixNodes.forEach { $0.removeFromParentNode() }
+            self.helixNodes.removeAll()
+            
+            // Force memory cleanup
+            autoreleasepool {
+                // This will help release memory immediately
+            }
+            
+            guard let sequence = self.currentSequence else { return }
+            
+            // Limit display length for large sequences to prevent crash (except for APOE gene)
+            let isAPOE = sequence.name.lowercased().contains("apoe")
+            let maxDisplayLength = isAPOE ? 200 : 20  // APOE는 200개, 다른 큰 시퀀스는 20개로 제한
+            let safeDisplayLength = min(self.displayLength, maxDisplayLength)
+            if safeDisplayLength < self.displayLength {
+                print("⚠️ Limiting display from \(self.displayLength) to \(safeDisplayLength) for stability")
+                self.displayLength = safeDisplayLength
+            }
+            
+            // Build according to current representation on background thread
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                guard let self = self else { return }
+                
+                var newNodes: [SCNNode] = []
+                
+                switch self.currentRepresentation {
+                case .doubleHelix:
+                    newNodes = self.buildDoubleHelixNodes(sequence: sequence)
+                case .ladder:
+                    newNodes = self.buildLadderNodes(sequence: sequence)
+                case .ballAndStick:
+                    newNodes = self.buildBallAndStickNodes(sequence: sequence)
+                case .sequenceOnly:
+                    break
+                }
+                
+                // Add nodes on main thread
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    print("➕ Adding \(newNodes.count) new nodes to scene...")
+                    for node in newNodes {
+                        self.scene.rootNode.addChildNode(node)
+                        self.helixNodes.append(node)
+                    }
+                    print("✅ Scene rebuild complete. Total nodes: \(self.helixNodes.count)")
+                }
+            }
         }
     }
     
-    func buildDoubleHelix(sequence: DNASequence) {
+    // Background-safe node builders (return nodes without adding to scene)
+    private func buildDoubleHelixNodes(sequence: DNASequence) -> [SCNNode] {
         let helixBuilder = HelixBuilder()
         let displaySeq = getDisplaySequence(sequence)
+        
+        guard !displaySeq.isEmpty else {
+            print("⚠️ buildDoubleHelixNodes: empty display sequence")
+            return []
+        }
         
         print("🧬 Building double helix with sequence: \(displaySeq)")
         print("🧬 Sequence length: \(displaySeq.count)")
@@ -239,25 +339,46 @@ class DNASceneManager: ObservableObject {
         )
         
         print("🧬 Created \(nodes.count) nodes for DNA helix")
-        
-        for node in nodes {
-            scene.rootNode.addChildNode(node)
-            helixNodes.append(node)
-        }
-        
-        print("🧬 DNA helix build complete. Total nodes in scene: \(helixNodes.count)")
+        return nodes
     }
     
-    func buildLadder(sequence: DNASequence) {
+    private func buildLadderNodes(sequence: DNASequence) -> [SCNNode] {
         let ladderBuilder = LadderBuilder()
         let displaySeq = getDisplaySequence(sequence)
         
-        let nodes = ladderBuilder.buildLadder(
+        guard !displaySeq.isEmpty else { return [] }
+        
+        return ladderBuilder.buildLadder(
             sequence: displaySeq,
             colorScheme: colorScheme,
             startPosition: displayStart
         )
+    }
+    
+    private func buildBallAndStickNodes(sequence: DNASequence) -> [SCNNode] {
+        let ballStickBuilder = BallStickBuilder()
+        let displaySeq = getDisplaySequence(sequence)
         
+        guard !displaySeq.isEmpty else { return [] }
+        
+        return ballStickBuilder.buildBallStick(
+            sequence: displaySeq,
+            colorScheme: colorScheme,
+            startPosition: displayStart
+        )
+    }
+    
+    // Deprecated: kept for compatibility, use buildXXXNodes instead
+    func buildDoubleHelix(sequence: DNASequence) {
+        let nodes = buildDoubleHelixNodes(sequence: sequence)
+        for node in nodes {
+            scene.rootNode.addChildNode(node)
+            helixNodes.append(node)
+        }
+    }
+    
+    func buildLadder(sequence: DNASequence) {
+        let nodes = buildLadderNodes(sequence: sequence)
         for node in nodes {
             scene.rootNode.addChildNode(node)
             helixNodes.append(node)
@@ -265,15 +386,7 @@ class DNASceneManager: ObservableObject {
     }
     
     func buildBallAndStick(sequence: DNASequence) {
-        let ballStickBuilder = BallStickBuilder()
-        let displaySeq = getDisplaySequence(sequence)
-        
-        let nodes = ballStickBuilder.buildBallStick(
-            sequence: displaySeq,
-            colorScheme: colorScheme,
-            startPosition: displayStart
-        )
-        
+        let nodes = buildBallAndStickNodes(sequence: sequence)
         for node in nodes {
             scene.rootNode.addChildNode(node)
             helixNodes.append(node)
@@ -283,6 +396,11 @@ class DNASceneManager: ObservableObject {
     private func getDisplaySequence(_ sequence: DNASequence) -> String {
         let start = min(displayStart, sequence.length)
         let end = min(displayStart + displayLength, sequence.length)
+        
+        guard start < sequence.sequence.count, end <= sequence.sequence.count, start < end else {
+            print("❌ getDisplaySequence: Invalid range start=\(start) end=\(end) seqLen=\(sequence.sequence.count)")
+            return ""
+        }
         
         let startIndex = sequence.sequence.index(sequence.sequence.startIndex, offsetBy: start)
         let endIndex = sequence.sequence.index(sequence.sequence.startIndex, offsetBy: end)
@@ -320,8 +438,8 @@ class DNASceneManager: ObservableObject {
     }
     
     func resetView() {
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 50)
-        cameraNode.eulerAngles = SCNVector3(x: 0, y: 0, z: 0)
+        cameraNode.position = SCNVector3(x: 0, y: 8, z: 25)
+        cameraNode.look(at: SCNVector3(x: 0, y: -10, z: 0))
     }
     
     func selectBase(at index: Int) {
@@ -443,14 +561,23 @@ class DNASceneManager: ObservableObject {
         cameraNode.removeAllActions()
         
         // Calculate optimal camera position
+        #if os(macOS)
+        let cameraDistance: CGFloat = 20.0
+        // Position camera directly in front and slightly above the selected base
+        let cameraPosition = SCNVector3(
+            x: CGFloat(position.x),
+            y: CGFloat(position.y) + 5.0,  // Above
+            z: CGFloat(position.z) + cameraDistance  // In front
+        )
+        #else
         let cameraDistance: Float = 20.0
-        
         // Position camera directly in front and slightly above the selected base
         let cameraPosition = SCNVector3(
             x: position.x,
             y: position.y + 5.0,  // Above
             z: position.z + cameraDistance  // In front
         )
+        #endif
         
         print("📹 Moving camera to: (\(cameraPosition.x), \(cameraPosition.y), \(cameraPosition.z))")
         
@@ -472,14 +599,29 @@ class DNASceneManager: ObservableObject {
 // MARK: - Color Utilities
 
 extension DNASceneManager {
+    // Pre-defined platform colors to avoid any UIColor/NSColor init calls during rendering
+    #if os(macOS)
+    private static let defaultAdenine = NSColor.systemOrange
+    private static let defaultThymine = NSColor.systemGreen
+    private static let defaultGuanine = NSColor.systemRed
+    private static let defaultCytosine = NSColor.systemYellow
+    private static let defaultHydrogen = NSColor.white
+    #else
+    private static let defaultAdenine = UIColor.systemOrange
+    private static let defaultThymine = UIColor.systemGreen
+    private static let defaultGuanine = UIColor.systemRed
+    private static let defaultCytosine = UIColor.systemYellow
+    private static let defaultHydrogen = UIColor.white
+    #endif
+
     static func colorForBase(_ base: Character, scheme: DNAColorScheme, gcContent: Double = 0) -> PlatformColor {
         switch scheme {
         case .byBase:
             switch base {
-            case "A": return PlatformColor(red: 1.0, green: 0.5, blue: 0.0, alpha: 1.0) // Orange
-            case "T": return PlatformColor(red: 0.0, green: 0.8, blue: 0.0, alpha: 1.0) // Green
-            case "G": return PlatformColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0) // Red
-            case "C": return PlatformColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0) // Yellow
+            case "A": return defaultAdenine
+            case "T": return defaultThymine
+            case "G": return defaultGuanine
+            case "C": return defaultCytosine
             default: return .gray
             }
         case .byStrand:
@@ -494,3 +636,28 @@ extension DNASceneManager {
     }
 }
 
+extension DNASceneManager {
+    static func hydrogenPlatformColor() -> PlatformColor {
+        return defaultHydrogen
+    }
+}
+
+// MARK: - PlatformColor Extension
+extension PlatformColor {
+    convenience init(_ color: Color) {
+        #if os(macOS)
+        if let cg = color.cgColor, let ns = NSColor(cgColor: cg) {
+            self.init(srgbRed: ns.redComponent, green: ns.greenComponent, blue: ns.blueComponent, alpha: ns.alphaComponent)
+        } else {
+            self.init(srgbRed: 1, green: 1, blue: 1, alpha: 1)
+        }
+        #else
+        // Prefer bridging via UIColor(Color) to preserve dynamic/sRGB on iPad
+        if #available(iOS 14.0, *) {
+            self.init(cgColor: UIColor(color).cgColor)
+        } else {
+            self.init(cgColor: color.cgColor ?? UIColor.white.cgColor)
+        }
+        #endif
+    }
+}

@@ -12,11 +12,11 @@ import simd
 // MARK: - SCNVector3 Extensions
 extension SCNVector3 {
     func length() -> Float {
-        return sqrt(x * x + y * y + z * z)
+        return simd_length(self.simd)
     }
     
     var simd: simd_float3 {
-        simd_float3(x, y, z)
+        simd_float3(Float(x), Float(y), Float(z))
     }
     
     init(_ simd: simd_float3) {
@@ -32,7 +32,17 @@ extension SCNVector3 {
     }
     
     static func * (vector: SCNVector3, scalar: Float) -> SCNVector3 {
-        return SCNVector3(vector.x * scalar, vector.y * scalar, vector.z * scalar)
+        return SCNVector3(Float(vector.x) * scalar, Float(vector.y) * scalar, Float(vector.z) * scalar)
+    }
+
+    static func * (vector: SCNVector3, scalar: CGFloat) -> SCNVector3 {
+        let s = Float(scalar)
+        return SCNVector3(Float(vector.x) * s, Float(vector.y) * s, Float(vector.z) * s)
+    }
+
+    static func * (vector: SCNVector3, scalar: Double) -> SCNVector3 {
+        let s = Float(scalar)
+        return SCNVector3(Float(vector.x) * s, Float(vector.y) * s, Float(vector.z) * s)
     }
 }
 
@@ -47,8 +57,8 @@ class HelixBuilder {
     // DNA helix parameters (B-DNA)
     private let basesPerTurn: Double = 10.5
     private let risePerBase: Double = 0.34  // nm
-    private let helixRadius: Double = 1.0    // nm
-    private let scale: Double = 5.0          // Scale factor for visualization (reduced for better visibility)
+    private let helixRadius: Double = 0.3    // nm (reduced for flatter appearance)
+    private let scale: Double = 12.0         // Scale factor for visualization (increased to compensate for smaller radius)
     private let backboneRadius: CGFloat = 0.55
     private let baseHalfThickness: CGFloat = 0.32
     private let baseHalfDepth: CGFloat = 0.42
@@ -105,7 +115,7 @@ class HelixBuilder {
         
         for i in 0..<sequenceLength {
             let angle = Double(i) * angleStep + strandOffset
-            let height = Double(i) * risePerBase * scale
+            let height = Double(i) * risePerBase * scale - 25.0  // Move DNA model much further down to bottom
             
             let x = helixRadius * cos(angle) * scale
             let z = helixRadius * sin(angle) * scale
@@ -380,17 +390,13 @@ class HelixBuilder {
         
         let distance = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
         
-        // Hydrogen bonds shown as light gray cylinders between paired bases
+        // Hydrogen bonds with customizable color
         let cylinder = SCNCylinder(radius: hydrogenBondRadius, height: CGFloat(distance))
-        #if os(macOS)
-        cylinder.firstMaterial?.diffuse.contents = NSColor(white: 0.7, alpha: 1.0)  // Light gray
-        cylinder.firstMaterial?.specular.contents = NSColor.white
-        cylinder.firstMaterial?.emission.contents = NSColor(white: 0.1, alpha: 1.0)  // Slight glow
-        #else
-        cylinder.firstMaterial?.diffuse.contents = UIColor(white: 0.7, alpha: 1.0)  // Light gray
-        cylinder.firstMaterial?.specular.contents = UIColor.white
-        cylinder.firstMaterial?.emission.contents = UIColor(white: 0.1, alpha: 1.0)  // Slight glow
-        #endif
+        let hydrogenColor = DNASceneManager.hydrogenPlatformColor()
+        
+        cylinder.firstMaterial?.diffuse.contents = hydrogenColor
+        cylinder.firstMaterial?.specular.contents = PlatformColor.white
+        cylinder.firstMaterial?.emission.contents = hydrogenColor.withAlphaComponent(0.1)  // Slight glow
         cylinder.firstMaterial?.shininess = 80
         
         let node = SCNNode(geometry: cylinder)

@@ -45,17 +45,17 @@ struct ViewerView: View {
                 showStyleAndColor: showStyleAndColor
             )
             
-            // 3D Scene View (fills remaining space)
-            ZStack {
-                SceneView(
-                    scene: sceneManager.scene,
-                    pointOfView: nil,
-                    options: [.allowsCameraControl, .autoenablesDefaultLighting]
-                )
-                .background(Color(red: 0.03, green: 0.08, blue: 0.15)) // Dark navy background
-                
-                // Overlay UI on Scene
-                VStack(spacing: 0) {
+            // Main content area with 3D Scene and bottom controls
+            VStack(spacing: 0) {
+                // 3D Scene View (fills available space above sequence info)
+                ZStack {
+                    SceneView(
+                        scene: sceneManager.scene,
+                        pointOfView: nil,
+                        options: [.allowsCameraControl, .autoenablesDefaultLighting]
+                    )
+                    .background(Color(red: 0.03, green: 0.08, blue: 0.15)) // Dark navy background
+                    
                     // Side Controls (floating on right, top area)
                     HStack {
                         Spacer()
@@ -84,8 +84,8 @@ struct ViewerView: View {
                         }
                         .padding()
                     }
-                    
-                    Spacer()
+                }  // End ZStack (Scene)
+                .frame(maxWidth: .infinity, maxHeight: .infinity) // 가능한 모든 공간 사용
                 
                 // Bottom section - Control Bar and Sequence Bar
                 VStack(spacing: 0) {
@@ -105,14 +105,28 @@ struct ViewerView: View {
                         .frame(height: 120)
                     }
                 }  // End VStack (Bottom section)
-            }  // End VStack (Scene overlay)
-            }  // End ZStack (Scene)
-        }  // End VStack (Top Bar + Scene)
+            }  // End VStack (Main content)
+        }  // End VStack (Top Bar + Main content)
         .onAppear {
             sceneManager.loadSequence(sequence)
         }
         .onChange(of: sequence) { newSequence in
             sceneManager.loadSequence(newSequence)
+        }
+        .onChange(of: sceneManager.colorSettings.adenineColor) { _ in
+            sceneManager.rebuildScene()
+        }
+        .onChange(of: sceneManager.colorSettings.thymineColor) { _ in
+            sceneManager.rebuildScene()
+        }
+        .onChange(of: sceneManager.colorSettings.guanineColor) { _ in
+            sceneManager.rebuildScene()
+        }
+        .onChange(of: sceneManager.colorSettings.cytosineColor) { _ in
+            sceneManager.rebuildScene()
+        }
+        .onChange(of: sceneManager.colorSettings.hydrogenBondColor) { _ in
+            sceneManager.rebuildScene()
         }
         .sheet(isPresented: $showInfo) {
             InfoSheet(sequence: sequence)
