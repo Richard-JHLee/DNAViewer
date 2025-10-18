@@ -22,6 +22,7 @@
 		4053DC98783D8EA19A1090BD /* DNASequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */; };
 		4581269345B9FF02BD34A3E8 /* TranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1759BF0FCE2F4F158AC5547 /* TranslationSheet.swift */; };
 		49ED7795548935F2D3838D5B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B709C6609D5488C389FF46 /* ContentView.swift */; };
+		4C6A24C34A2D56BCBA93A527 /* RestrictionEnzymes.json in Resources */ = {isa = PBXBuildFile; fileRef = 460E4B1CEA21B342A9BB52A2 /* RestrictionEnzymes.json */; };
 		5ADB196E52A85B8B01A3BBA8 /* SequenceBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CE7D66DB7A9BD25D28744B /* SequenceBar.swift */; };
 		5C9DF7B1D3A728954F9D121F /* SequenceAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C435A58633CA370AC6D6E2E /* SequenceAnalyzer.swift */; };
 		5E851E8BCB1814AA41771E4C /* AnalysisSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828A016B73E89ACACABA0737 /* AnalysisSheet.swift */; };
@@ -65,6 +66,7 @@
 		CE81C73E0E2C9A907B1E1002 /* GeneFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A29CACC152D5D9773D8012 /* GeneFeature.swift */; };
 		CF398146A66A3A0C7C080354 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0B9E25D6D068B4BD6DD3E8 /* HomeView.swift */; };
 		D1138289E9A51171E15EC608 /* ViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CB62E2F8F22E49B4747143 /* ViewerView.swift */; };
+		D7CEA895C00D28F9823D0FAD /* RestrictionEnzymes.json in Resources */ = {isa = PBXBuildFile; fileRef = 460E4B1CEA21B342A9BB52A2 /* RestrictionEnzymes.json */; };
 		D970833C33052D6435AE0FD7 /* HelixBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AEF53C2DE46CBC96CF69BA7 /* HelixBuilder.swift */; };
 		DE1C6C7AB4A9DABDB2EDEC00 /* DNASceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933C9A3D6A5A0E1C930132E /* DNASceneManager.swift */; };
 		E75FB76CB65117D243D498D9 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B66D0384711A95DF556C897 /* Charts.framework */; };
@@ -91,6 +93,7 @@
 		2CE727243006F5E24F6AB76F /* PDBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDBService.swift; sourceTree = "<group>"; };
 		2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNASequence.swift; sourceTree = "<group>"; };
 		43FAF54CAB9CE1B8865DAD21 /* FASTAParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FASTAParser.swift; sourceTree = "<group>"; };
+		460E4B1CEA21B342A9BB52A2 /* RestrictionEnzymes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = RestrictionEnzymes.json; sourceTree = "<group>"; };
 		50B709C6609D5488C389FF46 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		56A33F946973CB17ECD861D5 /* RestrictionSites.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = RestrictionSites.json; sourceTree = "<group>"; };
 		56F9B36B1D0C4758804D4AE7 /* DNAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNAApp.swift; sourceTree = "<group>"; };
@@ -255,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				F96361928E842CA4E6A5913C /* QuizData.json */,
+				460E4B1CEA21B342A9BB52A2 /* RestrictionEnzymes.json */,
 				56A33F946973CB17ECD861D5 /* RestrictionSites.json */,
 				9D72CC3BB9DAFC21904B1CB2 /* SampleGenes.json */,
 			);
@@ -359,6 +363,7 @@
 			files = (
 				3B9DE06A7A1F9F9D4626C269 /* Assets.xcassets in Resources */,
 				BA287B9F09C18621E3E8DE86 /* QuizData.json in Resources */,
+				4C6A24C34A2D56BCBA93A527 /* RestrictionEnzymes.json in Resources */,
 				83041FB103CBBD04B33D3FB5 /* RestrictionSites.json in Resources */,
 				238949F2F149851A01D027D7 /* SampleGenes.json in Resources */,
 			);
@@ -370,6 +375,7 @@
 			files = (
 				004F9FCC478710956D4C6DB8 /* Assets.xcassets in Resources */,
 				7C8079EC5B3B5E0958AAA270 /* QuizData.json in Resources */,
+				D7CEA895C00D28F9823D0FAD /* RestrictionEnzymes.json in Resources */,
 				8BFEE05B17E1BC71AC050A6D /* RestrictionSites.json in Resources */,
 				7D6DB0B74EDDFB6CEF3687C7 /* SampleGenes.json in Resources */,
 			);

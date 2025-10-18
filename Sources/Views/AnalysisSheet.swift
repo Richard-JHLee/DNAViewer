@@ -218,9 +218,10 @@ struct AnalysisSheet: View {
                                 .padding(.top, 24)
                             } else {
                                 LazyVStack(spacing: 12) {
-                                    ForEach(defaultEnzymes) { enzyme in
-                                        if let hits = advancedRestrictionResults[enzyme.name] {
-                                            AdvancedEnzymeRow(enzyme: enzyme, hits: hits)
+                                    // 결과를 효소 이름 알파벳 순으로 정렬
+                                    ForEach(advancedRestrictionResults.sorted(by: { $0.key < $1.key }), id: \.key) { enzymeName, hits in
+                                        if let firstHit = hits.first {
+                                            AdvancedEnzymeRow(enzyme: firstHit.enzyme, hits: hits)
                                                 .padding(.horizontal)
                                         }
                                     }
@@ -261,12 +262,15 @@ struct AnalysisSheet: View {
         isAnalyzing = true
         
         DispatchQueue.global(qos: .userInitiated).async {
+            // RestrictionEnzymes.shared에서 효소 목록 가져오기 (한 번만 로드됨)
+            let enzymes = RestrictionEnzymes.shared.getAllEnzymes()
             let analyzer = RestrictionSiteAnalyzer()
-            let results = analyzer.analyze(sequence: customSequence, enzymes: defaultEnzymes)
+            let results = analyzer.analyze(sequence: customSequence, enzymes: enzymes)
             
             DispatchQueue.main.async {
                 advancedRestrictionResults = results
                 isAnalyzing = false
+                print("🔬 Analysis complete: Found \(results.count) enzymes with restriction sites")
             }
         }
     }

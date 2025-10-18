@@ -22,9 +22,13 @@ struct RestrictionEnzyme: Identifiable, Codable, Hashable {
     let cutPosition: Int
     let recognitionSite: String
     let overhang: String
+    let isoschizomers: [String]?
+    let organism: String?
+    let supplier: [String]?
     
     enum CodingKeys: String, CodingKey {
         case name, sequence, cutPosition, recognitionSite, overhang
+        case isoschizomers, organism, supplier
     }
     
     /// caret('^')를 제외한 순수 패턴 (IUPAC 포함 가능)
@@ -105,21 +109,21 @@ final class RestrictionSiteAnalyzer {
 
 let defaultEnzymes: [RestrictionEnzyme] = [
     // 주석: 인식서열 / 절단위치 / 오버행
-    RestrictionEnzyme(name: "EcoRI", sequence: "GAATTC", cutPosition: 1, recognitionSite: "G^AATTC", overhang: "5' overhang"),
-    RestrictionEnzyme(name: "BamHI", sequence: "GGATCC", cutPosition: 1, recognitionSite: "G^GATCC", overhang: "5' overhang"),
-    RestrictionEnzyme(name: "HindIII", sequence: "AAGCTT", cutPosition: 1, recognitionSite: "A^AGCTT", overhang: "5' overhang"),
-    RestrictionEnzyme(name: "PstI", sequence: "CTGCAG", cutPosition: 5, recognitionSite: "CTGCA^G", overhang: "3' overhang"),
-    RestrictionEnzyme(name: "SacI", sequence: "GAGCTC", cutPosition: 5, recognitionSite: "GAGCT^C", overhang: "3' overhang"),
-    RestrictionEnzyme(name: "NotI", sequence: "GCGGCCGC", cutPosition: 2, recognitionSite: "GC^GGCCGC", overhang: "5' overhang"),
-    RestrictionEnzyme(name: "XbaI", sequence: "TCTAGA", cutPosition: 1, recognitionSite: "T^CTAGA", overhang: "5' overhang"),
-    RestrictionEnzyme(name: "SalI", sequence: "GTCGAC", cutPosition: 1, recognitionSite: "G^TCGAC", overhang: "5' overhang"),
-    RestrictionEnzyme(name: "XhoI", sequence: "CTCGAG", cutPosition: 1, recognitionSite: "C^TCGAG", overhang: "5' overhang"),
-    RestrictionEnzyme(name: "KpnI", sequence: "GGTACC", cutPosition: 5, recognitionSite: "GGTAC^C", overhang: "3' overhang"),
-    RestrictionEnzyme(name: "SmaI", sequence: "CCCGGG", cutPosition: 3, recognitionSite: "CCC^GGG", overhang: "blunt"),
-    RestrictionEnzyme(name: "EcoRV", sequence: "GATATC", cutPosition: 3, recognitionSite: "GAT^ATC", overhang: "blunt"),
-    RestrictionEnzyme(name: "DraI", sequence: "TTTAAA", cutPosition: 3, recognitionSite: "TTT^AAA", overhang: "blunt"),
-    RestrictionEnzyme(name: "ScaI", sequence: "AGTACT", cutPosition: 3, recognitionSite: "AGT^ACT", overhang: "blunt"),
-    RestrictionEnzyme(name: "PvuII", sequence: "CAGCTG", cutPosition: 3, recognitionSite: "CAG^CTG", overhang: "blunt")
+    RestrictionEnzyme(name: "EcoRI", sequence: "GAATTC", cutPosition: 1, recognitionSite: "G^AATTC", overhang: "5' overhang", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "BamHI", sequence: "GGATCC", cutPosition: 1, recognitionSite: "G^GATCC", overhang: "5' overhang", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "HindIII", sequence: "AAGCTT", cutPosition: 1, recognitionSite: "A^AGCTT", overhang: "5' overhang", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "PstI", sequence: "CTGCAG", cutPosition: 5, recognitionSite: "CTGCA^G", overhang: "3' overhang", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "SacI", sequence: "GAGCTC", cutPosition: 5, recognitionSite: "GAGCT^C", overhang: "3' overhang", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "NotI", sequence: "GCGGCCGC", cutPosition: 2, recognitionSite: "GC^GGCCGC", overhang: "5' overhang", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "XbaI", sequence: "TCTAGA", cutPosition: 1, recognitionSite: "T^CTAGA", overhang: "5' overhang", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "SalI", sequence: "GTCGAC", cutPosition: 1, recognitionSite: "G^TCGAC", overhang: "5' overhang", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "XhoI", sequence: "CTCGAG", cutPosition: 1, recognitionSite: "C^TCGAG", overhang: "5' overhang", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "KpnI", sequence: "GGTACC", cutPosition: 5, recognitionSite: "GGTAC^C", overhang: "3' overhang", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "SmaI", sequence: "CCCGGG", cutPosition: 3, recognitionSite: "CCC^GGG", overhang: "blunt", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "EcoRV", sequence: "GATATC", cutPosition: 3, recognitionSite: "GAT^ATC", overhang: "blunt", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "DraI", sequence: "TTTAAA", cutPosition: 3, recognitionSite: "TTT^AAA", overhang: "blunt", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "ScaI", sequence: "AGTACT", cutPosition: 3, recognitionSite: "AGT^ACT", overhang: "blunt", isoschizomers: nil, organism: nil, supplier: nil),
+    RestrictionEnzyme(name: "PvuII", sequence: "CAGCTG", cutPosition: 3, recognitionSite: "CAG^CTG", overhang: "blunt", isoschizomers: nil, organism: nil, supplier: nil)
     // 필요 시 수백 종까지 확장 가능 (IUPAC 포함 인식서열 지원)
 ]
 
@@ -128,42 +132,52 @@ class RestrictionEnzymes {
     static let shared = RestrictionEnzymes()
     
     private var enzymes: [RestrictionEnzyme] = []
+    private var isLoaded: Bool = false
+    private let loadQueue = DispatchQueue(label: "com.avas.DNAViewer.restrictionEnzymes", qos: .userInitiated)
     
     private init() {
-        loadEnzymes()
+        // 초기화 시점에는 로드하지 않음 (lazy loading)
+    }
+    
+    /// 효소 데이터를 한 번만 로드 (thread-safe)
+    private func ensureLoaded() {
+        loadQueue.sync {
+            guard !isLoaded else { return }
+            loadEnzymes()
+            isLoaded = true
+        }
     }
     
     private func loadEnzymes() {
-        // Load from JSON file
-        guard let url = Bundle.main.url(forResource: "RestrictionSites", withExtension: "json"),
-              let data = try? Data(contentsOf: url),
-              let loadedEnzymes = try? JSONDecoder().decode([RestrictionEnzyme].self, from: data) else {
-            // Fallback to default enzymes
-            loadDefaultEnzymes()
-            return
+        print("🧬 Loading restriction enzymes from JSON...")
+        
+        // 1. 먼저 번들의 JSON 파일에서 로드 시도
+        if let url = Bundle.main.url(forResource: "RestrictionEnzymes", withExtension: "json") {
+            print("📦 Found RestrictionEnzymes.json in bundle")
+            do {
+                let data = try Data(contentsOf: url)
+                let loadedEnzymes = try JSONDecoder().decode([RestrictionEnzyme].self, from: data)
+                self.enzymes = loadedEnzymes
+                print("✅ Loaded \(loadedEnzymes.count) restriction enzymes from JSON")
+                return
+            } catch {
+                print("⚠️ Failed to load JSON: \(error.localizedDescription)")
+            }
         }
         
-        self.enzymes = loadedEnzymes
-    }
-    
-    private func loadDefaultEnzymes() {
-        enzymes = [
-            RestrictionEnzyme(name: "EcoRI", sequence: "GAATTC", cutPosition: 1, recognitionSite: "G^AATTC", overhang: "5' overhang"),
-            RestrictionEnzyme(name: "BamHI", sequence: "GGATCC", cutPosition: 1, recognitionSite: "G^GATCC", overhang: "5' overhang"),
-            RestrictionEnzyme(name: "HindIII", sequence: "AAGCTT", cutPosition: 1, recognitionSite: "A^AGCTT", overhang: "5' overhang"),
-            RestrictionEnzyme(name: "PstI", sequence: "CTGCAG", cutPosition: 5, recognitionSite: "CTGCA^G", overhang: "3' overhang"),
-            RestrictionEnzyme(name: "SmaI", sequence: "CCCGGG", cutPosition: 3, recognitionSite: "CCC^GGG", overhang: "blunt"),
-            RestrictionEnzyme(name: "XbaI", sequence: "TCTAGA", cutPosition: 1, recognitionSite: "T^CTAGA", overhang: "5' overhang"),
-            RestrictionEnzyme(name: "NotI", sequence: "GCGGCCGC", cutPosition: 2, recognitionSite: "GC^GGCCGC", overhang: "5' overhang"),
-            RestrictionEnzyme(name: "SacI", sequence: "GAGCTC", cutPosition: 5, recognitionSite: "GAGCT^C", overhang: "3' overhang")
-        ]
+        // 2. 번들에 없으면 하드코딩된 기본 효소 사용
+        print("📝 Using default enzyme library")
+        self.enzymes = defaultEnzymes
+        print("✅ Loaded \(defaultEnzymes.count) default restriction enzymes")
     }
     
     func getAllEnzymes() -> [RestrictionEnzyme] {
+        ensureLoaded()
         return enzymes
     }
     
     func findSites(in sequence: String, enzyme: RestrictionEnzyme) -> [RestrictionSite] {
+        ensureLoaded()
         var sites: [RestrictionSite] = []
         let pattern = enzyme.sequence
         var searchRange = sequence.startIndex..<sequence.endIndex
@@ -185,6 +199,7 @@ class RestrictionEnzymes {
     }
     
     func findAllSites(in sequence: String) -> [String: [RestrictionSite]] {
+        ensureLoaded()
         var allSites: [String: [RestrictionSite]] = [:]
         
         for enzyme in enzymes {
@@ -198,6 +213,7 @@ class RestrictionEnzymes {
     }
     
     func digestSequence(_ sequence: String, with enzyme: RestrictionEnzyme) -> [String] {
+        ensureLoaded()
         let sites = findSites(in: sequence, enzyme: enzyme)
         
         guard !sites.isEmpty else {

@@ -1,0 +1,752 @@
+[
+  {
+    "name": "EcoRI",
+    "sequence": "GAATTC",
+    "cutPosition": 1,
+    "recognitionSite": "G^AATTC",
+    "overhang": "5' overhang",
+    "isoschizomers": ["RsrI"],
+    "organism": "Escherichia coli RY13",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "BamHI",
+    "sequence": "GGATCC",
+    "cutPosition": 1,
+    "recognitionSite": "G^GATCC",
+    "overhang": "5' overhang",
+    "isoschizomers": ["BamHI-HF"],
+    "organism": "Bacillus amyloliquefaciens H",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "HindIII",
+    "sequence": "AAGCTT",
+    "cutPosition": 1,
+    "recognitionSite": "A^AGCTT",
+    "overhang": "5' overhang",
+    "isoschizomers": ["HindIII-HF"],
+    "organism": "Haemophilus influenzae Rd",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "PstI",
+    "sequence": "CTGCAG",
+    "cutPosition": 5,
+    "recognitionSite": "CTGCA^G",
+    "overhang": "3' overhang",
+    "isoschizomers": ["PstI-HF"],
+    "organism": "Providencia stuartii 164",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "SacI",
+    "sequence": "GAGCTC",
+    "cutPosition": 5,
+    "recognitionSite": "GAGCT^C",
+    "overhang": "3' overhang",
+    "isoschizomers": ["SacI-HF"],
+    "organism": "Streptomyces achromogenes",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "NotI",
+    "sequence": "GCGGCCGC",
+    "cutPosition": 2,
+    "recognitionSite": "GC^GGCCGC",
+    "overhang": "5' overhang",
+    "isoschizomers": ["NotI-HF"],
+    "organism": "Nocardia otitidis-caviarum",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "XbaI",
+    "sequence": "TCTAGA",
+    "cutPosition": 1,
+    "recognitionSite": "T^CTAGA",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Xanthomonas badrii",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "SalI",
+    "sequence": "GTCGAC",
+    "cutPosition": 1,
+    "recognitionSite": "G^TCGAC",
+    "overhang": "5' overhang",
+    "isoschizomers": ["SalI-HF"],
+    "organism": "Streptomyces albus G",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "XhoI",
+    "sequence": "CTCGAG",
+    "cutPosition": 1,
+    "recognitionSite": "C^TCGAG",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Xanthomonas holcicola",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "KpnI",
+    "sequence": "GGTACC",
+    "cutPosition": 5,
+    "recognitionSite": "GGTAC^C",
+    "overhang": "3' overhang",
+    "isoschizomers": ["KpnI-HF"],
+    "organism": "Klebsiella pneumoniae OK8",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "SmaI",
+    "sequence": "CCCGGG",
+    "cutPosition": 3,
+    "recognitionSite": "CCC^GGG",
+    "overhang": "blunt",
+    "isoschizomers": ["XmaI"],
+    "organism": "Serratia marcescens Sb",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "EcoRV",
+    "sequence": "GATATC",
+    "cutPosition": 3,
+    "recognitionSite": "GAT^ATC",
+    "overhang": "blunt",
+    "isoschizomers": ["EcoRV-HF"],
+    "organism": "Escherichia coli J62 pLG74",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "DraI",
+    "sequence": "TTTAAA",
+    "cutPosition": 3,
+    "recognitionSite": "TTT^AAA",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Deinococcus radiophilus",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "ScaI",
+    "sequence": "AGTACT",
+    "cutPosition": 3,
+    "recognitionSite": "AGT^ACT",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Streptomyces caespitosus",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "PvuII",
+    "sequence": "CAGCTG",
+    "cutPosition": 3,
+    "recognitionSite": "CAG^CTG",
+    "overhang": "blunt",
+    "isoschizomers": ["PvuII-HF"],
+    "organism": "Proteus vulgaris",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "AatII",
+    "sequence": "GACGTC",
+    "cutPosition": 5,
+    "recognitionSite": "GACGT^C",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Acetobacter aceti sub. liquefaciens",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "AccI",
+    "sequence": "GTMKAC",
+    "cutPosition": 2,
+    "recognitionSite": "GT^MKAC",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Acinetobacter calcoaceticus",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "AclI",
+    "sequence": "AACGTT",
+    "cutPosition": 2,
+    "recognitionSite": "AA^CGTT",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Acinetobacter calcoaceticus",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "AflII",
+    "sequence": "CTTAAG",
+    "cutPosition": 1,
+    "recognitionSite": "C^TTAAG",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Anabaena flos-aquae",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "AgeI",
+    "sequence": "ACCGGT",
+    "cutPosition": 1,
+    "recognitionSite": "A^CCGGT",
+    "overhang": "5' overhang",
+    "isoschizomers": ["AgeI-HF"],
+    "organism": "Agrobacterium gelatinovorum",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "AluI",
+    "sequence": "AGCT",
+    "cutPosition": 2,
+    "recognitionSite": "AG^CT",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Arthrobacter luteus",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "ApaI",
+    "sequence": "GGGCCC",
+    "cutPosition": 5,
+    "recognitionSite": "GGGCC^C",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Acetobacter pasteurianus",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "ApaLI",
+    "sequence": "GTGCAC",
+    "cutPosition": 1,
+    "recognitionSite": "G^TGCAC",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Acetobacter pasteurianus",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "AscI",
+    "sequence": "GGCGCGCC",
+    "cutPosition": 2,
+    "recognitionSite": "GG^CGCGCC",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Arthrobacter species C",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "AseI",
+    "sequence": "ATTAAT",
+    "cutPosition": 2,
+    "recognitionSite": "AT^TAAT",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Anabaena species",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "AvrII",
+    "sequence": "CCTAGG",
+    "cutPosition": 1,
+    "recognitionSite": "C^CTAGG",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Anabaena variabilis",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "BaeI",
+    "sequence": "ACNNNNGTAYC",
+    "cutPosition": 10,
+    "recognitionSite": "ACNNNNGTAY^C",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Bacillus sphaericus",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "BglII",
+    "sequence": "AGATCT",
+    "cutPosition": 1,
+    "recognitionSite": "A^GATCT",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Bacillus globigii",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "BsaI",
+    "sequence": "GGTCTC",
+    "cutPosition": 1,
+    "recognitionSite": "GGTCTC^",
+    "overhang": "5' overhang",
+    "isoschizomers": ["BsaI-HF"],
+    "organism": "Bacillus stearothermophilus",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "BsiWI",
+    "sequence": "CGTACG",
+    "cutPosition": 1,
+    "recognitionSite": "C^GTACG",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Bacillus species",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "BsmBI",
+    "sequence": "CGTCTC",
+    "cutPosition": 1,
+    "recognitionSite": "CGTCTC^",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Bacillus stearothermophilus",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "BsrGI",
+    "sequence": "TGTACA",
+    "cutPosition": 1,
+    "recognitionSite": "T^GTACA",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Bacillus stearothermophilus",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "BstEII",
+    "sequence": "GGTNACC",
+    "cutPosition": 1,
+    "recognitionSite": "G^GTNACC",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Bacillus stearothermophilus ET",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "BstXI",
+    "sequence": "CCANNNNNNTGG",
+    "cutPosition": 8,
+    "recognitionSite": "CCANNNNN^NTGG",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Bacillus stearothermophilus X",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "ClaI",
+    "sequence": "ATCGAT",
+    "cutPosition": 2,
+    "recognitionSite": "AT^CGAT",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Caryophanon latum L",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "DpnI",
+    "sequence": "GATC",
+    "cutPosition": 0,
+    "recognitionSite": "^GATC",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Diplococcus pneumoniae",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "DraIII",
+    "sequence": "CACNNNGTG",
+    "cutPosition": 6,
+    "recognitionSite": "CACNNN^GTG",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Deinococcus radiophilus",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "EagI",
+    "sequence": "CGGCCG",
+    "cutPosition": 1,
+    "recognitionSite": "C^GGCCG",
+    "overhang": "5' overhang",
+    "isoschizomers": ["EagI-HF"],
+    "organism": "Enterobacter agglomerans",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "EcoNI",
+    "sequence": "CCTNNNNNAGG",
+    "cutPosition": 5,
+    "recognitionSite": "CCTNN^NNNAGG",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Escherichia coli RFL19",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "FseI",
+    "sequence": "GGCCGGCC",
+    "cutPosition": 6,
+    "recognitionSite": "GGCCGG^CC",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Frankia species",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "HaeII",
+    "sequence": "RGCGCY",
+    "cutPosition": 5,
+    "recognitionSite": "RGCGC^Y",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Haemophilus aegyptius",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "HaeIII",
+    "sequence": "GGCC",
+    "cutPosition": 2,
+    "recognitionSite": "GG^CC",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Haemophilus aegyptius",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "HhaI",
+    "sequence": "GCGC",
+    "cutPosition": 3,
+    "recognitionSite": "GCG^C",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Haemophilus haemolyticus",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "HincII",
+    "sequence": "GTYRAC",
+    "cutPosition": 3,
+    "recognitionSite": "GTY^RAC",
+    "overhang": "blunt",
+    "isoschizomers": ["HincII-HF"],
+    "organism": "Haemophilus influenzae Rc",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "HinfI",
+    "sequence": "GANTC",
+    "cutPosition": 1,
+    "recognitionSite": "G^ANTC",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Haemophilus influenzae Rf",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "HpaI",
+    "sequence": "GTTAAC",
+    "cutPosition": 3,
+    "recognitionSite": "GTT^AAC",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Haemophilus parainfluenzae",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "MfeI",
+    "sequence": "CAATTG",
+    "cutPosition": 1,
+    "recognitionSite": "C^AATTG",
+    "overhang": "5' overhang",
+    "isoschizomers": ["MfeI-HF"],
+    "organism": "Micrococcus species",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "MluI",
+    "sequence": "ACGCGT",
+    "cutPosition": 1,
+    "recognitionSite": "A^CGCGT",
+    "overhang": "5' overhang",
+    "isoschizomers": ["MluI-HF"],
+    "organism": "Micrococcus luteus",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "MscI",
+    "sequence": "TGGCCA",
+    "cutPosition": 3,
+    "recognitionSite": "TGG^CCA",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Manduca sexta",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "MseI",
+    "sequence": "TTAA",
+    "cutPosition": 1,
+    "recognitionSite": "T^TAA",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Micrococcus species",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "NaeI",
+    "sequence": "GCCGGC",
+    "cutPosition": 3,
+    "recognitionSite": "GCC^GGC",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Nocardia aerocolonigenes",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "NarI",
+    "sequence": "GGCGCC",
+    "cutPosition": 2,
+    "recognitionSite": "GG^CGCC",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Nocardia argentinensis",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "NcoI",
+    "sequence": "CCATGG",
+    "cutPosition": 1,
+    "recognitionSite": "C^CATGG",
+    "overhang": "5' overhang",
+    "isoschizomers": ["NcoI-HF"],
+    "organism": "Nocardia corallina",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "NdeI",
+    "sequence": "CATATG",
+    "cutPosition": 2,
+    "recognitionSite": "CA^TATG",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Neisseria denitrificans",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "NheI",
+    "sequence": "GCTAGC",
+    "cutPosition": 1,
+    "recognitionSite": "G^CTAGC",
+    "overhang": "5' overhang",
+    "isoschizomers": ["NheI-HF"],
+    "organism": "Neisseria mucosa heidelbergensis",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "NruI",
+    "sequence": "TCGCGA",
+    "cutPosition": 3,
+    "recognitionSite": "TCG^CGA",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Nocardia rubra",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "NsiI",
+    "sequence": "ATGCAT",
+    "cutPosition": 5,
+    "recognitionSite": "ATGCA^T",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Neisseria sicca",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "NspI",
+    "sequence": "RCATGY",
+    "cutPosition": 5,
+    "recognitionSite": "RCATG^Y",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Neisseria species",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "PacI",
+    "sequence": "TTAATTAA",
+    "cutPosition": 5,
+    "recognitionSite": "TTAAT^TAA",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Pseudomonas alcaligenes",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "PmeI",
+    "sequence": "GTTTAAAC",
+    "cutPosition": 4,
+    "recognitionSite": "GTTT^AAAC",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Pseudomonas mendocina",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "PvuI",
+    "sequence": "CGATCG",
+    "cutPosition": 4,
+    "recognitionSite": "CGAT^CG",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Proteus vulgaris",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "SacII",
+    "sequence": "CCGCGG",
+    "cutPosition": 4,
+    "recognitionSite": "CCGC^GG",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Streptomyces achromogenes",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "SalI-HF",
+    "sequence": "GTCGAC",
+    "cutPosition": 1,
+    "recognitionSite": "G^TCGAC",
+    "overhang": "5' overhang",
+    "isoschizomers": ["SalI"],
+    "organism": "Streptomyces albus G",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "SbfI",
+    "sequence": "CCTGCAGG",
+    "cutPosition": 6,
+    "recognitionSite": "CCTGCA^GG",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Streptomyces species",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "SfiI",
+    "sequence": "GGCCNNNNNGGCC",
+    "cutPosition": 8,
+    "recognitionSite": "GGCCNNNN^NGGCC",
+    "overhang": "3' overhang",
+    "isoschizomers": [],
+    "organism": "Streptomyces fimbriatus",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "SnaBI",
+    "sequence": "TACGTA",
+    "cutPosition": 3,
+    "recognitionSite": "TAC^GTA",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Sphaerotilus natans",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "SpeI",
+    "sequence": "ACTAGT",
+    "cutPosition": 1,
+    "recognitionSite": "A^CTAGT",
+    "overhang": "5' overhang",
+    "isoschizomers": ["SpeI-HF"],
+    "organism": "Sphaerotilus species",
+    "supplier": ["NEB", "Thermo", "Takara"]
+  },
+  {
+    "name": "SphI",
+    "sequence": "GCATGC",
+    "cutPosition": 5,
+    "recognitionSite": "GCATG^C",
+    "overhang": "3' overhang",
+    "isoschizomers": ["SphI-HF"],
+    "organism": "Streptomyces phaeochromogenes",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "SspI",
+    "sequence": "AATATT",
+    "cutPosition": 3,
+    "recognitionSite": "AAT^ATT",
+    "overhang": "blunt",
+    "isoschizomers": ["SspI-HF"],
+    "organism": "Sphaerotilus species",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "StuI",
+    "sequence": "AGGCCT",
+    "cutPosition": 3,
+    "recognitionSite": "AGG^CCT",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Streptomyces tubercidicus",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "SwaI",
+    "sequence": "ATTTAAAT",
+    "cutPosition": 4,
+    "recognitionSite": "ATTT^AAAT",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Staphylococcus warneri",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "TaqI",
+    "sequence": "TCGA",
+    "cutPosition": 1,
+    "recognitionSite": "T^CGA",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Thermus aquaticus",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "XcmI",
+    "sequence": "CCANNNNNNNNNTGG",
+    "cutPosition": 8,
+    "recognitionSite": "CCANNNNN^NNNTGG",
+    "overhang": "5' overhang",
+    "isoschizomers": [],
+    "organism": "Xanthomonas campestris",
+    "supplier": ["NEB"]
+  },
+  {
+    "name": "XmaI",
+    "sequence": "CCCGGG",
+    "cutPosition": 1,
+    "recognitionSite": "C^CCGGG",
+    "overhang": "5' overhang",
+    "isoschizomers": ["SmaI"],
+    "organism": "Xanthomonas malvacearum",
+    "supplier": ["NEB", "Thermo"]
+  },
+  {
+    "name": "ZraI",
+    "sequence": "GACGTC",
+    "cutPosition": 3,
+    "recognitionSite": "GAC^GTC",
+    "overhang": "blunt",
+    "isoschizomers": [],
+    "organism": "Zymomonas ramigera",
+    "supplier": ["NEB"]
+  }
+]
