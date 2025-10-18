@@ -94,13 +94,6 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
-			<key>eutils.ncbi.nlm.nih.gov</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<false/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-			</dict>
 			<key>rcsb.org</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>

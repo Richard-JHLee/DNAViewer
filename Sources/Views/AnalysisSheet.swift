@@ -43,6 +43,9 @@ struct AnalysisSheet: View {
     @State private var gcWindowData: [(position: Int, gcContent: Double)] = []
     @State private var cpgIslands: [SequenceAnalyzer.CpGIsland] = []
     @State private var restrictionSites: [String: [RestrictionSite]] = [:]
+    @State private var advancedRestrictionResults: [String: [RestrictionHit]] = [:]
+    @State private var customSequence: String = ""
+    @State private var isAnalyzing: Bool = false
     
     var body: some View {
         NavigationView {
@@ -142,22 +145,85 @@ struct AnalysisSheet: View {
                     }
                     .tag(1)
                     
-                    // Restriction Sites
+                    // Advanced Restriction Sites
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("Restriction Sites")
+                            Text("Restriction Sites Analysis")
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .padding(.horizontal)
                             
-                            if restrictionSites.isEmpty {
-                                Text("No restriction sites found")
-                                    .foregroundColor(.secondary)
-                                    .padding()
+                            // Sequence Input
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("DNA Sequence")
+                                    .font(.headline)
+                                    .padding(.horizontal)
+                                
+                                TextEditor(text: $customSequence)
+                                    .font(.system(.body, design: .monospaced))
+                                    .frame(minHeight: 120)
+                                    .padding(8)
+                                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.gray.opacity(0.3)))
+                                    .padding(.horizontal)
+                                
+                                HStack {
+                                    Button {
+                                        analyzeRestrictionSites()
+                                    } label: {
+                                        HStack {
+                                            if isAnalyzing {
+                                                ProgressView()
+                                                    .scaleEffect(0.8)
+                                            } else {
+                                                Image(systemName: "scalpel")
+                                            }
+                                            Text("Analyze")
+                                        }
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                    .disabled(isAnalyzing || customSequence.isEmpty)
+                                    
+                                    Spacer()
+                                    
+                                    Text("\(customSequence.count) bp")
+                                        .font(.footnote)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .padding(.horizontal)
+                            }
+                            
+                            // Results
+                            if advancedRestrictionResults.isEmpty && !isAnalyzing {
+                                VStack(spacing: 16) {
+                                    Image(systemName: "line.3.horizontal.decrease.circle")
+                                        .font(.system(size: 60))
+                                        .foregroundColor(.secondary)
+                                    
+                                    Text("Restriction Sites")
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                    
+                                    Text("Paste a DNA sequence and tap Analyze.")
+                                        .foregroundColor(.secondary)
+                                        .multilineTextAlignment(.center)
+                                }
+                                .padding(.top, 24)
+                            } else if isAnalyzing {
+                                VStack(spacing: 16) {
+                                    ProgressView()
+                                        .scaleEffect(1.2)
+                                    Text("Analyzing restriction sites...")
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.top, 24)
                             } else {
-                                ForEach(restrictionSites.sorted(by: { $0.key < $1.key }), id: \.key) { enzyme, sites in
-                                    RestrictionSiteCard(enzyme: enzyme, sites: sites)
-                                        .padding(.horizontal)
+                                LazyVStack(spacing: 12) {
+                                    ForEach(defaultEnzymes) { enzyme in
+                                        if let hits = advancedRestrictionResults[enzyme.name] {
+                                            AdvancedEnzymeRow(enzyme: enzyme, hits: hits)
+                                                .padding(.horizontal)
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -186,6 +252,23 @@ struct AnalysisSheet: View {
         
         // Restriction Site Finding
         restrictionSites = RestrictionEnzymes.shared.findAllSites(in: sequence.sequence)
+        
+        // Initialize custom sequence with current sequence
+        customSequence = sequence.sequence
+    }
+    
+    private func analyzeRestrictionSites() {
+        isAnalyzing = true
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            let analyzer = RestrictionSiteAnalyzer()
+            let results = analyzer.analyze(sequence: customSequence, enzymes: defaultEnzymes)
+            
+            DispatchQueue.main.async {
+                advancedRestrictionResults = results
+                isAnalyzing = false
+            }
+        }
     }
 }
 
@@ -292,6 +375,84 @@ struct RestrictionSiteCard: View {
         .background(Color(.systemGray6))
         #endif
         .cornerRadius(12)
+    }
+}
+
+// MARK: - Advanced Restriction Sites Components
+
+struct AdvancedEnzymeRow: View {
+    let enzyme: RestrictionEnzyme
+    let hits: [RestrictionHit]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(enzyme.name).font(.headline)
+                Spacer()
+                Capsule()
+                    .fill(Color.blue.opacity(0.15))
+                    .overlay(
+                        Text("\(hits.count) site\(hits.count > 1 ? "s" : "")")
+                            .font(.caption).padding(.horizontal, 8)
+                    )
+                    .frame(height: 24)
+            }
+
+            HStack {
+                Text(enzyme.recognitionSite).font(.system(.subheadline, design: .monospaced))
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text(enzyme.overhang).font(.caption).foregroundStyle(.secondary)
+            }
+
+            // 위치 칩 배지
+            WrapHStack(spacing: 8) {
+                ForEach(hits) { h in
+                    Text("\(NumberFormatter.localizedString(from: h.position as NSNumber, number: .decimal))")
+                        .font(.caption)
+                        .padding(.horizontal, 8).padding(.vertical, 4)
+                        .background(Color.green.opacity(0.18), in: Capsule())
+                }
+            }
+        }
+        .padding(.vertical, 6)
+        #if os(macOS)
+        .background(Color(NSColor.controlBackgroundColor))
+        #else
+        .background(Color(.systemGray6))
+        #endif
+        .cornerRadius(12)
+    }
+}
+
+// 간단한 줄바꿈 HStack
+struct WrapHStack<Content: View>: View {
+    var spacing: CGFloat = 8
+    @ViewBuilder var content: () -> Content
+
+    var body: some View {
+        var width = CGFloat.zero
+        var height = CGFloat.zero
+
+        return GeometryReader { geo in
+            ZStack(alignment: .topLeading) {
+                content()
+                    .alignmentGuide(.leading) { d in
+                        if (abs(width - d.width) > geo.size.width) {
+                            width = 0; height -= d.height + spacing
+                        }
+                        let result = width
+                        if d.width != 0 { width -= d.width + spacing }
+                        return result
+                    }
+                    .alignmentGuide(.top) { _ in
+                        let result = height
+                        if height == 0 { height = 0 }
+                        return result
+                    }
+            }
+        }
+        .frame(height: -height)
     }
 }
 
