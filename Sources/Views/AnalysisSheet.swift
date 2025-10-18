@@ -175,7 +175,7 @@ struct AnalysisSheet: View {
                                                 ProgressView()
                                                     .scaleEffect(0.8)
                                             } else {
-                                                Image(systemName: "scalpel")
+                                                Image(systemName: "scissors")
                                             }
                                             Text("Analyze")
                                         }

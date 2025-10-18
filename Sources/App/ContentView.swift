@@ -41,7 +41,7 @@ struct ContentView: View {
                             }
                         } else {
                             VStack(spacing: 16) {
-                                Image(systemName: "dna")
+                                        Image(systemName: "doc.text.magnifyingglass")
                                     .font(.system(size: 60))
                                     .foregroundColor(.blue)
                                 
@@ -130,7 +130,7 @@ struct DNASplashScreenView: View {
                         .frame(width: 140, height: 140)
                     
                     // DNA 이중나선 아이콘
-                    Image(systemName: "dna")
+                                        Image(systemName: "doc.text.magnifyingglass")
                         .font(.system(size: 60))
                         .foregroundColor(.blue)
                 }

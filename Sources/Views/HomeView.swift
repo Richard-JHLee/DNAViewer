@@ -29,7 +29,7 @@ struct HomeView: View {
                         VStack(spacing: 24) {
                             // Header
                             VStack(spacing: 8) {
-                                Image(systemName: "dna")
+                                Image(systemName: "doc.text.magnifyingglass")
                                     .font(.system(size: 60))
                                     .foregroundColor(.blue)
                                 
@@ -125,7 +125,7 @@ struct DNAHomeTopBar: View {
     var body: some View {
         HStack {
             // App Logo/Icon
-            Image(systemName: "dna")
+            Image(systemName: "doc.text.magnifyingglass")
                 .font(.title2)
                 .foregroundColor(.primary)
             
@@ -220,7 +220,7 @@ struct RecentItemCard: View {
     var body: some View {
         Button(action: action) {
             VStack(alignment: .leading, spacing: 8) {
-                Image(systemName: "dna")
+                Image(systemName: "doc.text.magnifyingglass")
                     .font(.system(size: 40))
                     .foregroundColor(.blue)
                     .frame(maxWidth: .infinity)

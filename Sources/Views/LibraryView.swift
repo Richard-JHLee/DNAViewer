@@ -267,7 +267,7 @@ struct GeneCard: View {
         }) {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Image(systemName: "dna")
+                    Image(systemName: "doc.text.magnifyingglass")
                         .font(.largeTitle)
                         .foregroundColor(.blue)
                     
