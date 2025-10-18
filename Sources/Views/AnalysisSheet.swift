@@ -261,6 +261,9 @@ struct AnalysisSheet: View {
     private func analyzeRestrictionSites() {
         isAnalyzing = true
         
+        // 이전 결과 초기화
+        advancedRestrictionResults = [:]
+        
         DispatchQueue.global(qos: .userInitiated).async {
             // RestrictionEnzymes.shared에서 효소 목록 가져오기 (한 번만 로드됨)
             let enzymes = RestrictionEnzymes.shared.getAllEnzymes()
@@ -270,7 +273,7 @@ struct AnalysisSheet: View {
             DispatchQueue.main.async {
                 advancedRestrictionResults = results
                 isAnalyzing = false
-                print("🔬 Analysis complete: Found \(results.count) enzymes with restriction sites")
+                print("🔬 Analysis complete for '\(customSequence)' (\(customSequence.count)bp): Found \(results.count) enzymes with restriction sites")
             }
         }
     }
