@@ -20,6 +20,7 @@
 		31C16AF1001F9A0C3C5F9A72 /* RestrictionEnzymes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF284579B996092849B64A0F /* RestrictionEnzymes.swift */; };
 		3B9DE06A7A1F9F9D4626C269 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC54D377B007B7D3ABA58CD6 /* Assets.xcassets */; };
 		4053DC98783D8EA19A1090BD /* DNASequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */; };
+		40995E6E9A488D5E21DF2149 /* SidebarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47599488D8EC557F3E4EA21 /* SidebarMenu.swift */; };
 		4581269345B9FF02BD34A3E8 /* TranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1759BF0FCE2F4F158AC5547 /* TranslationSheet.swift */; };
 		49ED7795548935F2D3838D5B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B709C6609D5488C389FF46 /* ContentView.swift */; };
 		4C6A24C34A2D56BCBA93A527 /* RestrictionEnzymes.json in Resources */ = {isa = PBXBuildFile; fileRef = 460E4B1CEA21B342A9BB52A2 /* RestrictionEnzymes.json */; };
@@ -56,6 +57,7 @@
 		B22C39EEBB78673157AD5C09 /* FASTAParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FAF54CAB9CE1B8865DAD21 /* FASTAParser.swift */; };
 		B29B8E32C97F438394E7BC4B /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28319BD6515EE4C2ACFAC43E /* SceneKit.framework */; };
 		BA287B9F09C18621E3E8DE86 /* QuizData.json in Resources */ = {isa = PBXBuildFile; fileRef = F96361928E842CA4E6A5913C /* QuizData.json */; };
+		BA5DEA9ABE044ED8D2CA4B20 /* SidebarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47599488D8EC557F3E4EA21 /* SidebarMenu.swift */; };
 		BB9D29D3B10E7F403B63903C /* LadderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1679AA03FAA750B9F540D3 /* LadderBuilder.swift */; };
 		BD98CA735664A1F4FB7D8112 /* LadderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1679AA03FAA750B9F540D3 /* LadderBuilder.swift */; };
 		BE405BA2F9206E8F7E968942 /* SearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2498359334561349104C5F4F /* SearchSheet.swift */; };
@@ -117,6 +119,7 @@
 		C7CE7D66DB7A9BD25D28744B /* SequenceBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceBar.swift; sourceTree = "<group>"; };
 		CF284579B996092849B64A0F /* RestrictionEnzymes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionEnzymes.swift; sourceTree = "<group>"; };
 		D1759BF0FCE2F4F158AC5547 /* TranslationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationSheet.swift; sourceTree = "<group>"; };
+		D47599488D8EC557F3E4EA21 /* SidebarMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarMenu.swift; sourceTree = "<group>"; };
 		DC54D377B007B7D3ABA58CD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F96361928E842CA4E6A5913C /* QuizData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = QuizData.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -248,6 +251,7 @@
 				5C212B9C4559024BF4D14A21 /* MutationSheet.swift */,
 				2498359334561349104C5F4F /* SearchSheet.swift */,
 				C7CE7D66DB7A9BD25D28744B /* SequenceBar.swift */,
+				D47599488D8EC557F3E4EA21 /* SidebarMenu.swift */,
 				D1759BF0FCE2F4F158AC5547 /* TranslationSheet.swift */,
 				78CB62E2F8F22E49B4747143 /* ViewerView.swift */,
 			);
@@ -414,6 +418,7 @@
 				BE405BA2F9206E8F7E968942 /* SearchSheet.swift in Sources */,
 				5FD8E39930DC5C930B9DC932 /* SequenceAnalyzer.swift in Sources */,
 				17EC5917B00909022185D6CB /* SequenceBar.swift in Sources */,
+				BA5DEA9ABE044ED8D2CA4B20 /* SidebarMenu.swift in Sources */,
 				4581269345B9FF02BD34A3E8 /* TranslationSheet.swift in Sources */,
 				9FCCD305596BD4EA98E85671 /* ViewerView.swift in Sources */,
 			);
@@ -449,6 +454,7 @@
 				E7CCF2FB4D6CD0D0EAE1C55E /* SearchSheet.swift in Sources */,
 				5C9DF7B1D3A728954F9D121F /* SequenceAnalyzer.swift in Sources */,
 				5ADB196E52A85B8B01A3BBA8 /* SequenceBar.swift in Sources */,
+				40995E6E9A488D5E21DF2149 /* SidebarMenu.swift in Sources */,
 				2A455DFE61AEEFB15BC0A7E6 /* TranslationSheet.swift in Sources */,
 				D1138289E9A51171E15EC608 /* ViewerView.swift in Sources */,
 			);

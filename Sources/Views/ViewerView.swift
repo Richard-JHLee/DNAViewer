@@ -22,6 +22,7 @@ struct ViewerView: View {
     @State private var showSequenceBar = true
     @State private var showAnalysis = false
     @State private var showStyleAndColor = false
+    @State private var showSidebar = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -29,7 +30,11 @@ struct ViewerView: View {
             DNAViewerTopBar(
                 sequenceName: extractFullName(from: sequence.name),
                 sequenceId: extractGeneId(from: sequence.name),
-                onDismiss: { dismiss() },
+                onDismiss: { 
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        showSidebar = true
+                    }
+                },
                 onLibrary: { showLibrary = true },
                 onToggleControls: {
                     withAnimation {
@@ -123,6 +128,38 @@ struct ViewerView: View {
         .sheet(isPresented: $showAnalysis) {
             AnalysisSheet(sequence: sequence)
         }
+        .overlay(
+            // Sidebar Menu
+            Group {
+                if showSidebar {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                showSidebar = false
+                            }
+                        }
+                    
+                    HStack {
+                        SidebarMenu(
+                            isPresented: $showSidebar,
+                            onLibrary: { showLibrary = true },
+                            onAnalysis: { showAnalysis = true },
+                            onSettings: { 
+                                // TODO: Settings sheet
+                            },
+                            onAbout: { 
+                                // TODO: About sheet
+                            }
+                        )
+                        .frame(width: 280)
+                        .transition(.move(edge: .leading))
+                        
+                        Spacer()
+                    }
+                }
+            }
+        )
     }
     
     // Extract gene ID from name (e.g., "BRCA1 - Breast Cancer 1" -> "BRCA1")
