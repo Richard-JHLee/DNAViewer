@@ -12,6 +12,7 @@
 		0DDBB838134C07AD58FCC3F4 /* RestrictionEnzymes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF284579B996092849B64A0F /* RestrictionEnzymes.swift */; };
 		0E3B597C91F9004788BAA13E /* ControlBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F071C072744C6294B834B29 /* ControlBar.swift */; };
 		133CEBC79FC9C5927B2DAE5D /* InfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5381E8D6B39638D9BED975 /* InfoSheet.swift */; };
+		16F66A5D6EB2E22262DE080E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2CB9D844F6BACB865CB9D1 /* SettingsView.swift */; };
 		17EC5917B00909022185D6CB /* SequenceBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CE7D66DB7A9BD25D28744B /* SequenceBar.swift */; };
 		219C9FAE10DBA54880459FF3 /* BallStickBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E683D38687B4203066DBC28 /* BallStickBuilder.swift */; };
 		238949F2F149851A01D027D7 /* SampleGenes.json in Resources */ = {isa = PBXBuildFile; fileRef = 9D72CC3BB9DAFC21904B1CB2 /* SampleGenes.json */; };
@@ -71,6 +72,7 @@
 		D7CEA895C00D28F9823D0FAD /* RestrictionEnzymes.json in Resources */ = {isa = PBXBuildFile; fileRef = 460E4B1CEA21B342A9BB52A2 /* RestrictionEnzymes.json */; };
 		D970833C33052D6435AE0FD7 /* HelixBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AEF53C2DE46CBC96CF69BA7 /* HelixBuilder.swift */; };
 		DE1C6C7AB4A9DABDB2EDEC00 /* DNASceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933C9A3D6A5A0E1C930132E /* DNASceneManager.swift */; };
+		E542A9425274A3E997E45324 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2CB9D844F6BACB865CB9D1 /* SettingsView.swift */; };
 		E75FB76CB65117D243D498D9 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B66D0384711A95DF556C897 /* Charts.framework */; };
 		E79C3643A7864EB2E88221D4 /* GeneFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A29CACC152D5D9773D8012 /* GeneFeature.swift */; };
 		E7CCF2FB4D6CD0D0EAE1C55E /* SearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2498359334561349104C5F4F /* SearchSheet.swift */; };
@@ -90,6 +92,7 @@
 		28319BD6515EE4C2ACFAC43E /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
 		2933C9A3D6A5A0E1C930132E /* DNASceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNASceneManager.swift; sourceTree = "<group>"; };
 		2AEF53C2DE46CBC96CF69BA7 /* HelixBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelixBuilder.swift; sourceTree = "<group>"; };
+		2C2CB9D844F6BACB865CB9D1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		2C435A58633CA370AC6D6E2E /* SequenceAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceAnalyzer.swift; sourceTree = "<group>"; };
 		2CB614CFAF489AC2677E0CD4 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		2CE727243006F5E24F6AB76F /* PDBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDBService.swift; sourceTree = "<group>"; };
@@ -251,6 +254,7 @@
 				5C212B9C4559024BF4D14A21 /* MutationSheet.swift */,
 				2498359334561349104C5F4F /* SearchSheet.swift */,
 				C7CE7D66DB7A9BD25D28744B /* SequenceBar.swift */,
+				2C2CB9D844F6BACB865CB9D1 /* SettingsView.swift */,
 				D47599488D8EC557F3E4EA21 /* SidebarMenu.swift */,
 				D1759BF0FCE2F4F158AC5547 /* TranslationSheet.swift */,
 				78CB62E2F8F22E49B4747143 /* ViewerView.swift */,
@@ -418,6 +422,7 @@
 				BE405BA2F9206E8F7E968942 /* SearchSheet.swift in Sources */,
 				5FD8E39930DC5C930B9DC932 /* SequenceAnalyzer.swift in Sources */,
 				17EC5917B00909022185D6CB /* SequenceBar.swift in Sources */,
+				E542A9425274A3E997E45324 /* SettingsView.swift in Sources */,
 				BA5DEA9ABE044ED8D2CA4B20 /* SidebarMenu.swift in Sources */,
 				4581269345B9FF02BD34A3E8 /* TranslationSheet.swift in Sources */,
 				9FCCD305596BD4EA98E85671 /* ViewerView.swift in Sources */,
@@ -454,6 +459,7 @@
 				E7CCF2FB4D6CD0D0EAE1C55E /* SearchSheet.swift in Sources */,
 				5C9DF7B1D3A728954F9D121F /* SequenceAnalyzer.swift in Sources */,
 				5ADB196E52A85B8B01A3BBA8 /* SequenceBar.swift in Sources */,
+				16F66A5D6EB2E22262DE080E /* SettingsView.swift in Sources */,
 				40995E6E9A488D5E21DF2149 /* SidebarMenu.swift in Sources */,
 				2A455DFE61AEEFB15BC0A7E6 /* TranslationSheet.swift in Sources */,
 				D1138289E9A51171E15EC608 /* ViewerView.swift in Sources */,

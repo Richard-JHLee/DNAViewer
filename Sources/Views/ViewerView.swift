@@ -23,6 +23,7 @@ struct ViewerView: View {
     @State private var showAnalysis = false
     @State private var showStyleAndColor = false
     @State private var showSidebar = false
+    @State private var showSettings = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -128,6 +129,9 @@ struct ViewerView: View {
         .sheet(isPresented: $showAnalysis) {
             AnalysisSheet(sequence: sequence)
         }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
         .overlay(
             // Sidebar Menu
             Group {
@@ -146,7 +150,7 @@ struct ViewerView: View {
                             onLibrary: { showLibrary = true },
                             onAnalysis: { showAnalysis = true },
                             onSettings: { 
-                                // TODO: Settings sheet
+                                showSettings = true
                             },
                             onAbout: { 
                                 // TODO: About sheet
