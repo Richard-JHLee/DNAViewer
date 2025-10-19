@@ -127,7 +127,8 @@ struct SequenceBar: View {
                             base: base,
                             index: globalIndex,
                             isSelected: isSelected(globalIndex),
-                            isInCurrentGroup: true  // All bases in current group are in current group
+                            isInCurrentGroup: true,  // All bases in current group are in current group
+                            isCutSite: isCutSite(globalIndex)
                         )
                         .onTapGesture {
                             print("👉 BaseCell tapped at global index: \(globalIndex), local index: \(localIndex), base: \(base)")
@@ -161,6 +162,10 @@ struct SequenceBar: View {
         guard let range = selectedRange else { return false }
         return range.contains(index)
     }
+    
+    private func isCutSite(_ index: Int) -> Bool {
+        return sceneManager.highlightedCutSites.contains(index)
+    }
 }
 
 struct BaseCell: View {
@@ -168,11 +173,16 @@ struct BaseCell: View {
     let index: Int
     let isSelected: Bool
     let isInCurrentGroup: Bool
+    let isCutSite: Bool
     
     var body: some View {
         VStack(spacing: 2) {
-            // Position number (every 10)
-            if index % 10 == 0 {
+            // Position number (every 10) or cut site indicator
+            if isCutSite {
+                Image(systemName: "scissors.circle.fill")
+                    .font(.system(size: 10))
+                    .foregroundColor(.red)
+            } else if index % 10 == 0 {
                 Text("\(index)")
                     .font(.system(size: 8))
                     .foregroundColor(.white.opacity(0.6))
@@ -196,7 +206,9 @@ struct BaseCell: View {
     }
     
     private var borderColor: Color {
-        if isSelected {
+        if isCutSite {
+            return .red  // 절단 위치: 빨간색
+        } else if isSelected {
             return .blue  // 개별 선택: 파란색
         } else if isInCurrentGroup {
             return .white   // 현재 그룹: 흰색
@@ -206,7 +218,9 @@ struct BaseCell: View {
     }
     
     private var borderWidth: CGFloat {
-        if isSelected {
+        if isCutSite {
+            return 3  // 절단 위치: 가장 두꺼운 테두리
+        } else if isSelected {
             return 3  // 개별 선택: 더 두꺼운 테두리
         } else if isInCurrentGroup {
             return 2  // 현재 그룹: 두꺼운 테두리

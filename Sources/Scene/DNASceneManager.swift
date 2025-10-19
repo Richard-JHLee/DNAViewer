@@ -605,39 +605,49 @@ class DNASceneManager: ObservableObject {
         clearHighlights()
         
         // Store the cut sites for camera focusing
-        highlightedCutSites = positions
+        highlightedCutSites = positions.sorted()
         
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         print("✂️ Highlighting \(positions.count) cut sites")
+        print("📍 Positions: \(highlightedCutSites)")
         
-        // Check if any positions are outside current display range
-        var needsGroupChange = false
-        var targetGroup: Int?
-        
-        for position in positions {
-            let relativeIndex = position - displayStart
-            
-            if relativeIndex < 0 || relativeIndex >= displayLength {
-                print("⚠️ Position \(position) is out of display range")
-                needsGroupChange = true
-                targetGroup = (position / groupSize) + 1
-                break
-            }
-        }
-        
-        // If positions are outside current range, navigate to the appropriate group
-        if needsGroupChange, let group = targetGroup {
-            print("🔄 Navigating to group \(group) for cut sites")
-            loadGroup(group)
-            
-            // Highlight positions after group load completes
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.highlightPositionsInCurrentGroup(positions)
-            }
+        guard !highlightedCutSites.isEmpty else {
+            print("⚠️ No cut sites to highlight")
             return
         }
         
-        // Highlight positions in current group
-        highlightPositionsInCurrentGroup(positions)
+        // Calculate which groups contain cut sites
+        var groupsWithCutSites: [Int: [Int]] = [:]  // group -> positions in that group
+        for position in highlightedCutSites {
+            let group = (position / groupSize) + 1
+            if groupsWithCutSites[group] == nil {
+                groupsWithCutSites[group] = []
+            }
+            groupsWithCutSites[group]?.append(position)
+        }
+        
+        let affectedGroups = groupsWithCutSites.keys.sorted()
+        print("📊 Cut sites span \(affectedGroups.count) groups: \(affectedGroups)")
+        
+        // Navigate to the first group with cut sites
+        let firstGroup = affectedGroups.first ?? currentGroup
+        print("🎯 Navigating to first group with cut sites: G\(firstGroup)")
+        
+        if firstGroup != currentGroup {
+            print("🔄 Loading group \(firstGroup)...")
+            loadGroup(firstGroup)
+            
+            // Highlight positions after group load completes
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                print("🎨 Highlighting positions in group \(firstGroup)")
+                self.highlightPositionsInCurrentGroup(self.highlightedCutSites)
+            }
+        } else {
+            print("✅ Already in target group - highlighting immediately")
+            highlightPositionsInCurrentGroup(highlightedCutSites)
+        }
+        
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     }
     
     /// Highlight positions within the current display group
@@ -662,50 +672,90 @@ class DNASceneManager: ObservableObject {
     
     /// Add a cut site marker (scissors icon) to a node
     private func addCutSiteMarker(to node: SCNNode, at position: Int) {
-        // Create a red cutting plane marker
-        let cutPlane = SCNBox(width: 3.0, height: 0.1, length: 3.0, chamferRadius: 0)
+        print("✂️ Adding cut site marker at position \(position)")
+        
+        // Create a bright red cutting plane marker (larger and more visible)
+        let cutPlane = SCNBox(width: 4.0, height: 0.2, length: 4.0, chamferRadius: 0.1)
         cutPlane.firstMaterial?.diffuse.contents = PlatformColor.red
-        cutPlane.firstMaterial?.transparency = 0.5
+        cutPlane.firstMaterial?.emission.contents = PlatformColor.red  // Make it glow
+        cutPlane.firstMaterial?.transparency = 0.7
         cutPlane.firstMaterial?.lightingModel = .constant
         
         let cutMarker = SCNNode(geometry: cutPlane)
         cutMarker.name = "cut_site_\(position)"
+        
+        // Position the marker slightly offset for better visibility
+        cutMarker.position = SCNVector3(0, 0, 0)
         node.addChildNode(cutMarker)
         
-        // Add flashing animation
-        let fadeOut = SCNAction.fadeOpacity(to: 0.2, duration: 0.5)
-        let fadeIn = SCNAction.fadeOpacity(to: 0.8, duration: 0.5)
+        // Add a sphere marker for extra visibility
+        let sphere = SCNSphere(radius: 0.8)
+        sphere.firstMaterial?.diffuse.contents = PlatformColor.yellow
+        sphere.firstMaterial?.emission.contents = PlatformColor.yellow
+        sphere.firstMaterial?.lightingModel = .constant
+        sphere.firstMaterial?.transparency = 0.8
+        
+        let sphereMarker = SCNNode(geometry: sphere)
+        sphereMarker.name = "cut_site_sphere_\(position)"
+        sphereMarker.position = SCNVector3(0, 2.0, 0)  // Position above
+        node.addChildNode(sphereMarker)
+        
+        // Add flashing animation to both markers
+        let fadeOut = SCNAction.fadeOpacity(to: 0.3, duration: 0.4)
+        let fadeIn = SCNAction.fadeOpacity(to: 1.0, duration: 0.4)
         let flash = SCNAction.sequence([fadeOut, fadeIn])
         let repeatFlash = SCNAction.repeatForever(flash)
         cutMarker.runAction(repeatFlash)
+        sphereMarker.runAction(repeatFlash)
         
-        print("✂️ Added cut site marker at position \(position)")
+        // Add pulsing scale animation
+        let scaleUp = SCNAction.scale(to: 1.2, duration: 0.4)
+        let scaleDown = SCNAction.scale(to: 1.0, duration: 0.4)
+        let pulse = SCNAction.sequence([scaleUp, scaleDown])
+        let repeatPulse = SCNAction.repeatForever(pulse)
+        sphereMarker.runAction(repeatPulse)
+        
+        print("   ✅ Added plane and sphere markers")
         
         // Focus camera on the first cut site
         if position == (highlightedCutSites.first ?? -1) {
+            print("   📹 This is the first cut site - focusing camera")
             focusCameraOn(position: node.worldPosition)
         }
     }
     
     func clearHighlights() {
+        print("🧹 Clearing all highlights and cut site markers")
+        
         // Clear tracked cut sites
+        let previousCount = highlightedCutSites.count
         highlightedCutSites.removeAll()
+        print("   Cleared \(previousCount) tracked cut sites")
+        
+        var removedCount = 0
         
         for helixNode in helixNodes {
             helixNode.enumerateChildNodes { node, _ in
                 // Remove highlight spheres
                 if node.name == "highlight" {
                     node.removeFromParentNode()
+                    removedCount += 1
                 }
                 
-                // Remove cut site markers
+                // Remove cut site plane markers
                 if let name = node.name, name.hasPrefix("cut_site_") {
                     node.removeFromParentNode()
+                    removedCount += 1
+                }
+                
+                // Remove cut site sphere markers
+                if let name = node.name, name.hasPrefix("cut_site_sphere_") {
+                    node.removeFromParentNode()
+                    removedCount += 1
                 }
                 
                 // Restore label colors to white
                 if let name = node.name, name.hasPrefix("label_") {
-                    print("⚪ Restoring label color: \(name)")
                     if let textGeometry = node.childNodes.first?.geometry as? SCNText {
                         textGeometry.firstMaterial?.diffuse.contents = PlatformColor.white
                         textGeometry.firstMaterial?.emission.contents = PlatformColor(white: 0.2, alpha: 1.0)
@@ -713,6 +763,9 @@ class DNASceneManager: ObservableObject {
                 }
             }
         }
+        
+        print("   Removed \(removedCount) marker nodes")
+        print("✅ Highlights cleared")
     }
     
     private func focusCameraOn(position: SCNVector3) {

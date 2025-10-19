@@ -231,18 +231,61 @@ struct RestrictionEnzymeView: View {
     }
     
     private func highlightCutSites() {
-        guard let map = restrictionMap else { return }
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🎯 Show 3D button clicked")
+        
+        // 분석이 안 되어 있으면 먼저 분석
+        if restrictionMap == nil {
+            print("⚠️ No restriction map - analyzing sequence first...")
+            analyzeSequence()
+        }
+        
+        guard let map = restrictionMap else {
+            print("❌ Failed to create restriction map")
+            return
+        }
         
         // Collect all cut positions
         var cutPositions: [Int] = []
-        for siteList in map.hits.values {
-            cutPositions.append(contentsOf: siteList.map { $0.position })
+        var enzymeNames: [String] = []
+        
+        for (enzyme, sites) in map.hits {
+            let positions = sites.map { $0.position }
+            cutPositions.append(contentsOf: positions)
+            enzymeNames.append(enzyme.name)
+            
+            print("✂️ Enzyme: \(enzyme.name)")
+            for site in sites {
+                print("   - Cut site at position: \(site.position)")
+            }
         }
         
-        print("🎯 Highlighting \(cutPositions.count) cut sites: \(cutPositions)")
+        // Sort positions for better visualization
+        cutPositions.sort()
+        
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("📊 Total cut sites: \(cutPositions.count)")
+        print("📊 Enzymes used: \(enzymeNames.joined(separator: ", "))")
+        print("📊 Cut positions: \(cutPositions)")
+        
+        if !cutPositions.isEmpty {
+            // Calculate which groups contain cut sites
+            let groupSize = 100
+            var affectedGroups = Set<Int>()
+            for position in cutPositions {
+                let group = (position / groupSize) + 1
+                affectedGroups.add(group)
+            }
+            print("📊 Affected groups: \(affectedGroups.sorted())")
+        }
+        
+        print("🎬 Highlighting cut sites in 3D view...")
         
         // Use the sceneManager's highlightPositions which handles group navigation automatically
         sceneManager.highlightPositions(cutPositions)
+        
+        print("✅ Highlight complete - dismissing enzyme view")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         
         dismiss()
     }
