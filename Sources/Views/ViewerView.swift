@@ -77,6 +77,53 @@ struct ViewerView: View {
                             }
                     )
                     
+                    // Floating Digest button - only show when cut sites are highlighted
+                    if !sceneManager.highlightedCutSites.isEmpty {
+                        VStack {
+                            HStack {
+                                Spacer()
+                                
+                                Button(action: { showDigestionResult = true }) {
+                                    VStack(spacing: 4) {
+                                        Image(systemName: "scissors.badge.ellipsis")
+                                            .font(.system(size: 24, weight: .semibold))
+                                            .foregroundColor(.white)
+                                        Text("Digest")
+                                            .font(.caption)
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(.white)
+                                        
+                                        // Badge showing cut site count
+                                        Text("\(sceneManager.highlightedCutSites.count) sites")
+                                            .font(.system(size: 10))
+                                            .foregroundColor(.white.opacity(0.9))
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 12)
+                                    .background(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [Color.orange, Color.red]),
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                    )
+                                    .cornerRadius(16)
+                                    .shadow(color: .orange.opacity(0.5), radius: 12, x: 0, y: 4)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                                    )
+                                }
+                                .buttonStyle(ScaleButtonStyle())
+                                .padding(.trailing, 16)
+                                .padding(.top, 16)
+                                .transition(.scale.combined(with: .opacity))
+                            }
+                            Spacer()
+                        }
+                        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: sceneManager.highlightedCutSites.count)
+                    }
+                    
                 }  // End ZStack (Scene)
                 .frame(maxWidth: .infinity, maxHeight: .infinity) // 가능한 모든 공간 사용
                 
@@ -133,15 +180,6 @@ struct ViewerView: View {
                         title: "Reload",
                         action: { sceneManager.resetView() }
                     )
-                    
-                    // Digest button - only show when cut sites are highlighted
-                    if !sceneManager.highlightedCutSites.isEmpty {
-                        BottomMenuButton(
-                            icon: "scissors.badge.ellipsis",
-                            title: "Digest",
-                            action: { showDigestionResult = true }
-                        )
-                    }
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 8)
@@ -394,6 +432,15 @@ struct BottomMenuButton: View {
             .padding(.vertical, 8)
         }
         .buttonStyle(PlainButtonStyle())
+    }
+}
+
+// Scale button style for floating digest button
+struct ScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.92 : 1.0)
+            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 
