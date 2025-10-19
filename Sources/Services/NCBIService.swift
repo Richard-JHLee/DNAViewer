@@ -145,12 +145,12 @@ class NCBIService {
 
     // MARK: - Gene Library (API)
     // Fetch a list of genes from NCBI Gene DB using esearch + esummary
-    func fetchGeneLibrary(term: String = "Homo sapiens[Organism]", retmax: Int = 20) async throws -> [GeneInfo] {
+    func fetchGeneLibrary(term: String = "Homo sapiens[Organism]", retmax: Int = 20) async throws -> [Gene] {
         return try await fetchGeneLibraryFiltered(term: term, retmax: retmax)
     }
 
     // Generalized: fetch with optional ESummary-based filters
-    func fetchGeneLibraryFiltered(term: String, retmax: Int, filterGenetype: String? = nil, requireKeywords: [String]? = nil) async throws -> [GeneInfo] {
+    func fetchGeneLibraryFiltered(term: String, retmax: Int, filterGenetype: String? = nil, requireKeywords: [String]? = nil) async throws -> [Gene] {
         // 1) Search gene IDs
         var searchComponents = URLComponents(string: "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi")
         searchComponents?.queryItems = [
@@ -181,7 +181,7 @@ class NCBIService {
         let sumJSON = try JSONSerialization.jsonObject(with: sumData) as? [String: Any]
         guard let result = sumJSON?["result"] as? [String: Any], let uids = result["uids"] as? [String] else { return [] }
 
-        var genes: [GeneInfo] = []
+        var genes: [Gene] = []
         for uid in uids {
             guard let obj = result[uid] as? [String: Any] else { continue }
             // Optional filters
@@ -199,13 +199,16 @@ class NCBIService {
             let symbol = (obj["name"] as? String) ?? (obj["nomenclaturesymbol"] as? String) ?? uid
             let fullName = (obj["nomenclaturename"] as? String) ?? (obj["description"] as? String) ?? symbol
             let chrom = (obj["chromosome"] as? String) ?? ""
-            let gene = GeneInfo(
-                id: uid,
-                name: fullName,
+            let gene = Gene(
+                geneId: Int(uid) ?? 0,
                 symbol: symbol,
-                description: fullName,
+                name: fullName,
+                organism: "Homo sapiens",
+                taxId: 9606,
                 chromosome: chrom.isEmpty ? "" : chrom,
-                diseases: []
+                geneType: "unknown",
+                aliases: [],
+                description: fullName
             )
             genes.append(gene)
         }
@@ -239,9 +242,9 @@ class NCBIService {
         return ids
     }
 
-    func esummaryGeneInfos(uids: [String]) async throws -> [GeneInfo] {
+    func esummaryGeneInfos(uids: [String]) async throws -> [Gene] {
         guard !uids.isEmpty else { return [] }
-        var all: [GeneInfo] = []
+        var all: [Gene] = []
         let chunkSize = 100
         var idx = 0
         while idx < uids.count {
@@ -263,7 +266,17 @@ class NCBIService {
                 let symbol = (obj["name"] as? String) ?? (obj["nomenclaturesymbol"] as? String) ?? uid
                 let fullName = (obj["nomenclaturename"] as? String) ?? (obj["description"] as? String) ?? symbol
                 let chrom = (obj["chromosome"] as? String) ?? ""
-                all.append(GeneInfo(id: uid, name: fullName, symbol: symbol, description: fullName, chromosome: chrom, diseases: []))
+                all.append(Gene(
+                    geneId: Int(uid) ?? 0,
+                    symbol: symbol,
+                    name: fullName,
+                    organism: "Homo sapiens",
+                    taxId: 9606,
+                    chromosome: chrom,
+                    geneType: "unknown",
+                    aliases: [],
+                    description: fullName
+                ))
             }
             idx = end
         }

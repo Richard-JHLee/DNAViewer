@@ -18,6 +18,7 @@ struct ContentView: View {
                 if let sequence = viewModel.currentSequence {
                     // DNA 시퀀스가 로드되면 ViewerView 표시
                     ViewerView(sequence: sequence, viewModel: viewModel)
+                        .id(sequence.id) // sequence가 변경되면 ViewerView를 재생성
                 } else {
                     // 로딩 중이거나 에러 발생
                     VStack(spacing: 20) {

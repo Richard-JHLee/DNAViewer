@@ -7,24 +7,6 @@
 
 import SwiftUI
 
-// Helper types
-struct RestrictionMap {
-    let hits: [String: [RestrictionHit]]
-    let totalSites: Int
-    
-    func sitesForEnzyme(_ enzyme: RestrictionEnzyme) -> Int {
-        return hits[enzyme.name]?.count ?? 0
-    }
-}
-
-struct DNAFragment: Identifiable {
-    let id = UUID()
-    let sequence: String
-    let start: Int
-    let end: Int
-    var length: Int { sequence.count }
-}
-
 struct RestrictionEnzymeView: View {
     let sequence: DNASequence
     @ObservedObject var sceneManager: DNASceneManager
@@ -32,17 +14,21 @@ struct RestrictionEnzymeView: View {
     
     @State private var selectedEnzymes: Set<RestrictionEnzyme> = []
     @State private var restrictionMap: RestrictionMap?
-    @State private var showDigestionResult = false
-    @State private var fragments: [DNAFragment] = []
     @State private var searchText = ""
+    @State private var showDigestionResult = false
+    @State private var showGelElectrophoresis = false
+    @State private var showCloningProcess = false
+    @State private var showTransformation = false
+    @State private var showVerification = false
     
-    var filteredEnzymes: [RestrictionEnzyme] {
+    private var filteredEnzymes: [RestrictionEnzyme] {
         if searchText.isEmpty {
-            return defaultEnzymes
-        }
-        return defaultEnzymes.filter { enzyme in
-            enzyme.name.lowercased().contains(searchText.lowercased()) ||
-            enzyme.recognitionSite.lowercased().contains(searchText.lowercased())
+            return RestrictionEnzyme.all
+        } else {
+            return RestrictionEnzyme.all.filter { enzyme in
+                enzyme.name.localizedCaseInsensitiveContains(searchText) ||
+                enzyme.sequence.localizedCaseInsensitiveContains(searchText)
+            }
         }
     }
     
@@ -53,47 +39,116 @@ struct RestrictionEnzymeView: View {
                 searchBarView
                 enzymeListView
                 bottomActionBar
+                
+                // Educational Features Section
+                if restrictionMap != nil && !selectedEnzymes.isEmpty {
+                    VStack(spacing: 12) {
+                        Text("Educational Features")
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                            .padding(.top)
+                        
+                        HStack(spacing: 8) {
+                            Button(action: startGelElectrophoresis) {
+                                VStack {
+                                    Image(systemName: "rectangle.stack")
+                                        .font(.title2)
+                                    Text("Gel Electrophoresis")
+                                        .font(.caption)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue.opacity(0.1))
+                                .foregroundColor(.blue)
+                                .cornerRadius(8)
+                            }
+                            
+                            Button(action: startCloningProcess) {
+                                VStack {
+                                    Image(systemName: "link")
+                                        .font(.title2)
+                                    Text("Cloning Process")
+                                        .font(.caption)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.green.opacity(0.1))
+                                .foregroundColor(.green)
+                                .cornerRadius(8)
+                            }
+                        }
+                        
+                        HStack(spacing: 8) {
+                            Button(action: startTransformation) {
+                                VStack {
+                                    Image(systemName: "arrow.down.circle")
+                                        .font(.title2)
+                                    Text("Transformation")
+                                        .font(.caption)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.purple.opacity(0.1))
+                                .foregroundColor(.purple)
+                                .cornerRadius(8)
+                            }
+                            
+                            Button(action: startVerification) {
+                                VStack {
+                                    Image(systemName: "checkmark.shield")
+                                        .font(.title2)
+                                    Text("Verification")
+                                        .font(.caption)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.orange.opacity(0.1))
+                                .foregroundColor(.orange)
+                                .cornerRadius(8)
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                }
             }
             .navigationTitle("Restriction Enzymes")
-            #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
-            #endif
             .toolbar {
-                #if os(iOS)
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Close") {
-                        dismiss()
-                    }
-                }
-                
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Clear") {
-                        selectedEnzymes.removeAll()
-                        restrictionMap = nil
-                    }
-                    .disabled(selectedEnzymes.isEmpty)
-                }
-                #else
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") {
+                    Button("Done") {
                         dismiss()
                     }
                 }
-                
-                ToolbarItem(placement: .primaryAction) {
-                    Button("Clear") {
-                        selectedEnzymes.removeAll()
-                        restrictionMap = nil
-                    }
-                    .disabled(selectedEnzymes.isEmpty)
-                }
-                #endif
             }
-            .sheet(isPresented: $showDigestionResult) {
+        }
+        .sheet(isPresented: $showDigestionResult) {
+            if let map = restrictionMap {
+                let fragments = createFragmentsFromCutSites(map: map)
                 DigestionResultView(fragments: fragments, enzymes: Array(selectedEnzymes))
             }
         }
+        .sheet(isPresented: $showGelElectrophoresis) {
+            if let map = restrictionMap {
+                let fragments = createFragmentsFromCutSites(map: map)
+                GelElectrophoresisView(fragments: fragments, enzymes: Array(selectedEnzymes))
+            }
+        }
+        .sheet(isPresented: $showCloningProcess) {
+            if let map = restrictionMap {
+                let targetDNA = createTargetDNAFromCutSites(map: map)
+                let vectorDNA = DNAFragment(sequence: "GCTAGCTAGCTAGCTA", start: 0, end: 16)
+                CloningVisualizationView(targetDNA: targetDNA, vectorDNA: vectorDNA)
+            }
+        }
+        .sheet(isPresented: $showTransformation) {
+            TransformationAnimationView()
+        }
+        .sheet(isPresented: $showVerification) {
+            VerificationGuideView()
+        }
     }
+    
+    // MARK: - Actions
     
     private func toggleEnzyme(_ enzyme: RestrictionEnzyme) {
         if selectedEnzymes.contains(enzyme) {
@@ -106,53 +161,25 @@ struct RestrictionEnzymeView: View {
     private func analyzeSequence() {
         let analyzer = RestrictionSiteAnalyzer()
         let enzymes = Array(selectedEnzymes)
-        let hits = analyzer.analyze(sequence: sequence.sequence, enzymes: enzymes)
+        let hitsDict = analyzer.analyze(sequence: sequence.sequence, enzymes: enzymes)
         
-        let totalSites = hits.values.flatMap { $0 }.count
-        restrictionMap = RestrictionMap(hits: hits, totalSites: totalSites)
+        // Convert [String: [RestrictionHit]] to [RestrictionEnzyme: [RestrictionSite]]
+        var enzymeHits: [RestrictionEnzyme: [RestrictionSite]] = [:]
+        for enzyme in enzymes {
+            if let hits = hitsDict[enzyme.name] {
+                let sites = hits.map { hit in
+                    RestrictionSite(enzyme: enzyme, position: hit.position, matchedSequence: enzyme.sequence)
+                }
+                enzymeHits[enzyme] = sites
+            }
+        }
+        
+        let totalSites = enzymeHits.values.flatMap { $0 }.count
+        restrictionMap = RestrictionMap(hits: enzymeHits, totalSites: totalSites)
     }
     
     private func simulateDigestion() {
-        // Simple simulation: find all cut sites and split sequence
-        let analyzer = RestrictionSiteAnalyzer()
-        let enzymes = Array(selectedEnzymes)
-        let hits = analyzer.analyze(sequence: sequence.sequence, enzymes: enzymes)
-        
-        var allPositions: Set<Int> = []
-        for siteList in hits.values {
-            for site in siteList {
-                allPositions.insert(site.position)
-            }
-        }
-        
-        let sortedPositions = allPositions.sorted()
-        var tempFragments: [DNAFragment] = []
-        
-        if sortedPositions.isEmpty {
-            tempFragments.append(DNAFragment(sequence: sequence.sequence, start: 0, end: sequence.length))
-        } else {
-            let seq = sequence.sequence
-            var lastPos = 0
-            
-            for pos in sortedPositions {
-                if pos > lastPos {
-                    let startIdx = seq.index(seq.startIndex, offsetBy: max(0, lastPos))
-                    let endIdx = seq.index(seq.startIndex, offsetBy: min(seq.count, pos))
-                    let frag = String(seq[startIdx..<endIdx])
-                    tempFragments.append(DNAFragment(sequence: frag, start: lastPos, end: pos))
-                }
-                lastPos = pos
-            }
-            
-            // Last fragment
-            if lastPos < seq.count {
-                let startIdx = seq.index(seq.startIndex, offsetBy: lastPos)
-                let frag = String(seq[startIdx...])
-                tempFragments.append(DNAFragment(sequence: frag, start: lastPos, end: seq.count))
-            }
-        }
-        
-        fragments = tempFragments
+        analyzeSequence()
         showDigestionResult = true
     }
     
@@ -165,22 +192,79 @@ struct RestrictionEnzymeView: View {
             cutPositions.append(contentsOf: siteList.map { $0.position })
         }
         
-        // Find the group containing the first cut site and navigate to it
-        if let firstCutSite = cutPositions.first {
-            let targetGroup = (firstCutSite / sceneManager.groupSize) + 1
-            
-            print("🔍 Cut site at position \(firstCutSite) -> Group \(targetGroup)")
-            
-            // Navigate to the group containing the cut site
-            sceneManager.loadGroup(targetGroup)
-            
-            // Wait a moment for the scene to rebuild, then highlight positions
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.sceneManager.highlightPositions(cutPositions)
-            }
-        }
+        print("🎯 Highlighting \(cutPositions.count) cut sites: \(cutPositions)")
+        
+        // Use the sceneManager's highlightPositions which handles group navigation automatically
+        sceneManager.highlightPositions(cutPositions)
         
         dismiss()
+    }
+    
+    // MARK: - Educational Features
+    
+    private func startGelElectrophoresis() {
+        showGelElectrophoresis = true
+    }
+    
+    private func startCloningProcess() {
+        showCloningProcess = true
+    }
+    
+    private func startTransformation() {
+        showTransformation = true
+    }
+    
+    private func startVerification() {
+        showVerification = true
+    }
+    
+    private func createFragmentsFromCutSites(map: RestrictionMap) -> [DNAFragment] {
+        var fragments: [DNAFragment] = []
+        let cutPositions = map.hits.values.flatMap { $0.map { $0.position } }.sorted()
+        var lastPosition = 0
+        
+        for position in cutPositions {
+            if position > lastPosition {
+                let fragment = DNAFragment(
+                    sequence: String(sequence.sequence.dropFirst(lastPosition).prefix(position - lastPosition)),
+                    start: lastPosition,
+                    end: position
+                )
+                fragments.append(fragment)
+            }
+            lastPosition = position
+        }
+        
+        // Add last fragment
+        if lastPosition < sequence.sequence.count {
+            let fragment = DNAFragment(
+                sequence: String(sequence.sequence.dropFirst(lastPosition)),
+                start: lastPosition,
+                end: sequence.sequence.count
+            )
+            fragments.append(fragment)
+        }
+        
+        return fragments
+    }
+    
+    private func createTargetDNAFromCutSites(map: RestrictionMap) -> DNAFragment {
+        if let firstCutSite = map.hits.values.flatMap({ $0.map { $0.position } }).first {
+            let start = max(0, firstCutSite - 50)
+            let end = min(sequence.sequence.count, firstCutSite + 50)
+            return DNAFragment(
+                sequence: String(sequence.sequence.dropFirst(start).prefix(end - start)),
+                start: start,
+                end: end
+            )
+        }
+        
+        // Default fragment if no cut sites
+        return DNAFragment(
+            sequence: String(sequence.sequence.prefix(100)),
+            start: 0,
+            end: 100
+        )
     }
     
     // MARK: - View Components
@@ -227,14 +311,13 @@ struct RestrictionEnzymeView: View {
             }
         }
         #if os(macOS)
-        .listStyle(SidebarListStyle())
-        #else
-        .listStyle(InsetGroupedListStyle())
+        .listStyle(PlainListStyle())
         #endif
     }
     
     private var bottomActionBar: some View {
         VStack(spacing: 12) {
+            // Summary info
             if let map = restrictionMap {
                 HStack {
                     Image(systemName: "scissors")
@@ -292,13 +375,10 @@ struct RestrictionEnzymeView: View {
             }
             .padding(.horizontal)
         }
-        .padding(.vertical)
-        .background(Color(.systemBackground))
-        .shadow(radius: 2)
     }
 }
 
-// MARK: - Enzyme Row
+// MARK: - Supporting Views
 
 struct EnzymeRow: View {
     let enzyme: RestrictionEnzyme
@@ -307,35 +387,41 @@ struct EnzymeRow: View {
     
     var body: some View {
         HStack {
+            // Selection indicator
             Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                 .foregroundColor(isSelected ? .blue : .gray)
-                .font(.title3)
+                .font(.title2)
             
             VStack(alignment: .leading, spacing: 4) {
+                Text(enzyme.name)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                
+                Text(enzyme.sequence)
+                    .font(.system(.subheadline, design: .monospaced))
+                    .foregroundColor(.secondary)
+                
                 HStack {
-                    Text(enzyme.name)
-                        .font(.headline)
+                    Text(overhangTypeText)
+                        .font(.caption)
+                        .foregroundColor(.blue)
                     
                     Spacer()
                     
                     if siteCount > 0 {
                         Text("\(siteCount) sites")
                             .font(.caption)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color.blue.opacity(0.2))
-                            .cornerRadius(8)
+                            .foregroundColor(.green)
+                            .fontWeight(.semibold)
+                    } else {
+                        Text("No sites")
+                            .font(.caption)
+                            .foregroundColor(.red)
                     }
                 }
-                
-                Text(enzyme.recognitionSite)
-                    .font(.system(.body, design: .monospaced))
-                    .foregroundColor(.secondary)
-                
-                Text(overhangTypeText)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
             }
+            
+            Spacer()
         }
         .padding(.vertical, 4)
     }
@@ -352,68 +438,140 @@ struct DigestionResultView: View {
     let enzymes: [RestrictionEnzyme]
     @Environment(\.dismiss) var dismiss
     
+    @State private var showGelElectrophoresis = false
+    @State private var showCloningProcess = false
+    @State private var showTransformation = false
+    @State private var showVerification = false
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
                 // Summary header
                 VStack(spacing: 8) {
-                    Text("Digestion Complete")
+                    Text("Digestion Results")
                         .font(.title2)
                         .bold()
-                    
-                    Text("Enzymes: \(enzymes.map { $0.name }.joined(separator: ", "))")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.primary)
                     
                     Text("\(fragments.count) fragments generated")
-                        .font(.headline)
-                        .foregroundColor(.blue)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
                 }
                 .padding()
-                .frame(maxWidth: .infinity)
                 .background(Color.blue.opacity(0.1))
                 
                 // Fragments list
                 List {
-                    Section(header: Text("DNA Fragments").font(.headline)) {
-                        ForEach(Array(fragments.enumerated()), id: \.element.id) { index, fragment in
-                            VStack(alignment: .leading, spacing: 8) {
-                                HStack {
-                                    Text("Fragment \(index + 1)")
-                                        .font(.headline)
-                                    
-                                    Spacer()
-                                    
-                                    Text("\(fragment.length) bp")
-                                        .font(.caption)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 4)
-                                        .background(Color.green.opacity(0.2))
-                                        .cornerRadius(8)
-                                }
+                    ForEach(Array(fragments.enumerated()), id: \.offset) { index, fragment in
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text("Fragment \(index + 1)")
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
                                 
-                                Text("Position: \(fragment.start) - \(fragment.end)")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
+                                Spacer()
                                 
-                                if fragment.length <= 100 {
-                                    Text(fragment.sequence)
-                                        .font(.system(.caption, design: .monospaced))
-                                        .foregroundColor(.blue)
-                                        .lineLimit(3)
-                                }
+                                Text("\(fragment.length) bp")
+                                    .font(.subheadline)
+                                    .foregroundColor(.blue)
+                                    .fontWeight(.semibold)
                             }
-                            .padding(.vertical, 4)
+                            
+                            Text("Position: \(fragment.start) - \(fragment.end)")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            
+                            Text("Sequence: \(fragment.sequence)")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                                .lineLimit(2)
                         }
+                        .padding(.vertical, 4)
                     }
                 }
-                #if os(macOS)
-                .listStyle(SidebarListStyle())
-                #else
-                .listStyle(InsetGroupedListStyle())
-                #endif
+                
+                // Educational Features Section
+                VStack(spacing: 16) {
+                    Text("Next Steps: Choose an Educational Feature")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                        .padding(.top)
+                    
+                    // First row: Gel Electrophoresis and Cloning
+                    HStack(spacing: 12) {
+                        Button(action: { showGelElectrophoresis = true }) {
+                            VStack(spacing: 8) {
+                                Image(systemName: "rectangle.stack")
+                                    .font(.title2)
+                                Text("Gel Electrophoresis")
+                                    .font(.caption)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue.opacity(0.1))
+                            .foregroundColor(.blue)
+                            .cornerRadius(10)
+                        }
+                        
+                        Button(action: { showCloningProcess = true }) {
+                            VStack(spacing: 8) {
+                                Image(systemName: "link")
+                                    .font(.title2)
+                                Text("Cloning Process")
+                                    .font(.caption)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.green.opacity(0.1))
+                            .foregroundColor(.green)
+                            .cornerRadius(10)
+                        }
+                    }
+                    
+                    // Second row: Transformation and Verification
+                    HStack(spacing: 12) {
+                        Button(action: { showTransformation = true }) {
+                            VStack(spacing: 8) {
+                                Image(systemName: "arrow.down.circle")
+                                    .font(.title2)
+                                Text("Transformation")
+                                    .font(.caption)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.purple.opacity(0.1))
+                            .foregroundColor(.purple)
+                            .cornerRadius(10)
+                        }
+                        
+                        Button(action: { showVerification = true }) {
+                            VStack(spacing: 8) {
+                                Image(systemName: "checkmark.shield")
+                                    .font(.title2)
+                                Text("Verification")
+                                    .font(.caption)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.orange.opacity(0.1))
+                            .foregroundColor(.orange)
+                            .cornerRadius(10)
+                        }
+                    }
+                    
+                    // Close button
+                    Button("Close") {
+                        dismiss()
+                    }
+                    .buttonStyle(.bordered)
+                    .padding(.top, 8)
+                }
+                .padding()
             }
-            .navigationTitle("Digestion Results")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -422,6 +580,20 @@ struct DigestionResultView: View {
                     }
                 }
             }
+        }
+        .sheet(isPresented: $showGelElectrophoresis) {
+            GelElectrophoresisView(fragments: fragments, enzymes: enzymes)
+        }
+        .sheet(isPresented: $showCloningProcess) {
+            let targetDNA = fragments.first ?? DNAFragment(sequence: "ATCG", start: 0, end: 4)
+            let vectorDNA = DNAFragment(sequence: "GCTAGCTAGCTAGCTA", start: 0, end: 16)
+            CloningVisualizationView(targetDNA: targetDNA, vectorDNA: vectorDNA)
+        }
+        .sheet(isPresented: $showTransformation) {
+            TransformationAnimationView()
+        }
+        .sheet(isPresented: $showVerification) {
+            VerificationGuideView()
         }
     }
 }
@@ -436,4 +608,3 @@ struct DigestionResultView: View {
         sceneManager: DNASceneManager()
     )
 }
-

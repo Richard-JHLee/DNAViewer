@@ -7,486 +7,711 @@
 
 import SwiftUI
 
-enum GeneCategory: String, CaseIterable, Identifiable {
-    case all = "All"
-    case proteinCoding = "Protein Coding"
-    case oncogenes = "Oncogenes"
-    case tumorSuppressors = "Tumor Suppressors"
-    case nonCodingRNA = "Non-coding RNA"
-    case dnaRepair = "DNA Repair"
-    case transcriptionFactors = "Transcription Factors"
-    case immune = "Immune/HLA"
-    case mitochondrial = "Mitochondrial"
-    case cellCycle = "Cell Cycle"
-    case apoptosis = "Apoptosis"
-    
-    var id: String { rawValue }
-    
-    var esearchTerm: String {
-        switch self {
-        case .all:
-            return "Homo sapiens[Organism]"
-        case .proteinCoding:
-            // We will filter by ESummary genetype later to avoid fragile term
-            return "Homo sapiens[Organism]"
-        case .oncogenes:
-            return "Homo sapiens[Organism] AND (oncogene[All Fields] OR proto-oncogene[All Fields])"
-        case .tumorSuppressors:
-            return "Homo sapiens[Organism] AND (\"tumor suppressor\"[All Fields] OR \"tumour suppressor\"[All Fields])"
-        case .nonCodingRNA:
-            return "Homo sapiens[Organism] AND (non-coding RNA OR lncRNA OR microRNA OR miRNA OR snoRNA OR snRNA)"
-        case .dnaRepair:
-            return "Homo sapiens[Organism] AND \"DNA repair\""
-        case .transcriptionFactors:
-            return "Homo sapiens[Organism] AND \"transcription factor\""
-        case .immune:
-            return "Homo sapiens[Organism] AND (immune OR HLA)"
-        case .mitochondrial:
-            return "Homo sapiens[Organism] AND mitochondr*"
-        case .cellCycle:
-            return "Homo sapiens[Organism] AND \"cell cycle\""
-        case .apoptosis:
-            return "Homo sapiens[Organism] AND apoptosis"
-        }
-    }
-}
-
 struct LibraryView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var viewModel: DNAViewModel
-    @State private var sampleGenes: [GeneInfo] = []
-    @State private var selectedGene: GeneInfo?
-    @State private var showViewer = false
-    @State private var isLoadingSequence = false
-    @State private var loadingProgress = ""
-    @State private var loadedSequence: DNASequence?
-    @State private var errorMessage: String?
-    @State private var selectedCategory: GeneCategory = .all
-    @State private var isLoadingList: Bool = false
+    @StateObject private var geneImporter = GeneImporter()
+    @State private var selectedCategory: GeneCategory?
+    @State private var selectedSubCategory: GeneSubCategory?
+    @State private var selectedGeneForDetail: Gene? // sheet(item:)용으로 변경
+    @State private var genes: [Gene] = []
+    @State private var useMockData = false // 실제 API 데이터 사용
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 8) {
-                Picker("Category", selection: $selectedCategory) {
-                    ForEach(GeneCategory.allCases) { cat in
-                        Text(cat.rawValue).tag(cat)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding([.horizontal, .top])
-
-                if selectedCategory == .all {
-                    // Show category selection grid
-                    ScrollView {
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 16) {
-                            ForEach(GeneCategory.allCases.filter { $0 != .all }) { cat in
-                                Button {
-                                    selectedCategory = cat
-                                } label: {
-                                    VStack(alignment: .leading, spacing: 12) {
-                                        HStack {
-                                            Image(systemName: "books.vertical.fill")
-                                                .font(.largeTitle)
-                                                .foregroundColor(.blue)
-                                            Spacer()
-                                        }
-                                        Text(cat.rawValue)
-                                            .font(.title3)
-                                            .fontWeight(.semibold)
-                                            .foregroundColor(.primary)
-                                        Text("Tap to view genes")
-                                            .font(.caption)
-                                            .foregroundColor(.secondary)
-                                    }
-                                    .padding()
-                                    #if os(macOS)
-                                    .background(Color(NSColor.controlBackgroundColor))
-                                    #else
-                                    .background(Color(.systemBackground))
-                                    #endif
-                                    .cornerRadius(16)
-                                    .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
-                                }
-                                .buttonStyle(PlainButtonStyle())
-                            }
-                        }
-                        .padding()
-                    }
+            VStack(spacing: 0) {
+                // Header
+                headerView
+                
+                // Content
+                if selectedCategory == nil {
+                    categoryGridView
+                } else if selectedSubCategory == nil {
+                    subCategoryView
                 } else {
-                    // Show genes for selected category
-                    ScrollView {
-                        if isLoadingList {
-                            VStack(spacing: 12) {
-                                ProgressView()
-                                Text("Loading...")
-                                    .foregroundColor(.secondary)
-                            }
-                            .frame(maxWidth: .infinity, minHeight: 200)
-                        } else if sampleGenes.isEmpty {
-                            VStack(spacing: 8) {
-                                Image(systemName: "tray")
-                                    .font(.system(size: 44))
-                                    .foregroundColor(.secondary)
-                                Text("No results")
-                                    .font(.headline)
-                                Text("Try another category or refine your query.")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                            .frame(maxWidth: .infinity, minHeight: 200)
-                        } else {
-                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 16) {
-                                ForEach(sampleGenes) { gene in
-                                    GeneCard(gene: gene) {
-                                        loadGeneFromNCBI(gene)
-                                    }
-                                }
-                            }
-                            .padding()
-                        }
-                    }
-                }
-            }
-            .overlay {
-                if isLoadingSequence {
-                    ZStack {
-                        Color.black.opacity(0.3)
-                            .ignoresSafeArea()
-                        
-                        VStack(spacing: 16) {
-                            ProgressView()
-                                .scaleEffect(1.5)
-                                .tint(.white)
-                            
-                            Text(loadingProgress)
-                                .font(.headline)
-                                .foregroundColor(.white)
-                        }
-                        .padding(32)
-                        .background(.ultraThinMaterial)
-                        .cornerRadius(16)
-                    }
+                    geneListView
                 }
             }
             .navigationTitle("Gene Library")
-            #if !os(macOS)
             .navigationBarTitleDisplayMode(.inline)
-            #endif
+            .navigationBarBackButtonHidden(true)
             .toolbar {
-                #if os(macOS)
-                ToolbarItem(placement: .automatic) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
-                #else
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         dismiss()
                     }
                 }
-                #endif
-            }
-        }
-        .onAppear {
-            loadSampleGenes()
-        }
-        .onChange(of: selectedCategory) { _ in
-            loadSampleGenes()
-        }
-        .alert("Error", isPresented: .constant(errorMessage != nil)) {
-            Button("OK") {
-                errorMessage = nil
-            }
-        } message: {
-            if let error = errorMessage {
-                Text(error)
-            }
-        }
-    }
-    
-    private func loadSampleGenes() {
-        // In All mode we only show the category grid; skip API
-        if selectedCategory == .all {
-            sampleGenes = []
-            return
-        }
-        // Debounce concurrent loads
-        if isLoadingList { return }
-        isLoadingList = true
-        print("📚 Loading sample genes (category=\(selectedCategory.rawValue))...")
-        Task {
-            defer { Task { @MainActor in isLoadingList = false } }
-            // Build disjoint terms by excluding previous categories (fixed order)
-            let base = "Homo sapiens[Organism]"
-            func not(_ term: String) -> String { return "NOT (\(term))" }
-            let qOnco = "(oncogene[All Fields] OR proto-oncogene[All Fields])"
-            let qTS = "(\"tumor suppressor\"[All Fields] OR \"tumour suppressor\"[All Fields])"
-            let qNonCoding = "(non-coding RNA OR lncRNA OR microRNA OR miRNA OR snoRNA OR snRNA)"
-            let qDNARepair = "(\"DNA repair\")"
-            let qTF = "(\"transcription factor\")"
-            let qImmune = "(immune OR HLA)"
-            let qMito = "(mitochondr*)"
-            let qCellCycle = "(\"cell cycle\")"
-            let qApoptosis = "(apoptosis)"
-
-            // Fixed priority: ProteinCoding -> Oncogenes -> TumorSuppressors -> NonCodingRNA -> DNARepair -> TF -> Immune -> Mito -> CellCycle -> Apoptosis
-            let excludeOnco = [qNonCoding, qDNARepair, qTF, qImmune, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
-            let excludeTS = [qOnco, qNonCoding, qDNARepair, qTF, qImmune, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
-            let excludeNonCoding = [qOnco, qTS, qDNARepair, qTF, qImmune, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
-            let excludeDNARepair = [qOnco, qTS, qNonCoding, qTF, qImmune, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
-            let excludeTF = [qOnco, qTS, qNonCoding, qDNARepair, qImmune, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
-            let excludeImmune = [qOnco, qTS, qNonCoding, qDNARepair, qTF, qMito, qCellCycle, qApoptosis].joined(separator: " OR ")
-            let excludeMito = [qOnco, qTS, qNonCoding, qDNARepair, qTF, qImmune, qCellCycle, qApoptosis].joined(separator: " OR ")
-            let excludeCellCycle = [qOnco, qTS, qNonCoding, qDNARepair, qTF, qImmune, qMito, qApoptosis].joined(separator: " OR ")
-            let excludeApoptosis = [qOnco, qTS, qNonCoding, qDNARepair, qTF, qImmune, qMito, qCellCycle].joined(separator: " OR ")
-
-            var term: String = selectedCategory.esearchTerm
-            switch selectedCategory {
-            case .proteinCoding:
-                // Use ESummary-driven protein-coding UIDs as disjoint base (exclude others via NOT keywords)
-                if let uids = try? await NCBIService.shared.proteinCodingUIDs(retmax: 20), let list = try? await NCBIService.shared.esummaryGeneInfos(uids: uids) {
-                    print("✅ Loaded \(list.count) genes from NCBI API for category: Protein Coding (disjoint)")
-                    await MainActor.run { sampleGenes = list }
-                    return
+                
+                ToolbarItem(placement: .navigationBarLeading) {
+                    if selectedCategory != nil || selectedSubCategory != nil {
+                        Button("Back") {
+                            if selectedSubCategory != nil {
+                                selectedSubCategory = nil
+                            } else {
+                                selectedCategory = nil
+                            }
+                        }
+                    }
                 }
-            case .oncogenes:
-                term = "\(base) AND \(qOnco) AND \(not(excludeOnco))"
-            case .tumorSuppressors:
-                term = "\(base) AND \(qTS) AND \(not(excludeTS))"
-            case .nonCodingRNA:
-                term = "\(base) AND \(qNonCoding) AND \(not(excludeNonCoding))"
-            case .dnaRepair:
-                term = "\(base) AND \(qDNARepair) AND \(not(excludeDNARepair))"
-            case .transcriptionFactors:
-                term = "\(base) AND \(qTF) AND \(not(excludeTF))"
-            case .immune:
-                term = "\(base) AND \(qImmune) AND \(not(excludeImmune))"
-            case .mitochondrial:
-                term = "\(base) AND \(qMito) AND \(not(excludeMito))"
-            case .cellCycle:
-                term = "\(base) AND \(qCellCycle) AND \(not(excludeCellCycle))"
-            case .apoptosis:
-                term = "\(base) AND \(qApoptosis) AND \(not(excludeApoptosis))"
-            case .all:
-                term = base
-            }
-
-            if let uids = try? await NCBIService.shared.esearchUIDs(term: term, retmax: 20), let list = try? await NCBIService.shared.esummaryGeneInfos(uids: uids) {
-                print("✅ Loaded \(list.count) genes from NCBI API for category: \(selectedCategory.rawValue) (disjoint)")
-                await MainActor.run { sampleGenes = list }
-            } else {
-                await MainActor.run { sampleGenes = [] }
             }
         }
-    }
-    
-    private func loadDefaultGenes() {
-        print("⚠️ Using default hardcoded genes (5 genes)")
-        sampleGenes = [
-            GeneInfo(id: "BRCA1", name: "BRCA1", symbol: "BRCA1", description: "Breast cancer susceptibility gene", chromosome: "17q21.31", diseases: ["Breast Cancer", "Ovarian Cancer"]),
-            GeneInfo(id: "TP53", name: "TP53", symbol: "TP53", description: "Tumor suppressor protein", chromosome: "17p13.1", diseases: ["Li-Fraumeni Syndrome"]),
-            GeneInfo(id: "CFTR", name: "CFTR", symbol: "CFTR", description: "Cystic fibrosis transmembrane conductance regulator", chromosome: "7q31.2", diseases: ["Cystic Fibrosis"]),
-            GeneInfo(id: "HBB", name: "HBB", symbol: "HBB", description: "Hemoglobin subunit beta", chromosome: "11p15.4", diseases: ["Sickle Cell Disease"]),
-            GeneInfo(id: "APOE", name: "APOE", symbol: "APOE", description: "Apolipoprotein E", chromosome: "19q13.32", diseases: ["Alzheimer's Disease"])
-        ]
-        print("✅ Default genes loaded: \(sampleGenes.map { $0.symbol })")
-    }
-    
-    private func loadGeneFromNCBI(_ gene: GeneInfo) {
-        print("👆 loadGeneFromNCBI called for: \(gene.symbol)")
-        
-        selectedGene = gene
-        isLoadingSequence = true
-        loadingProgress = "Loading \(gene.symbol) from NCBI..."
-        errorMessage = nil
-        
-        print("⏳ isLoadingSequence = true, loadingProgress = \(loadingProgress)")
-        
-        Task {
-            do {
-                print("🌐 Task started - Fetching \(gene.symbol) from NCBI...")
-                
-                // Resolve accession from API using elink gene->nuccore; fallback to esearch by symbol
-                var accession: String?
-                let linked = try? await NCBIService.shared.resolveAccessionsFromGeneUID(gene.id, retmax: 1)
-                accession = linked?.first
-                if accession == nil {
-                    let hits = try await NCBIService.shared.searchGene(term: "\(gene.symbol)[Gene] AND Homo sapiens[orgn]")
-                    accession = hits.first
+        .sheet(item: $selectedGeneForDetail) { gene in
+            // Gene 상세 정보 화면
+            NavigationView {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        // Header
+                        VStack(alignment: .leading, spacing: 8) {
+                                Text(gene.symbol.isEmpty ? "Unknown Gene" : gene.symbol)
+                                    .font(.system(size: 34, weight: .bold))
+                                    .onAppear {
+                                        print("🔍 Gene Detail: symbol='\(gene.symbol)', name='\(gene.name)'")
+                                    }
+                                
+                                Text(gene.name)
+                                    .font(.title3)
+                                    .foregroundColor(.secondary)
+                                
+                                HStack {
+                                    Label("ID: \(gene.geneId)", systemImage: "number")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                    
+                                    Spacer()
+                                    
+                                    Text(gene.organism)
+                                        .font(.caption)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
+                                        .background(Color.blue.opacity(0.1))
+                                        .cornerRadius(8)
+                                }
+                            }
+                            .padding()
+                            .background(Color.blue.opacity(0.05))
+                            .cornerRadius(12)
+                            
+                            Divider()
+                            
+                            // Basic Information
+                            VStack(alignment: .leading, spacing: 16) {
+                                Text("Basic Information")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                
+                                GeneInfoRow(icon: "tag", title: "Gene ID", value: "\(gene.geneId)")
+                                GeneInfoRow(icon: "person.3", title: "Organism", value: gene.organism)
+                                GeneInfoRow(icon: "map", title: "Chromosome", value: gene.chromosome)
+                                GeneInfoRow(icon: "function", title: "Gene Type", value: gene.geneType)
+                                GeneInfoRow(icon: "number", title: "Tax ID", value: "\(gene.taxId)")
+                            }
+                            .padding()
+                            .background(Color.gray.opacity(0.05))
+                            .cornerRadius(12)
+                            
+                            // Description
+                            if let description = gene.description {
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text("Description")
+                                        .font(.headline)
+                                        .fontWeight(.semibold)
+                                    
+                                    Text(description)
+                                        .font(.body)
+                                    .foregroundColor(.secondary)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
+                                .padding()
+                                .background(Color.gray.opacity(0.05))
+                                .cornerRadius(12)
+                            }
+                            
+                            // Aliases (if any)
+                            if !gene.aliases.isEmpty {
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text("Aliases")
+                                        .font(.headline)
+                                        .fontWeight(.semibold)
+                                    
+                                    SimpleFlowLayout(spacing: 8) {
+                                        ForEach(gene.aliases, id: \.self) { alias in
+                                            Text(alias)
+                                                .font(.caption)
+                                                .padding(.horizontal, 10)
+                                                .padding(.vertical, 5)
+                                                .background(Color.green.opacity(0.2))
+                                                .cornerRadius(8)
+                                        }
+                                    }
+                                }
+                                .padding()
+                                .background(Color.gray.opacity(0.05))
+                                .cornerRadius(12)
+                            }
+                    }
+                    .padding()
                 }
-
-                guard let acc = accession else { throw NCBIService.NCBIError.invalidURL }
-
-                print("📡 Accession: \(acc)")
-                loadingProgress = "Downloading from NCBI (\(acc))..."
-
-                // Fetch sequence by accession
-                let sequence = try await NCBIService.shared.fetchSequence(accession: acc)
-                
-                print("✅ Loaded \(sequence.sequence.count)bp from NCBI")
-                
-                // JSON의 추가 정보와 병합
-                let jsonGene = try? loadGeneFromJSON(id: gene.id)
-                let strand: Strand = (jsonGene?.strand.lowercased() == "plus") ? .plus : .minus
-                let geneType: GeneType = (jsonGene?.geneType.lowercased() == "coding") ? .coding : .nonCoding
-                
-                // Mutation 변환
-                let mutations = (jsonGene?.mutations ?? []).map { mutJson -> Mutation in
-                    Mutation(
-                        position: mutJson.position,
-                        refBase: mutJson.refBase,
-                        altBase: mutJson.altBase,
-                        type: MutationType(rawValue: mutJson.type) ?? .substitution,
-                        consequence: mutJson.consequence ?? "",
-                        clinicalSignificance: ClinicalSignificance(rawValue: mutJson.clinicalSignificance) ?? .uncertain,
-                        disease: mutJson.disease,
-                        description: mutJson.description
-                    )
-                }
-                
-                let enhancedSequence = DNASequence(
-                    name: jsonGene?.name ?? gene.symbol,
-                    accession: acc,
-                    pdbID: jsonGene?.pdbID,
-                    sequence: sequence.sequence,
-                    chromosome: jsonGene?.chromosome,
-                    startPos: jsonGene?.startPos,
-                    endPos: jsonGene?.endPos,
-                    strand: strand,
-                    geneType: geneType,
-                    organism: jsonGene?.organism ?? "Homo sapiens",
-                    features: jsonGene?.features ?? [],
-                    mutations: mutations,
-                    summary: jsonGene?.summary,
-                    diseaseLinks: jsonGene?.diseaseLinks
-                )
-                
-                await MainActor.run {
-                    self.loadedSequence = enhancedSequence
-                    self.isLoadingSequence = false
-                    
-                    // ViewModel에 새로운 시퀀스 설정
-                    self.viewModel.currentSequence = enhancedSequence
-                    
-                    // LibraryView 닫기
-                    self.dismiss()
-                }
-            } catch {
-                await MainActor.run {
-                    self.isLoadingSequence = false
-                    self.errorMessage = "Failed to load \(gene.symbol): \(error.localizedDescription)"
-                    print("❌ Error loading gene: \(error)")
+                .navigationTitle("Gene Details")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("Close") {
+                            selectedGeneForDetail = nil
+                        }
+                    }
                 }
             }
         }
     }
     
-    private func loadGeneFromJSON(id: String) throws -> DNASequenceJSON? {
-        guard let url = Bundle.main.url(forResource: "SampleGenes", withExtension: "json"),
-              let data = try? Data(contentsOf: url),
-              let genes = try? JSONDecoder().decode([DNASequenceJSON].self, from: data) else {
-            return nil
-        }
-        return genes.first { $0.id == id }
-    }
-}
-
-// JSON 디코딩용 구조체
-struct DNASequenceJSON: Codable {
-    let id: String
-    let name: String
-    let accession: String?
-    let pdbID: String?
-    let sequence: String
-    let chromosome: String?
-    let startPos: Int?
-    let endPos: Int?
-    let strand: String
-    let geneType: String
-    let organism: String
-    let features: [GeneFeature]
-    let mutations: [MutationJSON]
-    let summary: String?
-    let diseaseLinks: [String]?
-}
-
-struct MutationJSON: Codable {
-    let id: String
-    let position: Int
-    let refBase: String
-    let altBase: String
-    let type: String
-    let consequence: String?
-    let clinicalSignificance: String
-    let disease: String?
-    let description: String?
-}
-
-struct GeneInfo: Identifiable, Codable {
-    let id: String
-    let name: String
-    let symbol: String
-    let description: String
-    let chromosome: String
-    let diseases: [String]
-}
-
-struct GeneCard: View {
-    let gene: GeneInfo
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: {
-            print("🎯 GeneCard tapped: \(gene.symbol)")
-            action()
-        }) {
-            VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    Image(systemName: "doc.text.magnifyingglass")
-                        .font(.largeTitle)
-                        .foregroundColor(.blue)
-                    
-                    Spacer()
-                }
-                
-                Text(gene.symbol)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                
-                Text(gene.description)
-                    .font(.caption)
+    private var headerView: some View {
+        VStack(spacing: 8) {
+            Text("DNA Atlas")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+            
+            if let category = selectedCategory {
+                Text(category.koreanName)
+                    .font(.subheadline)
                     .foregroundColor(.secondary)
-                    .lineLimit(2)
-                
-                Divider()
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Label(gene.chromosome, systemImage: "mappin.circle.fill")
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                    
-                    if let disease = gene.diseases.first {
-                        Label(disease, systemImage: "cross.case.fill")
-                            .font(.caption2)
-                            .foregroundColor(.red)
+            }
+            
+            if let subCategory = selectedSubCategory {
+                Text(subCategory.rawValue)
+                    .font(.subheadline)
+                    .foregroundColor(.blue)
+            }
+        }
+        .padding()
+        .background(Color.blue.opacity(0.1))
+    }
+    
+    private var categoryGridView: some View {
+        ScrollView {
+            LazyVGrid(columns: [
+                GridItem(.flexible()),
+                GridItem(.flexible())
+            ], spacing: 16) {
+                ForEach(GeneCategory.allCases, id: \.self) { category in
+                    CategoryCard(
+                        title: category.koreanName,
+                        subtitle: category.rawValue,
+                        icon: iconForCategory(category)
+                    ) {
+                        selectedCategory = category
                     }
                 }
             }
             .padding()
-            #if os(macOS)
-            .background(Color(NSColor.controlBackgroundColor))
-            #else
-            .background(Color(.systemBackground))
-            #endif
-            .cornerRadius(16)
-            .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
+        }
+    }
+    
+    private var subCategoryView: some View {
+        ScrollView {
+            LazyVStack(spacing: 12) {
+                if let category = selectedCategory {
+                    ForEach(subCategoriesForCategory(category), id: \.self) { subCategory in
+                        SubCategoryRow(
+                            title: subCategory.rawValue,
+                            count: getTotalCount(for: subCategory),
+                            isLoading: isLoadingSubCategory(subCategory)
+                        ) {
+                            selectedSubCategory = subCategory
+                            loadGenes(for: subCategory)
+                        }
+                    }
+                }
+            }
+            .padding()
+        }
+    }
+    
+    private var geneListView: some View {
+        VStack {
+            if genes.isEmpty && geneImporter.isLoading {
+                ProgressView("Loading genes...")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if let errorMessage = geneImporter.errorMessage {
+                VStack(spacing: 16) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.largeTitle)
+                        .foregroundColor(.orange)
+                    Text("Error loading genes")
+                        .font(.headline)
+                    Text(errorMessage)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 12) {
+                        ForEach(genes) { gene in
+                            GeneCard(gene: gene, onInfoTap: {
+                                selectedGeneForDetail = gene
+                            }, onApply: {
+                                applyGeneToMainView(gene)
+                            })
+                        }
+                        
+                        // Load More 버튼
+                        if geneImporter.hasMore {
+                            Button {
+                                Task {
+                                    do {
+                                        let moreGenes = try await geneImporter.loadMoreGenes()
+                                        genes.append(contentsOf: moreGenes)
+                                    } catch {
+                                        print("Failed to load more genes: \(error)")
+                                    }
+                                }
+                            } label: {
+                                HStack {
+                                    if geneImporter.isLoading {
+                                        ProgressView()
+                                            .progressViewStyle(CircularProgressViewStyle())
+                                    } else {
+                                        Text("Load More")
+                                            .font(.headline)
+                                    }
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue.opacity(0.1))
+                                .cornerRadius(10)
+                            }
+                            .disabled(geneImporter.isLoading)
+                            .padding(.horizontal)
+                            .padding(.bottom)
+                        }
+                    }
+                    .padding()
+                }
+            }
+        }
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func iconForCategory(_ category: GeneCategory) -> String {
+        switch category {
+        case .organism:
+            return "figure.2.and.child.holdinghands"
+        case .geneType:
+            return "function"
+        case .chromosome:
+            return "circle.grid.3x3"
+        case .status:
+            return "checkmark.circle"
+        case .symbolPrefix:
+            return "textformat.abc"
+        }
+    }
+    
+    private func subCategoriesForCategory(_ category: GeneCategory) -> [GeneSubCategory] {
+        return GeneSubCategory.allCases.filter { $0.parentCategory == category }
+    }
+    
+    private func getTotalCount(for subCategory: GeneSubCategory) -> Int? {
+        // 해당 sub-category의 실제 개수가 있으면 반환
+        if let category = selectedCategory,
+           let actualCount = geneImporter.getTotalCount(category: category, subCategory: subCategory) {
+            return actualCount
+        }
+        
+        // 로딩 중이면 nil 반환
+        if isLoadingSubCategory(subCategory) {
+            return nil
+        }
+        
+        // 아직 로드되지 않았으면 nil 반환 (Tap to load 표시)
+        return nil
+    }
+    
+    private func isLoadingSubCategory(_ subCategory: GeneSubCategory) -> Bool {
+        // 현재 선택된 sub-category이고, 로딩 중이며, 아직 totalCount가 없는 경우
+        return selectedSubCategory == subCategory && 
+               geneImporter.isLoading && 
+               (selectedCategory == nil || geneImporter.getTotalCount(category: selectedCategory!, subCategory: subCategory) == nil)
+    }
+    
+    private func mockCountForSubCategory(_ subCategory: GeneSubCategory) -> Int {
+        switch subCategory {
+        case .homo_sapiens:
+            return 25000
+        case .mus_musculus:
+            return 23000
+        case .drosophila_melanogaster:
+            return 15000
+        case .protein_coding:
+            return 20000
+        case .miRNA:
+            return 2000
+        case .lncRNA:
+            return 15000
+        case .pseudogene:
+            return 8000
+        case .chr1, .chr2, .chr3, .chr4, .chr5, .chr6, .chr7, .chr8, .chr9, .chr10,
+             .chr11, .chr12, .chr13, .chr14, .chr15, .chr16, .chr17, .chr18, .chr19, .chr20,
+             .chr21, .chr22, .chrX, .chrY, .chrMT:
+            return Int.random(in: 500...2000)
+        case .live:
+            return 20000
+        case .discontinued:
+            return 500
+        case .BRCA, .HBA, .HBB, .TP, .CFTR, .HTT:
+            return Int.random(in: 10...100)
+        }
+    }
+    
+    private func loadGenes(for subCategory: GeneSubCategory) {
+        Task {
+            do {
+                // 새로운 검색이므로 기존 genes 초기화
+                genes = []
+                geneImporter.resetPagination()
+                
+                if useMockData {
+                    // Mock 데이터 사용
+                    genes = GeneImporter.mockGenes(for: subCategory)
+                } else {
+                    // 실제 API 호출 (첫 100개)
+                    guard let category = selectedCategory else { return }
+                    genes = try await geneImporter.searchGenes(category: category, subCategory: subCategory)
+                }
+            } catch {
+                print("Error loading genes: \(error)")
+            }
+        }
+    }
+    
+    private func applyGeneToMainView(_ gene: Gene) {
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("🔄 Applying gene to main view")
+        print("   Gene Symbol: \(gene.symbol)")
+        print("   Gene ID: \(gene.geneId)")
+        print("   Chromosome: \(gene.chromosome)")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        
+        Task {
+            do {
+                // NCBI API를 통해 gene sequence 가져오기
+                let sequence = try await fetchGeneSequence(geneId: gene.geneId)
+                
+                await MainActor.run {
+                    // DNASequence 생성
+                    let dnaSequence = DNASequence(
+                        name: gene.symbol.isEmpty ? gene.name : gene.symbol,
+                        sequence: sequence,
+                        chromosome: gene.chromosome,
+                        organism: gene.organism,
+                        summary: gene.description
+                    )
+                    
+                    print("📦 Created DNASequence:")
+                    print("   Name: \(dnaSequence.name)")
+                    print("   ID: \(dnaSequence.id)")
+                    print("   Length: \(dnaSequence.length) bp")
+                    
+                    // 그룹 수 계산 미리보기
+                    let groupSize = 100
+                    let totalGroups = (dnaSequence.length + groupSize - 1) / groupSize
+                    print("   Expected Groups: \(totalGroups)")
+                    
+                    // ViewModel에 적용
+                    print("🔄 Setting viewModel.currentSequence...")
+                    viewModel.currentSequence = dnaSequence
+                    viewModel.currentSequenceName = dnaSequence.name
+                    
+                    print("✅ Gene applied successfully!")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    
+                    // Library sheet 닫기
+                    dismiss()
+                }
+            } catch {
+                print("❌ Failed to fetch gene sequence: \(error)")
+                print("⚠️ Falling back to sample sequence...")
+                
+                // 샘플 시퀀스로 대체
+                await MainActor.run {
+                    let sampleSequence = generateSampleSequence(length: 1000)
+                    let dnaSequence = DNASequence(
+                        name: gene.symbol.isEmpty ? gene.name : gene.symbol,
+                        sequence: sampleSequence,
+                        chromosome: gene.chromosome,
+                        organism: gene.organism,
+                        summary: gene.description
+                    )
+                    
+                    print("📦 Created sample DNASequence:")
+                    print("   Name: \(dnaSequence.name)")
+                    print("   Length: \(dnaSequence.length) bp")
+                    
+                    viewModel.currentSequence = dnaSequence
+                    viewModel.currentSequenceName = dnaSequence.name
+                    print("✅ Sample sequence applied")
+                    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+                    dismiss()
+                }
+            }
+        }
+    }
+    
+    private func fetchGeneSequence(geneId: Int) async throws -> String {
+        print("🔍 fetchGeneSequence: Gene ID = \(geneId)")
+        
+        // Step 1: Gene ID → Nucleotide Accession 변환 (elink API)
+        let accessions = try await NCBIService.shared.resolveAccessionsFromGeneUID(String(geneId), retmax: 1)
+        
+        guard let firstAccession = accessions.first else {
+            print("❌ No nucleotide accession found for gene ID: \(geneId)")
+            throw NSError(domain: "GeneSequence", code: -1, userInfo: [NSLocalizedDescriptionKey: "No nucleotide accession found"])
+        }
+        
+        print("✅ Found accession: \(firstAccession)")
+        
+        // Step 2: Nucleotide Accession → FASTA sequence (efetch API)
+        let urlString = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=\(firstAccession)&rettype=fasta&retmode=text"
+        guard let url = URL(string: urlString) else {
+            throw URLError(.badURL)
+        }
+        
+        print("📡 Fetching sequence from: \(urlString)")
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        // FASTA 형식 파싱
+        if let text = String(data: data, encoding: .utf8) {
+            // '>'로 시작하는 헤더 라인 제거하고 시퀀스만 추출
+            let lines = text.components(separatedBy: .newlines)
+            let sequenceLines = lines.filter { !$0.hasPrefix(">") && !$0.isEmpty }
+            let sequence = sequenceLines.joined().uppercased()
+            
+            print("✅ Sequence length: \(sequence.count) bp")
+            
+            if !sequence.isEmpty {
+                return sequence
+            }
+        }
+        
+        throw NSError(domain: "GeneSequence", code: -1, userInfo: [NSLocalizedDescriptionKey: "No sequence found"])
+    }
+    
+    private func generateSampleSequence(length: Int) -> String {
+        let bases = ["A", "T", "G", "C"]
+        return (0..<length).map { _ in bases.randomElement()! }.joined()
+    }
+}
+
+// MARK: - Supporting Views
+
+struct CategoryCard: View {
+    let title: String
+    let subtitle: String
+    let icon: String
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 12) {
+                Image(systemName: icon)
+                    .font(.system(size: 40))
+                    .foregroundColor(.blue)
+                
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.blue.opacity(0.1))
+            .cornerRadius(12)
         }
         .buttonStyle(PlainButtonStyle())
+    }
+}
+
+struct SubCategoryRow: View {
+    let title: String
+    let count: Int?  // Optional로 변경
+    let isLoading: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    
+                    HStack(spacing: 6) {
+                        if isLoading {
+                            ProgressView()
+                                .scaleEffect(0.7)
+                                .frame(width: 12, height: 12)
+                            Text("Loading...")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        } else if let count = count {
+                            Text("\(formatNumber(count)) genes")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        } else {
+                            Text("Tap to load")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.secondary)
+            }
+            .padding()
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(8)
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+    
+    private func formatNumber(_ number: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: NSNumber(value: number)) ?? "\(number)"
+    }
+}
+
+struct GeneCard: View {
+    let gene: Gene
+    let onInfoTap: () -> Void
+    let onApply: () -> Void
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text(gene.symbol)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    
+                    Text("ID: \(gene.geneId)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 2)
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(4)
+                    
+                    Spacer()
+                }
+                
+                Text(gene.name)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .lineLimit(2)
+                
+                if let description = gene.description {
+                    Text(description)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .lineLimit(3)
+                }
+                
+                HStack {
+                    Spacer()
+                    
+                    // Info 버튼 (상세 정보)
+                    Button(action: onInfoTap) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "info.circle")
+                            Text("Info")
+                                .font(.caption)
+                        }
+                        .foregroundColor(.blue)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color.blue.opacity(0.1))
+                        .cornerRadius(8)
+                    }
+                    
+                    // Apply 버튼
+                    Button(action: onApply) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "checkmark.circle.fill")
+                            Text("Apply")
+                                .font(.caption)
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                    }
+                }
+                .padding(.top, 4)
+                }
+            }
+            .padding()
+        .background(Color.white)
+        .cornerRadius(12)
+        .shadow(color: .gray.opacity(0.2), radius: 2, x: 0, y: 1)
+    }
+}
+
+// MARK: - Helper Views
+
+struct GeneInfoRow: View {
+    let icon: String
+    let title: String
+    let value: String
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .foregroundColor(.blue)
+                .frame(width: 24)
+            
+            Text(title)
+                .fontWeight(.medium)
+                .foregroundColor(.primary)
+                .frame(width: 120, alignment: .leading)
+            
+            Text(value)
+                .foregroundColor(.secondary)
+            
+            Spacer()
+        }
+    }
+}
+
+// iOS 15.0 호환 FlowLayout (VStack/HStack로 대체)
+struct SimpleFlowLayout<Content: View>: View {
+    let spacing: CGFloat
+    let content: () -> Content
+    
+    init(spacing: CGFloat = 8, @ViewBuilder content: @escaping () -> Content) {
+        self.spacing = spacing
+        self.content = content
+    }
+    
+    var body: some View {
+        // 간단히 HStack으로 표시
+        HStack(spacing: spacing) {
+            content()
+        }
     }
 }
 
 #Preview {
     LibraryView(viewModel: DNAViewModel())
 }
-

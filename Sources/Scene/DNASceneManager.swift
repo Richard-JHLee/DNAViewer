@@ -41,7 +41,7 @@ class DNASceneManager: ObservableObject {
     @Published var colorSettings = ColorSettings.shared
     
     // Track highlighted cut sites for camera focusing
-    private var highlightedCutSites: [Int] = []
+    @Published var highlightedCutSites: [Int] = []
     
     // Flag to prevent concurrent rebuilds
     private var isRebuilding = false
@@ -56,7 +56,7 @@ class DNASceneManager: ObservableObject {
     var displayLength: Int = 100 // Show only subset for performance
     var currentGroup: Int = 1
     var totalGroups: Int = 1
-    var groupSize: Int = 15  // Reduced for memory safety
+    var groupSize: Int = 100  // Increased for better visualization
     
     // 실제 표시되는 염기서열 수 (안전장치 적용 후)
     var actualDisplayLength: Int {
@@ -83,8 +83,21 @@ class DNASceneManager: ObservableObject {
         cameraNode.camera = SCNCamera()
         cameraNode.camera?.wantsHDR = true
         cameraNode.camera?.bloomIntensity = 0.3
-        cameraNode.position = SCNVector3(x: 0, y: 2, z: 15)  // Closer and flatter camera position
+        cameraNode.camera?.fieldOfView = 60  // Wider field of view to see more
+        cameraNode.camera?.zNear = 0.1
+        cameraNode.camera?.zFar = 1000
+        cameraNode.position = SCNVector3(x: 0, y: 3, z: 25)  // Further back to see entire DNA
         cameraNode.look(at: SCNVector3(x: 0, y: 0, z: 0))    // Look straight at the center
+        
+        // Add constraint to lock X position
+        let xConstraint = SCNTransformConstraint(inWorldSpace: true) { (node, transform) -> SCNMatrix4 in
+            var newTransform = transform
+            // Keep X position at 0
+            newTransform.m41 = 0
+            return newTransform
+        }
+        cameraNode.constraints = [xConstraint]
+        
         scene.rootNode.addChildNode(cameraNode)
         
         // Setup lighting
@@ -131,59 +144,53 @@ class DNASceneManager: ObservableObject {
     }
     
     func loadSequence(_ sequence: DNASequence) {
+        print("🔄 loadSequence called: \(sequence.name)")
+        
+        // 이전 상태 완전 초기화
+        highlightedCutSites = []
+        selectedRange = nil
+        selectedBaseIndex = nil
+        
+        // 표시 범위 초기화 (중요!)
+        displayStart = 0
+        currentGroup = 1
+        
         currentSequence = sequence
         
         // Calculate groups based on sequence ID and length
         calculateGroups(for: sequence)
         
+        // UI 업데이트 강제
+        objectWillChange.send()
+        
         rebuildScene()
+        
+        print("✅ loadSequence completed: totalGroups=\(totalGroups), currentGroup=\(currentGroup), displayStart=\(displayStart), displayLength=\(displayLength)")
     }
     
     private func calculateGroups(for sequence: DNASequence) {
         let sequenceId = sequence.name.lowercased()
         
         print("🔍 Calculating groups for sequence: '\(sequence.name)' (lowercased: '\(sequenceId)')")
+        print("🔍 Sequence length: \(sequence.length)")
         
-        // ID별로 적절한 그룹 크기 결정 (메모리 절약을 위해 더 작게)
-        if sequenceId.contains("brca1") {
-            groupSize = 15  // BRCA1: 7088개 -> 473개 그룹 (각 그룹당 15개)
-        } else if sequenceId.contains("tp53") {
-            groupSize = 15  // TP53: 393개 -> 27개 그룹
-        } else if sequenceId.contains("cftr") {
-            groupSize = 15  // CFTR: 1480개 -> 99개 그룹
-        } else if sequenceId.contains("huntingtin") {
-            groupSize = 15  // Huntingtin: 3144개 -> 210개 그룹
-        } else if sequenceId.contains("apoe") {
-            groupSize = 100  // APOE gene: ~6.7kb -> 67개 그룹 (각 그룹당 100개)
-            print("✅ APOE detected, setting groupSize to 100")
-        } else if sequence.length > 1000000 {
-            groupSize = 3   // 100만 bp 이상: 극도로 작게
-        } else {
-            // 기본값: 시퀀스 길이에 따라 동적 계산 (메모리 안전을 위해 더 작게)
-            if sequence.length > 10000 {
-                groupSize = 10  // 매우 큰 시퀀스
-            } else if sequence.length > 1000 {
-                groupSize = 15  // 큰 시퀀스
-            } else if sequence.length > 500 {
-                groupSize = 20  // 중간 시퀀스
-            } else if sequence.length > 100 {
-                groupSize = 25  // 작은 시퀀스
-            } else {
-                groupSize = sequence.length
-            }
-        }
+        // 모든 시퀀스에 대해 일관된 그룹 크기 설정
+        groupSize = 100  // 모든 시퀀스를 100개씩 표시
+        print("✅ Setting groupSize to 100 for consistent display")
         
-        // 그룹 수 계산
+        // 그룹 수 계산 (첫 번째 그룹으로 초기화)
         if sequence.length <= groupSize {
             totalGroups = 1
             currentGroup = 1
             displayStart = 0
             displayLength = sequence.length
+            print("📊 Single group: displayStart=\(displayStart), displayLength=\(displayLength)")
         } else {
             totalGroups = (sequence.length + groupSize - 1) / groupSize  // 올림 계산
-            currentGroup = 1
-            displayStart = 0
+            currentGroup = 1  // 항상 첫 번째 그룹부터 시작
+            displayStart = 0  // 첫 번째 그룹은 0부터 시작
             displayLength = min(groupSize, sequence.length)
+            print("📊 Multiple groups (\(totalGroups)): displayStart=\(displayStart), displayLength=\(displayLength)")
         }
         
         // 안전장치 적용 (APOE는 200개, 다른 시퀀스는 20개로 제한)
@@ -196,6 +203,7 @@ class DNASceneManager: ObservableObject {
         }
         
         print("🧬 \(sequence.name): \(sequence.length) bases -> \(totalGroups) groups (size: \(groupSize))")
+        print("🧬 Final values: currentGroup=\(currentGroup), displayStart=\(displayStart), displayLength=\(displayLength)")
         
         // UI 업데이트를 강제하여 SequenceBar가 새로운 값을 반영하도록 함
         objectWillChange.send()
@@ -234,9 +242,8 @@ class DNASceneManager: ObservableObject {
         self.displayStart = newStart
         self.displayLength = newLength
         
-        // 안전장치 적용 (APOE는 200개, 다른 시퀀스는 20개로 제한)
-        let isAPOE = sequence.name.lowercased().contains("apoe")
-        let maxDisplayLength = isAPOE ? 200 : 20
+        // 안전장치 적용 (모든 시퀀스를 100개로 통일)
+        let maxDisplayLength = 100
         let safeDisplayLength = min(self.displayLength, maxDisplayLength)
         if safeDisplayLength < self.displayLength {
             print("⚠️ loadGroup: Limiting display from \(self.displayLength) to \(safeDisplayLength) for stability")
@@ -466,13 +473,37 @@ class DNASceneManager: ObservableObject {
         isAnimating = false
         
         // Reset camera position
-        cameraNode.position = SCNVector3(x: 0, y: 2, z: 15)
+        cameraNode.position = SCNVector3(x: 0, y: 3, z: 25)
         cameraNode.look(at: SCNVector3(x: 0, y: 0, z: 0))
         
         // Reset DNA model rotation
         for node in helixNodes {
             node.rotation = SCNVector4(x: 0, y: 0, z: 0, w: 0)
         }
+    }
+    
+    // MARK: - Gesture Handlers
+    
+    private var lastRotationY: CGFloat = 0
+    
+    func handleDrag(translation: CGSize) {
+        // Only allow Y-axis rotation (left/right drag)
+        let rotationSpeed: CGFloat = 0.01
+        let rotationY = Float(translation.width * rotationSpeed)
+        
+        // Apply rotation to all DNA nodes around Y-axis only
+        for node in helixNodes {
+            node.eulerAngles.y = rotationY
+        }
+    }
+    
+    func handleZoom(scale: CGFloat) {
+        // Adjust camera Z position for zoom
+        let minZ: Float = 10
+        let maxZ: Float = 50
+        let newZ = Float(25.0 / scale) // Base position 25
+        
+        cameraNode.position.z = min(max(newZ, minZ), maxZ)
     }
     
     func selectBase(at index: Int) {

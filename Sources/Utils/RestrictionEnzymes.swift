@@ -31,6 +31,15 @@ struct RestrictionEnzyme: Identifiable, Codable, Hashable {
         case isoschizomers, organism, supplier
     }
     
+    static var all: [RestrictionEnzyme] {
+        guard let url = Bundle.main.url(forResource: "RestrictionEnzymes", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let enzymes = try? JSONDecoder().decode([RestrictionEnzyme].self, from: data) else {
+            return []
+        }
+        return enzymes
+    }
+    
     /// caret('^')를 제외한 순수 패턴 (IUPAC 포함 가능)
     var rawPattern: String {
         recognitionSite.replacingOccurrences(of: "^", with: "")
@@ -39,6 +48,15 @@ struct RestrictionEnzyme: Identifiable, Codable, Hashable {
     /// caret 위치 인덱스(상단가닥 기준, 0-based)
     var cutIndex: Int {
         (recognitionSite.firstIndex(of: "^").map { recognitionSite.distance(from: recognitionSite.startIndex, to: $0) }) ?? 0
+    }
+    
+    // Hashable implementation based on name only
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
+    
+    static func == (lhs: RestrictionEnzyme, rhs: RestrictionEnzyme) -> Bool {
+        return lhs.name == rhs.name
     }
 }
 

@@ -154,7 +154,7 @@ struct SequenceBar: View {
             }
         }
         .padding(.vertical, 8)
-        .background(Color.black.opacity(0.8))
+        .background(Color.gray.opacity(0.7))
     }
     
     private func isSelected(_ index: Int) -> Bool {

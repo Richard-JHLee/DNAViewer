@@ -131,7 +131,7 @@ struct ControlBar: View {
         .padding(.vertical, 16)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.black.opacity(0.85))
+                .fill(Color.gray.opacity(0.7))
                 .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 4)
         )
         .padding(.horizontal, 16)

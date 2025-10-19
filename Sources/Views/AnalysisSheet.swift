@@ -207,6 +207,7 @@ struct AnalysisSheet: View {
                                         .foregroundColor(.secondary)
                                         .multilineTextAlignment(.center)
                                 }
+                                .frame(maxWidth: .infinity)
                                 .padding(.top, 24)
                             } else if isAnalyzing {
                                 VStack(spacing: 16) {
@@ -215,6 +216,7 @@ struct AnalysisSheet: View {
                                     Text("Analyzing restriction sites...")
                                         .foregroundColor(.secondary)
                                 }
+                                .frame(maxWidth: .infinity)
                                 .padding(.top, 24)
                             } else {
                                 LazyVStack(spacing: 12) {

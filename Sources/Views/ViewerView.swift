@@ -27,6 +27,13 @@ struct ViewerView: View {
     @State private var showRestrictionEnzyme = false
     @State private var showVirtualCloning = false
     
+    // Digest and Educational Features
+    @State private var showDigestionResult = false
+    @State private var showGelElectrophoresis = false
+    @State private var showCloningProcess = false
+    @State private var showTransformation = false
+    @State private var showVerification = false
+    
     var body: some View {
         VStack(spacing: 0) {
             // Top Bar (full width, below status bar)
@@ -54,81 +61,95 @@ struct ViewerView: View {
                     SceneView(
                         scene: sceneManager.scene,
                         pointOfView: nil,
-                        options: [.allowsCameraControl, .autoenablesDefaultLighting]
+                        options: [.autoenablesDefaultLighting]
                     )
                     .background(Color(red: 0.03, green: 0.08, blue: 0.15)) // Dark navy background
+                    .gesture(
+                        DragGesture()
+                            .onChanged { value in
+                                sceneManager.handleDrag(translation: value.translation)
+                            }
+                    )
+                    .simultaneousGesture(
+                        MagnificationGesture()
+                            .onChanged { value in
+                                sceneManager.handleZoom(scale: value)
+                            }
+                    )
                     
-                    // Side Controls (floating on right, top area)
-                    HStack {
-                        Spacer()
-                        
-                        VStack(spacing: 16) {
-                            Button(action: { sceneManager.animateRotation() }) {
-                                Image(systemName: sceneManager.isAnimating ? "pause.circle.fill" : "play.circle.fill")
-                                    .font(.system(size: 44))
-                                    .foregroundColor(.white)
-                                    .shadow(radius: 2)
-                            }
-                            
-                            Button(action: { showRestrictionEnzyme = true }) {
-                                Image(systemName: "scissors")
-                                    .font(.system(size: 44))
-                                    .foregroundColor(.orange)
-                                    .shadow(radius: 2)
-                            }
-                            
-                            Button(action: { showVirtualCloning = true }) {
-                                Image(systemName: "arrow.triangle.branch")
-                                    .font(.system(size: 44))
-                                    .foregroundColor(.green)
-                                    .shadow(radius: 2)
-                            }
-                            
-                            Button(action: { showAnalysis = true }) {
-                                Image(systemName: "chart.bar.fill")
-                                    .font(.system(size: 44))
-                                    .foregroundColor(.white)
-                                    .shadow(radius: 2)
-                            }
-                            
-                            Button(action: { sceneManager.resetView() }) {
-                                Image(systemName: "arrow.counterclockwise.circle.fill")
-                                    .font(.system(size: 44))
-                                    .foregroundColor(.white)
-                                    .shadow(radius: 2)
-                            }
-                        }
-                        .padding()
-                    }
                 }  // End ZStack (Scene)
                 .frame(maxWidth: .infinity, maxHeight: .infinity) // 가능한 모든 공간 사용
                 
-                // Bottom section - Control Bar and Sequence Bar
-                VStack(spacing: 0) {
-                    // Control Bar (full width, above Sequence Bar)
-                    if showStyleAndColor {
-                        ControlBar(sceneManager: sceneManager, showStyleAndColor: $showStyleAndColor)
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                    }
+                // Sequence Bar (full width, at bottom)
+                if showSequenceBar {
+                    SequenceBar(
+                        sequence: sequence.sequence,
+                        selectedRange: $sceneManager.selectedRange,
+                        sceneManager: sceneManager
+                    )
+                    .frame(height: 120)
+                }
+                
+                // Bottom Menu
+                HStack(spacing: 0) {
+                    // Sequence button
+                    BottomMenuButton(
+                        icon: "textformat.abc",
+                        title: "Sequence",
+                        action: { showSequenceBar.toggle() }
+                    )
                     
-                    // Sequence Bar (full width, at bottom)
-                    if showSequenceBar {
-                        SequenceBar(
-                            sequence: sequence.sequence,
-                            selectedRange: $sceneManager.selectedRange,
-                            sceneManager: sceneManager
+                    // Rotation button
+                    BottomMenuButton(
+                        icon: "arrow.clockwise",
+                        title: "Rotation",
+                        action: { sceneManager.animateRotation() }
+                    )
+                    
+                    // Scissor button
+                    BottomMenuButton(
+                        icon: "scissors",
+                        title: "Scissor",
+                        action: { showRestrictionEnzyme = true }
+                    )
+                    
+                    // Cloning button
+                    BottomMenuButton(
+                        icon: "arrow.triangle.branch",
+                        title: "Cloning",
+                        action: { showVirtualCloning = true }
+                    )
+                    
+                    // Analysis button
+                    BottomMenuButton(
+                        icon: "chart.bar.fill",
+                        title: "Analysis",
+                        action: { showAnalysis = true }
+                    )
+                    
+                    // Reload button
+                    BottomMenuButton(
+                        icon: "arrow.counterclockwise.circle.fill",
+                        title: "Reload",
+                        action: { sceneManager.resetView() }
+                    )
+                    
+                    // Digest button - only show when cut sites are highlighted
+                    if !sceneManager.highlightedCutSites.isEmpty {
+                        BottomMenuButton(
+                            icon: "scissors.badge.ellipsis",
+                            title: "Digest",
+                            action: { showDigestionResult = true }
                         )
-                        .frame(height: 120)
                     }
-                }  // End VStack (Bottom section)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 12)
+                .background(.ultraThinMaterial)
+                .padding(.bottom, 0)
             }  // End VStack (Main content)
         }  // End VStack (Top Bar + Main content)
-        .onAppear {
-            sceneManager.loadSequence(sequence)
-        }
-        .onChange(of: sequence) { newSequence in
-            sceneManager.loadSequence(newSequence)
-        }
         .onChange(of: sceneManager.colorSettings.adenineColor) { _ in
             sceneManager.rebuildScene()
         }
@@ -159,14 +180,59 @@ struct ViewerView: View {
         .sheet(isPresented: $showAnalysis) {
             AnalysisSheet(sequence: sequence)
         }
-        .sheet(isPresented: $showSettings) {
-            SettingsView()
-        }
         .sheet(isPresented: $showRestrictionEnzyme) {
             RestrictionEnzymeView(sequence: sequence, sceneManager: sceneManager)
         }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
         .sheet(isPresented: $showVirtualCloning) {
             VirtualCloningView(sequence: sequence)
+        }
+        .sheet(isPresented: $showDigestionResult) {
+            let dummyFragments = [
+                DNAFragment(sequence: "ATGGATTTATCTGCT", start: 0, end: 15),
+                DNAFragment(sequence: "GCTAGCTAGCTAGCTA", start: 15, end: 31)
+            ]
+            DigestionResultView(fragments: dummyFragments, enzymes: [])
+        }
+        .sheet(isPresented: $showGelElectrophoresis) {
+            let dummyFragments = [
+                DNAFragment(sequence: "ATGGATTTATCTGCT", start: 0, end: 15),
+                DNAFragment(sequence: "GCTAGCTAGCTAGCTA", start: 15, end: 31)
+            ]
+            if #available(iOS 16.0, *) {
+                GelElectrophoresisView(fragments: dummyFragments, enzymes: [])
+                    .presentationDetents([.medium, .large])
+            } else {
+                GelElectrophoresisView(fragments: dummyFragments, enzymes: [])
+            }
+        }
+        .sheet(isPresented: $showCloningProcess) {
+            let targetDNA = DNAFragment(sequence: "ATGGATTTATCTGCT", start: 0, end: 15)
+            let vectorDNA = DNAFragment(sequence: "GCTAGCTAGCTAGCTA", start: 0, end: 16)
+            if #available(iOS 16.0, *) {
+                CloningVisualizationView(targetDNA: targetDNA, vectorDNA: vectorDNA)
+                    .presentationDetents([.medium, .large])
+            } else {
+                CloningVisualizationView(targetDNA: targetDNA, vectorDNA: vectorDNA)
+            }
+        }
+        .sheet(isPresented: $showTransformation) {
+            if #available(iOS 16.0, *) {
+                TransformationAnimationView()
+                    .presentationDetents([.medium, .large])
+            } else {
+                TransformationAnimationView()
+            }
+        }
+        .sheet(isPresented: $showVerification) {
+            if #available(iOS 16.0, *) {
+                VerificationGuideView()
+                    .presentationDetents([.medium, .large])
+            } else {
+                VerificationGuideView()
+            }
         }
         .overlay(
             // Sidebar Menu
@@ -185,6 +251,7 @@ struct ViewerView: View {
                             isPresented: $showSidebar,
                             onLibrary: { showLibrary = true },
                             onAnalysis: { showAnalysis = true },
+                            onRestrictionEnzymes: { showRestrictionEnzyme = true },
                             onSettings: { 
                                 showSettings = true
                             },
@@ -200,6 +267,29 @@ struct ViewerView: View {
                 }
             }
         )
+        .overlay(
+            // Control Bar overlay (floating at bottom)
+            Group {
+                if showStyleAndColor {
+                    VStack {
+                        Spacer()
+                        ControlBar(sceneManager: sceneManager, showStyleAndColor: $showStyleAndColor)
+                            .background(.ultraThinMaterial)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                }
+            }
+        )
+        .onAppear {
+            // 화면이 나타날 때 시퀀스 로드
+            print("🎬 ViewerView.onAppear: \(sequence.name)")
+            sceneManager.loadSequence(sequence)
+        }
+        .onChange(of: sequence.id) { newId in
+            // 시퀀스가 변경되면 새로운 시퀀스 로드
+            print("🔄 ViewerView.onChange(sequence.id): \(sequence.name) (id: \(newId))")
+            sceneManager.loadSequence(sequence)
+        }
     }
     
     // Extract gene ID from name (e.g., "BRCA1 - Breast Cancer 1" -> "BRCA1")
@@ -243,19 +333,13 @@ struct DNAViewerTopBar: View {
             
             Spacer()
             
-            // Sequence ID and Name
-            VStack(spacing: 2) {
-                Text(sequenceId)
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.primary)
-                
-                Text(sequenceName)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-            }
+            // Sequence Name
+            Text(sequenceName)
+                .font(.headline)
+                .fontWeight(.semibold)
+                .foregroundColor(.primary)
+                .lineLimit(1)
+                .truncationMode(.middle)
             
             Spacer()
             
@@ -285,6 +369,31 @@ struct DNAViewerTopBar: View {
         #else
         .background(.ultraThinMaterial)
         #endif
+    }
+    
+}
+
+struct BottomMenuButton: View {
+    let icon: String
+    let title: String
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundColor(.primary)
+                
+                Text(title)
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .foregroundColor(.primary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+        }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 

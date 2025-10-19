@@ -11,6 +11,7 @@ struct SidebarMenu: View {
     @Binding var isPresented: Bool
     let onLibrary: () -> Void
     let onAnalysis: () -> Void
+    let onRestrictionEnzymes: () -> Void
     let onSettings: () -> Void
     let onAbout: () -> Void
     
@@ -67,6 +68,16 @@ struct SidebarMenu: View {
                 ) {
                     isPresented = false
                     onAnalysis()
+                }
+                
+                MenuItem(
+                    icon: "scissors.badge.ellipsis",
+                    title: "Restriction Enzymes",
+                    subtitle: "Cut DNA & Educational Features",
+                    color: .orange
+                ) {
+                    isPresented = false
+                    onRestrictionEnzymes()
                 }
                 
                 MenuItem(
@@ -174,6 +185,7 @@ struct MenuItem: View {
         isPresented: .constant(true),
         onLibrary: {},
         onAnalysis: {},
+        onRestrictionEnzymes: {},
         onSettings: {},
         onAbout: {}
     )
