@@ -274,7 +274,7 @@ struct RestrictionEnzymeView: View {
             var affectedGroups = Set<Int>()
             for position in cutPositions {
                 let group = (position / groupSize) + 1
-                affectedGroups.add(group)
+                affectedGroups.insert(group)
             }
             print("📊 Affected groups: \(affectedGroups.sorted())")
         }
