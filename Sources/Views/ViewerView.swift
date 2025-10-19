@@ -80,6 +80,7 @@ struct ViewerView: View {
                     // Floating Digest button - only show when cut sites are highlighted
                     if !sceneManager.highlightedCutSites.isEmpty {
                         VStack {
+                            Spacer()
                             HStack {
                                 Spacer()
                                 
@@ -106,6 +107,7 @@ struct ViewerView: View {
                                             startPoint: .topLeading,
                                             endPoint: .bottomTrailing
                                         )
+                                        .opacity(0.95) // 약간 투명하게 하여 뒤의 3D가 살짝 보이도록
                                     )
                                     .cornerRadius(16)
                                     .shadow(color: .orange.opacity(0.5), radius: 12, x: 0, y: 4)
@@ -116,12 +118,12 @@ struct ViewerView: View {
                                 }
                                 .buttonStyle(ScaleButtonStyle())
                                 .padding(.trailing, 16)
-                                .padding(.top, 16)
+                                .padding(.bottom, 16)
                                 .transition(.scale.combined(with: .opacity))
                             }
-                            Spacer()
                         }
                         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: sceneManager.highlightedCutSites.count)
+                        .allowsHitTesting(true) // 버튼만 터치 가능, 나머지는 3D view로 전달
                     }
                     
                 }  // End ZStack (Scene)
