@@ -56,11 +56,11 @@ class HelixBuilder {
     
     // DNA helix parameters (B-DNA)
     private let basesPerTurn: Double = 10.5
-    private let risePerBase: Double = 0.34  // nm
+    private let risePerBase: Double = 0.17  // nm (reduced by half for shorter height)
     private let helixRadius: Double = 0.3    // nm (reduced for flatter appearance)
     private let scale: Double = 12.0         // Scale factor for visualization (increased to compensate for smaller radius)
     private let backboneRadius: CGFloat = 0.55
-    private let baseHalfThickness: CGFloat = 0.32
+    private let baseHalfThickness: CGFloat = 0.16  // Reduced by half for shorter base pairs
     private let baseHalfDepth: CGFloat = 0.42
     private let baseChamfer: CGFloat = 0.18
     private let hydrogenGap: Float = 0.3

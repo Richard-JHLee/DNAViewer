@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -32,7 +32,12 @@
 		6167B5A8530EDB5BB77CFC41 /* MutationSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A075A54DE5086635EAB4625 /* MutationSimulator.swift */; };
 		68CA1C5E3A25C8C53EFC06C7 /* Codon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D009E29E5A7E85E5E87D474 /* Codon.swift */; };
 		6A523A250495A7881D47ACF2 /* DNASceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933C9A3D6A5A0E1C930132E /* DNASceneManager.swift */; };
+		6A66D44EB0746A857D352B77 /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080DBD403D2C8D0D1851E208 /* ColorSettings.swift */; };
 		6E419D245A3959A6FE5F8A64 /* MutationSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A075A54DE5086635EAB4625 /* MutationSimulator.swift */; };
+		7981B4F82EA3D1E700D02BA7 /* VirtualCloningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7981B4F72EA3D1E700D02BA7 /* VirtualCloningView.swift */; };
+		7981B4F92EA3D1E700D02BA7 /* RestrictionEnzymeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7981B4F62EA3D1E700D02BA7 /* RestrictionEnzymeView.swift */; };
+		7981B4FA2EA3D1E700D02BA7 /* VirtualCloningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7981B4F72EA3D1E700D02BA7 /* VirtualCloningView.swift */; };
+		7981B4FB2EA3D1E700D02BA7 /* RestrictionEnzymeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7981B4F62EA3D1E700D02BA7 /* RestrictionEnzymeView.swift */; };
 		7BB490E25768CC91B5B11D60 /* Codon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D009E29E5A7E85E5E87D474 /* Codon.swift */; };
 		7C36B970951DCD32E26A7B96 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28319BD6515EE4C2ACFAC43E /* SceneKit.framework */; };
 		7C8079EC5B3B5E0958AAA270 /* QuizData.json in Resources */ = {isa = PBXBuildFile; fileRef = F96361928E842CA4E6A5913C /* QuizData.json */; };
@@ -65,6 +70,7 @@
 		C152F07622843AFFD759A79A /* FASTAParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FAF54CAB9CE1B8865DAD21 /* FASTAParser.swift */; };
 		C2594DDD602EAA4DD109A0F6 /* DNASequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */; };
 		C86DFF47B88C25258F2AB1D4 /* BallStickBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E683D38687B4203066DBC28 /* BallStickBuilder.swift */; };
+		CE4B20AD19E9D4B04218EE43 /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080DBD403D2C8D0D1851E208 /* ColorSettings.swift */; };
 		CE58C160B184BA5060881972 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0B9E25D6D068B4BD6DD3E8 /* HomeView.swift */; };
 		CE81C73E0E2C9A907B1E1002 /* GeneFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A29CACC152D5D9773D8012 /* GeneFeature.swift */; };
 		CF398146A66A3A0C7C080354 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0B9E25D6D068B4BD6DD3E8 /* HomeView.swift */; };
@@ -85,6 +91,7 @@
 
 /* Begin PBXFileReference section */
 		06F0923B8138E15D75827BF8 /* NCBIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCBIService.swift; sourceTree = "<group>"; };
+		080DBD403D2C8D0D1851E208 /* ColorSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSettings.swift; sourceTree = "<group>"; };
 		1616514D0778128027F527B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Base; path = Base.lproj/DNAViewer.entitlements; sourceTree = "<group>"; };
 		1B66D0384711A95DF556C897 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = System/Library/Frameworks/Charts.framework; sourceTree = SDKROOT; };
 		1D009E29E5A7E85E5E87D474 /* Codon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Codon.swift; sourceTree = "<group>"; };
@@ -107,6 +114,8 @@
 		65B8A4AD2F9C33F51C5870D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		66A96B5E1B0F288E95529D4A /* DNAViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNAViewModel.swift; sourceTree = "<group>"; };
 		78CB62E2F8F22E49B4747143 /* ViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerView.swift; sourceTree = "<group>"; };
+		7981B4F62EA3D1E700D02BA7 /* RestrictionEnzymeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionEnzymeView.swift; sourceTree = "<group>"; };
+		7981B4F72EA3D1E700D02BA7 /* VirtualCloningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualCloningView.swift; sourceTree = "<group>"; };
 		7F071C072744C6294B834B29 /* ControlBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBar.swift; sourceTree = "<group>"; };
 		828A016B73E89ACACABA0737 /* AnalysisSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisSheet.swift; sourceTree = "<group>"; };
 		89A29CACC152D5D9773D8012 /* GeneFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneFeature.swift; sourceTree = "<group>"; };
@@ -247,6 +256,8 @@
 			isa = PBXGroup;
 			children = (
 				828A016B73E89ACACABA0737 /* AnalysisSheet.swift */,
+				7981B4F62EA3D1E700D02BA7 /* RestrictionEnzymeView.swift */,
+				7981B4F72EA3D1E700D02BA7 /* VirtualCloningView.swift */,
 				7F071C072744C6294B834B29 /* ControlBar.swift */,
 				BF0B9E25D6D068B4BD6DD3E8 /* HomeView.swift */,
 				8A5381E8D6B39638D9BED975 /* InfoSheet.swift */,
@@ -277,6 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				1D009E29E5A7E85E5E87D474 /* Codon.swift */,
+				080DBD403D2C8D0D1851E208 /* ColorSettings.swift */,
 				2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */,
 				89A29CACC152D5D9773D8012 /* GeneFeature.swift */,
 				95688B2EC28FBD20191B2531 /* Mutation.swift */,
@@ -354,7 +366,6 @@
 			);
 			mainGroup = 749E0DDF7A4A6F3744025994;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -400,6 +411,7 @@
 				219C9FAE10DBA54880459FF3 /* BallStickBuilder.swift in Sources */,
 				F7E0020FAA68CA727CBC08F8 /* CacheManager.swift in Sources */,
 				7BB490E25768CC91B5B11D60 /* Codon.swift in Sources */,
+				6A66D44EB0746A857D352B77 /* ColorSettings.swift in Sources */,
 				49ED7795548935F2D3838D5B /* ContentView.swift in Sources */,
 				0E3B597C91F9004788BAA13E /* ControlBar.swift in Sources */,
 				A2B6D3D8FB914BBC30D75F29 /* DNAApp.swift in Sources */,
@@ -425,6 +437,8 @@
 				E542A9425274A3E997E45324 /* SettingsView.swift in Sources */,
 				BA5DEA9ABE044ED8D2CA4B20 /* SidebarMenu.swift in Sources */,
 				4581269345B9FF02BD34A3E8 /* TranslationSheet.swift in Sources */,
+				7981B4FA2EA3D1E700D02BA7 /* VirtualCloningView.swift in Sources */,
+				7981B4FB2EA3D1E700D02BA7 /* RestrictionEnzymeView.swift in Sources */,
 				9FCCD305596BD4EA98E85671 /* ViewerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +451,7 @@
 				C86DFF47B88C25258F2AB1D4 /* BallStickBuilder.swift in Sources */,
 				F74B7C6CEB7610139476E074 /* CacheManager.swift in Sources */,
 				68CA1C5E3A25C8C53EFC06C7 /* Codon.swift in Sources */,
+				CE4B20AD19E9D4B04218EE43 /* ColorSettings.swift in Sources */,
 				8D6F578C277C8DB6668612BB /* ContentView.swift in Sources */,
 				A680BBF6C033AE71A736BD24 /* ControlBar.swift in Sources */,
 				EF328673E2D1D19151031BBF /* DNAApp.swift in Sources */,
@@ -462,6 +477,8 @@
 				16F66A5D6EB2E22262DE080E /* SettingsView.swift in Sources */,
 				40995E6E9A488D5E21DF2149 /* SidebarMenu.swift in Sources */,
 				2A455DFE61AEEFB15BC0A7E6 /* TranslationSheet.swift in Sources */,
+				7981B4F82EA3D1E700D02BA7 /* VirtualCloningView.swift in Sources */,
+				7981B4F92EA3D1E700D02BA7 /* RestrictionEnzymeView.swift in Sources */,
 				D1138289E9A51171E15EC608 /* ViewerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

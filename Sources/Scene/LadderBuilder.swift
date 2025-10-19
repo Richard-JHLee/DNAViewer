@@ -16,7 +16,7 @@ import UIKit
 
 class LadderBuilder {
     
-    private let spacing: Double = 2.0  // Spacing between base pairs
+    private let spacing: Double = 1.0  // Spacing between base pairs (reduced by half)
     private let width: Double = 8.0    // Width of the ladder
     private let scale: Double = 1.0
     

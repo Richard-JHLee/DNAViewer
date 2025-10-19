@@ -23,6 +23,41 @@ struct SequenceBar: View {
         return String(sequence[startIndex..<endIndex])
     }
     
+    // 현재 그룹을 중심으로 보이는 그룹 번호들 계산
+    private var visibleGroupNumbers: [Int] {
+        let currentGroup = sceneManager.currentGroup
+        let totalGroups = sceneManager.totalGroups
+        let maxVisible = 15 // 화면에 보이는 최대 그룹 수 (홀수로 설정)
+        let halfVisible = maxVisible / 2
+        
+        // 현재 그룹을 중심으로 시작/끝 그룹 계산
+        let startGroup = max(1, currentGroup - halfVisible)
+        let endGroup = min(totalGroups, currentGroup + halfVisible)
+        
+        // 전체 그룹 수가 maxVisible보다 작은 경우만 1부터 시작
+        let adjustedStartGroup: Int
+        let adjustedEndGroup: Int
+        
+        if totalGroups <= maxVisible {
+            // 전체 그룹 수가 적으면 모든 그룹을 표시
+            adjustedStartGroup = 1
+            adjustedEndGroup = totalGroups
+        } else {
+            // 전체 그룹 수가 많으면 현재 그룹을 중심으로 표시
+            adjustedStartGroup = startGroup
+            adjustedEndGroup = endGroup
+        }
+        
+        let visibleGroups = Array(adjustedStartGroup...adjustedEndGroup)
+        
+        // 디버깅을 위한 로그
+        print("🔍 visibleGroupNumbers: currentGroup=\(currentGroup), totalGroups=\(totalGroups)")
+        print("🔍 visibleGroups: \(visibleGroups)")
+        print("🔍 startGroup=\(adjustedStartGroup), endGroup=\(adjustedEndGroup)")
+        
+        return visibleGroups
+    }
+    
     var body: some View {
         let _ = print("🎨 SequenceBar rendering: currentGroup=\(sceneManager.currentGroup), groupSize=\(sceneManager.groupSize)")
         let _ = print("🎨 Display length: \(sceneManager.displayLength), actual display length: \(sceneManager.actualDisplayLength)")
@@ -45,22 +80,41 @@ struct SequenceBar: View {
             }
             .padding(.horizontal)
             
-            // Group navigation buttons (horizontal scroll)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(1...sceneManager.totalGroups, id: \.self) { groupNumber in
-                        GroupButton(
-                            groupNumber: groupNumber,
-                            isSelected: groupNumber == sceneManager.currentGroup,
-                            onTap: { group in
-                                sceneManager.loadGroup(group)
-                            }
-                        )
+            // Group navigation buttons (horizontal scroll with current group centered)
+            ScrollViewReader { proxy in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(visibleGroupNumbers, id: \.self) { groupNumber in
+                            GroupButton(
+                                groupNumber: groupNumber,
+                                isSelected: groupNumber == sceneManager.currentGroup,
+                                onTap: { group in
+                                    sceneManager.loadGroup(group)
+                                }
+                            )
+                            .id("group_\(groupNumber)")
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                .frame(height: 40)
+                .onChange(of: sceneManager.currentGroup) { newGroup in
+                    // Scroll to current group when it changes
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            proxy.scrollTo("group_\(newGroup)", anchor: .center)
+                        }
                     }
                 }
-                .padding(.horizontal)
+                .onAppear {
+                    // Scroll to current group on first appearance
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            proxy.scrollTo("group_\(sceneManager.currentGroup)", anchor: .center)
+                        }
+                    }
+                }
             }
-            .frame(height: 40)
             
             // Current group sequence
             ScrollView(.horizontal, showsIndicators: true) {

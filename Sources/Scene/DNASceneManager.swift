@@ -40,6 +40,12 @@ class DNASceneManager: ObservableObject {
     @Published var selectedBaseIndex: Int?
     @Published var colorSettings = ColorSettings.shared
     
+    // Track highlighted cut sites for camera focusing
+    private var highlightedCutSites: [Int] = []
+    
+    // Flag to prevent concurrent rebuilds
+    private var isRebuilding = false
+    
     var scene: SCNScene
     private var cameraNode: SCNNode
     private var helixNodes: [SCNNode] = []
@@ -263,6 +269,14 @@ class DNASceneManager: ObservableObject {
     }
     
     func rebuildScene() {
+        // Prevent concurrent rebuilds to avoid infinite recursion
+        guard !isRebuilding else {
+            print("⚠️ Rebuild already in progress, skipping...")
+            return
+        }
+        
+        isRebuilding = true
+        
         // Clear existing nodes first to free memory
         print("🧹 Clearing \(helixNodes.count) existing nodes...")
         DispatchQueue.main.async { [weak self] in
@@ -275,7 +289,10 @@ class DNASceneManager: ObservableObject {
                 // This will help release memory immediately
             }
             
-            guard let sequence = self.currentSequence else { return }
+            guard let sequence = self.currentSequence else { 
+                self.isRebuilding = false
+                return 
+            }
             
             // Limit display length for large sequences to prevent crash (except for APOE gene)
             let isAPOE = sequence.name.lowercased().contains("apoe")
@@ -312,6 +329,9 @@ class DNASceneManager: ObservableObject {
                         self.helixNodes.append(node)
                     }
                     print("✅ Scene rebuild complete. Total nodes: \(self.helixNodes.count)")
+                    
+                    // Reset the rebuilding flag
+                    self.isRebuilding = false
                 }
             }
         }
@@ -417,8 +437,9 @@ class DNASceneManager: ObservableObject {
         isAnimating.toggle()
         
         if isAnimating {
+            // Y-axis rotation (rotate around vertical axis)
             let rotation = SCNAction.repeatForever(
-                SCNAction.rotateBy(x: 0, y: .pi * 2, z: 0, duration: 8)
+                SCNAction.rotateBy(x: 0, y: CGFloat.pi * 2, z: 0, duration: 8)
             )
             
             for node in helixNodes {
@@ -438,8 +459,20 @@ class DNASceneManager: ObservableObject {
     }
     
     func resetView() {
-        cameraNode.position = SCNVector3(x: 0, y: 8, z: 25)
-        cameraNode.look(at: SCNVector3(x: 0, y: -10, z: 0))
+        // Stop any animations
+        for node in helixNodes {
+            node.removeAction(forKey: "rotation")
+        }
+        isAnimating = false
+        
+        // Reset camera position
+        cameraNode.position = SCNVector3(x: 0, y: 2, z: 15)
+        cameraNode.look(at: SCNVector3(x: 0, y: 0, z: 0))
+        
+        // Reset DNA model rotation
+        for node in helixNodes {
+            node.rotation = SCNVector4(x: 0, y: 0, z: 0, w: 0)
+        }
     }
     
     func selectBase(at index: Int) {
@@ -534,11 +567,108 @@ class DNASceneManager: ObservableObject {
         }
     }
     
+    // MARK: - Restriction Enzyme Visualization
+    
+    /// Highlight multiple positions (e.g., restriction enzyme cut sites)
+    func highlightPositions(_ positions: [Int]) {
+        clearHighlights()
+        
+        // Store the cut sites for camera focusing
+        highlightedCutSites = positions
+        
+        print("✂️ Highlighting \(positions.count) cut sites")
+        
+        // Check if any positions are outside current display range
+        var needsGroupChange = false
+        var targetGroup: Int?
+        
+        for position in positions {
+            let relativeIndex = position - displayStart
+            
+            if relativeIndex < 0 || relativeIndex >= displayLength {
+                print("⚠️ Position \(position) is out of display range")
+                needsGroupChange = true
+                targetGroup = (position / groupSize) + 1
+                break
+            }
+        }
+        
+        // If positions are outside current range, navigate to the appropriate group
+        if needsGroupChange, let group = targetGroup {
+            print("🔄 Navigating to group \(group) for cut sites")
+            loadGroup(group)
+            
+            // Highlight positions after group load completes
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.highlightPositionsInCurrentGroup(positions)
+            }
+            return
+        }
+        
+        // Highlight positions in current group
+        highlightPositionsInCurrentGroup(positions)
+    }
+    
+    /// Highlight positions within the current display group
+    private func highlightPositionsInCurrentGroup(_ positions: [Int]) {
+        for position in positions {
+            let relativeIndex = position - displayStart
+            
+            guard relativeIndex >= 0 && relativeIndex < displayLength else {
+                print("⚠️ Position \(position) is still out of display range")
+                continue
+            }
+            
+            // Find and highlight the node at this position
+            for helixNode in helixNodes {
+                if let name = helixNode.name, name == "basepair_\(relativeIndex)" {
+                    addCutSiteMarker(to: helixNode, at: position)
+                    break
+                }
+            }
+        }
+    }
+    
+    /// Add a cut site marker (scissors icon) to a node
+    private func addCutSiteMarker(to node: SCNNode, at position: Int) {
+        // Create a red cutting plane marker
+        let cutPlane = SCNBox(width: 3.0, height: 0.1, length: 3.0, chamferRadius: 0)
+        cutPlane.firstMaterial?.diffuse.contents = PlatformColor.red
+        cutPlane.firstMaterial?.transparency = 0.5
+        cutPlane.firstMaterial?.lightingModel = .constant
+        
+        let cutMarker = SCNNode(geometry: cutPlane)
+        cutMarker.name = "cut_site_\(position)"
+        node.addChildNode(cutMarker)
+        
+        // Add flashing animation
+        let fadeOut = SCNAction.fadeOpacity(to: 0.2, duration: 0.5)
+        let fadeIn = SCNAction.fadeOpacity(to: 0.8, duration: 0.5)
+        let flash = SCNAction.sequence([fadeOut, fadeIn])
+        let repeatFlash = SCNAction.repeatForever(flash)
+        cutMarker.runAction(repeatFlash)
+        
+        print("✂️ Added cut site marker at position \(position)")
+        
+        // Focus camera on the first cut site
+        if position == (highlightedCutSites.first ?? -1) {
+            focusCameraOn(position: node.worldPosition)
+        }
+    }
+    
     func clearHighlights() {
+        // Clear tracked cut sites
+        highlightedCutSites.removeAll()
+        
         for helixNode in helixNodes {
             helixNode.enumerateChildNodes { node, _ in
                 // Remove highlight spheres
                 if node.name == "highlight" {
+                    node.removeFromParentNode()
+                }
+                
+                // Remove cut site markers
+                if let name = node.name, name.hasPrefix("cut_site_") {
                     node.removeFromParentNode()
                 }
                 
@@ -652,11 +782,11 @@ extension PlatformColor {
             self.init(srgbRed: 1, green: 1, blue: 1, alpha: 1)
         }
         #else
-        // Prefer bridging via UIColor(Color) to preserve dynamic/sRGB on iPad
-        if #available(iOS 14.0, *) {
-            self.init(cgColor: UIColor(color).cgColor)
+        // Use direct CGColor access to avoid infinite recursion
+        if let cgColor = color.cgColor {
+            self.init(cgColor: cgColor)
         } else {
-            self.init(cgColor: color.cgColor ?? UIColor.white.cgColor)
+            self.init(cgColor: UIColor.white.cgColor)
         }
         #endif
     }

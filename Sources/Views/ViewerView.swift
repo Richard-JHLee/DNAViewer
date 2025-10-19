@@ -24,6 +24,8 @@ struct ViewerView: View {
     @State private var showStyleAndColor = false
     @State private var showSidebar = false
     @State private var showSettings = false
+    @State private var showRestrictionEnzyme = false
+    @State private var showVirtualCloning = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -65,6 +67,20 @@ struct ViewerView: View {
                                 Image(systemName: sceneManager.isAnimating ? "pause.circle.fill" : "play.circle.fill")
                                     .font(.system(size: 44))
                                     .foregroundColor(.white)
+                                    .shadow(radius: 2)
+                            }
+                            
+                            Button(action: { showRestrictionEnzyme = true }) {
+                                Image(systemName: "scissors")
+                                    .font(.system(size: 44))
+                                    .foregroundColor(.orange)
+                                    .shadow(radius: 2)
+                            }
+                            
+                            Button(action: { showVirtualCloning = true }) {
+                                Image(systemName: "arrow.triangle.branch")
+                                    .font(.system(size: 44))
+                                    .foregroundColor(.green)
                                     .shadow(radius: 2)
                             }
                             
@@ -145,6 +161,12 @@ struct ViewerView: View {
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
+        }
+        .sheet(isPresented: $showRestrictionEnzyme) {
+            RestrictionEnzymeView(sequence: sequence, sceneManager: sceneManager)
+        }
+        .sheet(isPresented: $showVirtualCloning) {
+            VirtualCloningView(sequence: sequence)
         }
         .overlay(
             // Sidebar Menu

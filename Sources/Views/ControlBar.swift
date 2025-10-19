@@ -21,8 +21,8 @@ struct ControlBar: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Style")
                             .font(.title2)
+                            .bold()
                             .foregroundColor(.white)
-                            .fontWeight(.bold)
                         
                         LazyVGrid(columns: [
                             GridItem(.flexible(), spacing: 8),
@@ -36,7 +36,7 @@ struct ControlBar: View {
                                 }) {
                                     Text(rep.rawValue)
                                         .font(.body)
-                                        .fontWeight(.semibold)
+                                        .bold()
                                         .foregroundColor(.white)
                                         .frame(maxWidth: .infinity)
                                         .frame(height: 44)
@@ -55,8 +55,8 @@ struct ControlBar: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Color")
                             .font(.title2)
+                            .bold()
                             .foregroundColor(.white)
-                            .fontWeight(.bold)
                         
                         LazyVGrid(columns: [
                             GridItem(.flexible(), spacing: 8),
@@ -70,7 +70,7 @@ struct ControlBar: View {
                                 }) {
                                     Text(scheme.rawValue)
                                         .font(.body)
-                                        .fontWeight(.semibold)
+                                        .bold()
                                         .foregroundColor(.white)
                                         .frame(maxWidth: .infinity)
                                         .frame(height: 44)

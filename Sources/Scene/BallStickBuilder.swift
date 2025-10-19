@@ -16,7 +16,7 @@ import UIKit
 
 class BallStickBuilder {
     
-    private let spacing: Double = 3.0
+    private let spacing: Double = 1.5  // Reduced by half
     private let helixRadius: Double = 1.5
     private let scale: Double = 10.0
     
@@ -30,7 +30,7 @@ class BallStickBuilder {
         for (index, base) in sequence.enumerated() {
             let position = startPosition + index
             let angle = Double(index) * angleStep
-            let height = Double(index) * 0.34 * scale
+            let height = Double(index) * 0.17 * scale  // Reduced by half
             
             // Create detailed molecular structure
             let x = helixRadius * cos(angle) * scale
