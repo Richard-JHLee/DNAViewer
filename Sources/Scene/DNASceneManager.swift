@@ -285,11 +285,18 @@ class DNASceneManager: ObservableObject {
         isRebuilding = true
         
         // Clear existing nodes first to free memory
+        // Save cut sites before clearing
+        let savedCutSites = highlightedCutSites
         print("🧹 Clearing \(helixNodes.count) existing nodes...")
+        print("💾 Saved \(savedCutSites.count) cut sites for re-application")
+        
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.helixNodes.forEach { $0.removeFromParentNode() }
             self.helixNodes.removeAll()
+            
+            // Restore cut sites
+            self.highlightedCutSites = savedCutSites
             
             // Force memory cleanup
             autoreleasepool {
@@ -339,6 +346,15 @@ class DNASceneManager: ObservableObject {
                     
                     // Reset the rebuilding flag
                     self.isRebuilding = false
+                    
+                    // Re-apply highlights if there are cut sites
+                    if !self.highlightedCutSites.isEmpty {
+                        print("🔄 Re-applying highlights for \(self.highlightedCutSites.count) cut sites after rebuild")
+                        // Small delay to ensure nodes are fully rendered
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            self.highlightPositionsInCurrentGroup(self.highlightedCutSites)
+                        }
+                    }
                 }
             }
         }
@@ -652,22 +668,44 @@ class DNASceneManager: ObservableObject {
     
     /// Highlight positions within the current display group
     private func highlightPositionsInCurrentGroup(_ positions: [Int]) {
+        print("🎨 highlightPositionsInCurrentGroup called")
+        print("   Positions to highlight: \(positions)")
+        print("   Display range: \(displayStart) - \(displayStart + displayLength)")
+        print("   Available helixNodes: \(helixNodes.count)")
+        
+        var highlightCount = 0
+        
         for position in positions {
             let relativeIndex = position - displayStart
             
             guard relativeIndex >= 0 && relativeIndex < displayLength else {
-                print("⚠️ Position \(position) is still out of display range")
+                print("   ⏭️ Position \(position) (relative: \(relativeIndex)) is out of current display range")
                 continue
             }
             
+            print("   🔍 Looking for node: basepair_\(relativeIndex) (global position: \(position))")
+            
             // Find and highlight the node at this position
+            var found = false
             for helixNode in helixNodes {
                 if let name = helixNode.name, name == "basepair_\(relativeIndex)" {
+                    print("   ✅ Found node: \(name)")
                     addCutSiteMarker(to: helixNode, at: position)
+                    highlightCount += 1
+                    found = true
                     break
                 }
             }
+            
+            if !found {
+                print("   ❌ Node not found for position \(position) (relative: \(relativeIndex))")
+                // Debug: list first few node names
+                let nodeNames = helixNodes.prefix(5).compactMap { $0.name }
+                print("   📋 First few node names: \(nodeNames)")
+            }
         }
+        
+        print("   📊 Highlighted \(highlightCount) out of \(positions.count) positions in current group")
     }
     
     /// Add a cut site marker (scissors icon) to a node
@@ -724,13 +762,17 @@ class DNASceneManager: ObservableObject {
         }
     }
     
-    func clearHighlights() {
+    func clearHighlights(preserveCutSites: Bool = false) {
         print("🧹 Clearing all highlights and cut site markers")
         
-        // Clear tracked cut sites
-        let previousCount = highlightedCutSites.count
-        highlightedCutSites.removeAll()
-        print("   Cleared \(previousCount) tracked cut sites")
+        // Clear tracked cut sites only if not preserving
+        if !preserveCutSites {
+            let previousCount = highlightedCutSites.count
+            highlightedCutSites.removeAll()
+            print("   Cleared \(previousCount) tracked cut sites")
+        } else {
+            print("   Preserving \(highlightedCutSites.count) tracked cut sites")
+        }
         
         var removedCount = 0
         
