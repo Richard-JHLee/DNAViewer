@@ -20,12 +20,18 @@ struct RestrictionEnzymeView: View {
     @State private var showCloningProcess = false
     @State private var showTransformation = false
     @State private var showVerification = false
+    @State private var availableEnzymes: [RestrictionEnzyme] = []
+    @State private var enzymeSiteCounts: [String: Int] = [:]
+    @State private var isAnalyzing = false
+    @State private var showOnlyAvailable = true
     
     private var filteredEnzymes: [RestrictionEnzyme] {
+        let enzymesToFilter = showOnlyAvailable ? availableEnzymes : RestrictionEnzyme.all
+        
         if searchText.isEmpty {
-            return RestrictionEnzyme.all
+            return enzymesToFilter
         } else {
-            return RestrictionEnzyme.all.filter { enzyme in
+            return enzymesToFilter.filter { enzyme in
                 enzyme.name.localizedCaseInsensitiveContains(searchText) ||
                 enzyme.sequence.localizedCaseInsensitiveContains(searchText)
             }
@@ -37,6 +43,7 @@ struct RestrictionEnzymeView: View {
             VStack(spacing: 0) {
                 headerView
                 searchBarView
+                filterToggleView
                 enzymeListView
                 bottomActionBar
                 
@@ -121,6 +128,9 @@ struct RestrictionEnzymeView: View {
                 }
             }
         }
+        .onAppear {
+            analyzeSequenceForAvailableEnzymes()
+        }
         .sheet(isPresented: $showDigestionResult) {
             if let map = restrictionMap {
                 let fragments = createFragmentsFromCutSites(map: map)
@@ -155,6 +165,43 @@ struct RestrictionEnzymeView: View {
             selectedEnzymes.remove(enzyme)
         } else {
             selectedEnzymes.insert(enzyme)
+        }
+    }
+    
+    private func analyzeSequenceForAvailableEnzymes() {
+        print("🧬 Analyzing sequence for available restriction enzymes...")
+        print("📊 Sequence length: \(sequence.length) bp")
+        print("📊 Sequence preview: \(String(sequence.sequence.prefix(50)))...")
+        
+        isAnalyzing = true
+        
+        Task {
+            let analyzer = RestrictionSiteAnalyzer()
+            let allEnzymes = RestrictionEnzyme.all
+            
+            print("🔍 Testing \(allEnzymes.count) restriction enzymes...")
+            
+            let hitsDict = analyzer.analyze(sequence: sequence.sequence, enzymes: allEnzymes)
+            
+            await MainActor.run {
+                var available: [RestrictionEnzyme] = []
+                var siteCounts: [String: Int] = [:]
+                
+                for enzyme in allEnzymes {
+                    if let hits = hitsDict[enzyme.name] {
+                        available.append(enzyme)
+                        siteCounts[enzyme.name] = hits.count
+                        print("✅ \(enzyme.name): \(hits.count) sites found")
+                    }
+                }
+                
+                availableEnzymes = available.sorted { $0.name < $1.name }
+                enzymeSiteCounts = siteCounts
+                isAnalyzing = false
+                
+                print("📋 Found \(available.count) available enzymes out of \(allEnzymes.count) total")
+                print("📋 Available enzymes: \(available.map { $0.name }.joined(separator: ", "))")
+            }
         }
     }
     
@@ -275,9 +322,33 @@ struct RestrictionEnzymeView: View {
                 .font(.headline)
                 .foregroundColor(.primary)
             
-            Text("\(sequence.length) bp")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+            HStack {
+                Text("\(sequence.length) bp")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                if !isAnalyzing && !availableEnzymes.isEmpty {
+                    HStack(spacing: 4) {
+                        Image(systemName: "scissors")
+                            .foregroundColor(.green)
+                            .font(.caption)
+                        Text("\(availableEnzymes.count) available enzymes")
+                            .font(.caption)
+                            .foregroundColor(.green)
+                            .fontWeight(.semibold)
+                    }
+                }
+            }
+            
+            // Sequence preview
+            if sequence.length > 0 {
+                Text("Preview: \(String(sequence.sequence.prefix(30)))...")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .font(.system(.caption, design: .monospaced))
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
@@ -294,6 +365,42 @@ struct RestrictionEnzymeView: View {
         .padding()
     }
     
+    private var filterToggleView: some View {
+        HStack {
+            Button(action: { showOnlyAvailable.toggle() }) {
+                HStack(spacing: 8) {
+                    Image(systemName: showOnlyAvailable ? "checkmark.circle.fill" : "circle")
+                        .foregroundColor(showOnlyAvailable ? .green : .gray)
+                    
+                    Text(showOnlyAvailable ? "Available Only" : "All Enzymes")
+                        .font(.subheadline)
+                        .foregroundColor(.primary)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(20)
+            }
+            
+            Spacer()
+            
+            if isAnalyzing {
+                HStack(spacing: 8) {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                    Text("Analyzing...")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            } else {
+                Text("\(availableEnzymes.count) available")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(.horizontal)
+    }
+    
     private var enzymeListView: some View {
         List {
             Section(header: Text("Select Restriction Enzymes").font(.headline)) {
@@ -301,7 +408,8 @@ struct RestrictionEnzymeView: View {
                     EnzymeRow(
                         enzyme: enzyme,
                         isSelected: selectedEnzymes.contains(enzyme),
-                        siteCount: restrictionMap?.sitesForEnzyme(enzyme) ?? 0
+                        siteCount: enzymeSiteCounts[enzyme.name] ?? 0,
+                        isAvailable: availableEnzymes.contains(enzyme)
                     )
                     .contentShape(Rectangle())
                     .onTapGesture {
@@ -384,6 +492,7 @@ struct EnzymeRow: View {
     let enzyme: RestrictionEnzyme
     let isSelected: Bool
     let siteCount: Int
+    let isAvailable: Bool
     
     var body: some View {
         HStack {
@@ -393,13 +502,28 @@ struct EnzymeRow: View {
                 .font(.title2)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(enzyme.name)
-                    .font(.headline)
-                    .foregroundColor(.primary)
+                HStack {
+                    Text(enzyme.name)
+                        .font(.headline)
+                        .foregroundColor(isAvailable ? .primary : .secondary)
+                    
+                    Spacer()
+                    
+                    // Availability indicator
+                    if isAvailable {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(.green)
+                            .font(.caption)
+                    } else {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.red)
+                            .font(.caption)
+                    }
+                }
                 
                 Text(enzyme.sequence)
                     .font(.system(.subheadline, design: .monospaced))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(isAvailable ? .secondary : .gray)
                 
                 HStack {
                     Text(overhangTypeText)
@@ -408,13 +532,19 @@ struct EnzymeRow: View {
                     
                     Spacer()
                     
-                    if siteCount > 0 {
-                        Text("\(siteCount) sites")
-                            .font(.caption)
-                            .foregroundColor(.green)
-                            .fontWeight(.semibold)
+                    if isAvailable {
+                        if siteCount > 0 {
+                            Text("\(siteCount) sites")
+                                .font(.caption)
+                                .foregroundColor(.green)
+                                .fontWeight(.semibold)
+                        } else {
+                            Text("Available")
+                                .font(.caption)
+                                .foregroundColor(.orange)
+                        }
                     } else {
-                        Text("No sites")
+                        Text("No match")
                             .font(.caption)
                             .foregroundColor(.red)
                     }
@@ -424,6 +554,7 @@ struct EnzymeRow: View {
             Spacer()
         }
         .padding(.vertical, 4)
+        .opacity(isAvailable ? 1.0 : 0.6)
     }
     
     private var overhangTypeText: String {
