@@ -482,11 +482,17 @@ class DNASceneManager: ObservableObject {
     }
     
     func resetView() {
+        print("🔄 Resetting view to default state...")
+        
         // Stop any animations
         for node in helixNodes {
             node.removeAction(forKey: "rotation")
         }
         isAnimating = false
+        
+        // Clear restriction enzyme cut site highlights
+        clearHighlights()
+        print("   ✅ Cleared all restriction enzyme highlights")
         
         // Reset camera position
         cameraNode.position = SCNVector3(x: 0, y: 3, z: 25)
@@ -496,6 +502,8 @@ class DNASceneManager: ObservableObject {
         for node in helixNodes {
             node.rotation = SCNVector4(x: 0, y: 0, z: 0, w: 0)
         }
+        
+        print("✅ View reset complete")
     }
     
     // MARK: - Gesture Handlers

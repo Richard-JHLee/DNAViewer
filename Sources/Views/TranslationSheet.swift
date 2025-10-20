@@ -13,6 +13,7 @@ struct TranslationSheet: View {
     
     @State private var selectedFrame: Int = 0
     @State private var showCodonTable = false
+    @State private var showDetailedCodons = false
     
     var body: some View {
         NavigationView {
@@ -89,6 +90,37 @@ struct TranslationSheet: View {
                     }
                     .padding(.horizontal)
                     
+                    // 코돈 상세 보기 토글
+                    Toggle("상세 코돈 번역 보기", isOn: $showDetailedCodons)
+                        .padding(.horizontal)
+                    
+                    // 상세 코돈 번역 결과
+                    if showDetailedCodons {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Codon Translation (first 50)")
+                                .font(.headline)
+                                .padding(.horizontal)
+                            
+                            LazyVStack(spacing: 4) {
+                                ForEach(Array(getDetailedCodons().prefix(50).enumerated()), id: \.offset) { index, item in
+                                    DetailedCodonRow(
+                                        position: selectedFrame + (index * 3) + 1,
+                                        codon: item
+                                    )
+                                }
+                                
+                                if getDetailedCodons().count > 50 {
+                                    Text("... (\(getDetailedCodons().count - 50) more codons)")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                        .padding()
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        .padding(.vertical)
+                    }
+                    
                     // Codon Table Button
                     Button(action: { showCodonTable = true }) {
                         HStack {
@@ -142,6 +174,96 @@ struct TranslationSheet: View {
         let framedSeq = getFramedSequence()
         let codons = CodonTable.shared.translateSequence(framedSeq)
         return codons.map { $0.aminoAcid }.joined(separator: " ")
+    }
+    
+    private func getDetailedCodons() -> [Codon] {
+        let framedSeq = getFramedSequence()
+        return CodonTable.shared.translateSequence(framedSeq)
+    }
+}
+
+// MARK: - Detailed Codon Row Component
+
+struct DetailedCodonRow: View {
+    let position: Int
+    let codon: Codon
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Position
+            Text("\(position)")
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .frame(width: 50, alignment: .trailing)
+            
+            // Codon sequence
+            Text(codon.sequence)
+                .font(.system(.body, design: .monospaced))
+                .fontWeight(.semibold)
+                .foregroundColor(codonColor)
+                .frame(width: 50)
+                .padding(.vertical, 4)
+                .padding(.horizontal, 8)
+                .background(codonBackground)
+                .cornerRadius(6)
+            
+            // Arrow
+            Image(systemName: "arrow.right")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            // Amino Acid
+            HStack(spacing: 4) {
+                Text(codon.aminoAcid)
+                    .font(.system(.body, design: .monospaced))
+                    .fontWeight(.bold)
+                
+                if codon.isStartCodon || codon.isStopCodon {
+                    Text(codon.isStartCodon ? "START" : "STOP")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(codon.isStartCodon ? Color.green : Color.red)
+                        .cornerRadius(4)
+                }
+            }
+            
+            Spacer()
+            
+            // Full name
+            Text(codon.fullName)
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+        .padding(.vertical, 4)
+        .padding(.horizontal, 8)
+        #if os(macOS)
+        .background(Color(NSColor.controlBackgroundColor).opacity(0.3))
+        #else
+        .background(Color(.systemGray6).opacity(0.3))
+        #endif
+        .cornerRadius(8)
+    }
+    
+    private var codonColor: Color {
+        if codon.isStartCodon {
+            return .green
+        } else if codon.isStopCodon {
+            return .red
+        } else {
+            return .primary
+        }
+    }
+    
+    private var codonBackground: Color {
+        if codon.isStartCodon {
+            return Color.green.opacity(0.2)
+        } else if codon.isStopCodon {
+            return Color.red.opacity(0.2)
+        } else {
+            return Color.blue.opacity(0.1)
+        }
     }
 }
 
