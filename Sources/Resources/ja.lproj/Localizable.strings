@@ -93,6 +93,24 @@
 "privacy_user_rights" = "ユーザーの権利";
 "privacy_policy_changes" = "ポリシーの変更";
 
+"privacy_section_1_title" = "1. 情報収集";
+"privacy_section_1_content" = "DNA Viewerは個人情報を収集しません。\n\n• 遺伝子ID：遺伝子データダウンロード用の公開識別子で、個人情報ではありません。\n• アプリ使用データ：アプリ内で生成されたすべてのデータはデバイス上にのみ保存されます。\n• ネットワークリクエスト：DNA配列データダウンロード用のAPIコールのみです。";
+
+"privacy_section_2_title" = "2. 情報使用目的";
+"privacy_section_2_content" = "• DNA構造可視化と3Dレンダリング\n• 教育・研究目的のデータ提供\n• アプリ改善のためのローカルデータ処理\n• ユーザー体験向上のためのアプリ内機能";
+
+"privacy_section_3_title" = "3. 情報保護とセキュリティ";
+"privacy_section_3_content" = "• すべてのデータはユーザーのデバイス上にのみ保存されます。\n• 外部サーバーへの個人情報送信はありません。\n• NCBI APIコール時に公開データのみをリクエストします。\n• アプリを削除すると、すべてのローカルデータが削除されます。";
+
+"privacy_section_4_title" = "4. サードパーティサービス";
+"privacy_section_4_content" = "• NCBI E-utilities (eutils.ncbi.nlm.nih.gov)：遺伝子データプロバイダー\n• NCBI遺伝子データベース：遺伝子情報プロバイダー\n• NCBIヌクレオチドデータベース：DNA配列プロバイダー\n\nすべてのサービスは公開APIで、個人情報は必要ありません。";
+
+"privacy_section_5_title" = "5. ユーザーの権利";
+"privacy_section_5_content" = "• データ削除：アプリを削除することですべてのデータを削除できます。\n• データ修正：アプリで入力した情報はいつでも修正できます。\n• お問い合わせ：プライバシー関連のお問い合わせはアプリ情報ページをご利用ください。";
+
+"privacy_section_6_title" = "6. ポリシーの変更";
+"privacy_section_6_content" = "プライバシーポリシーは必要に応じて変更される場合があり、変更時はアプリ内で通知されます。最終更新日：2025年10月20日";
+
 /* Terms */
 "terms_title" = "利用規約";
 "terms_service_usage" = "サービス利用";

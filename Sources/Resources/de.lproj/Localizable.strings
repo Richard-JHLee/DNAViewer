@@ -93,6 +93,24 @@
 "privacy_user_rights" = "Nutzerrechte";
 "privacy_policy_changes" = "Richtlinienänderungen";
 
+"privacy_section_1_title" = "1. Informationserfassung";
+"privacy_section_1_content" = "DNA Viewer sammelt keine persönlichen Informationen.\n\n• Gen-ID: Öffentliche Kennung zum Herunterladen von Gendaten, keine persönlichen Informationen.\n• App-Nutzungsdaten: Alle in der App generierten Daten werden nur auf dem Gerät gespeichert.\n• Netzwerkanfragen: Nur API-Aufrufe zum Herunterladen von DNA-Sequenzdaten.";
+
+"privacy_section_2_title" = "2. Zweck der Informationsnutzung";
+"privacy_section_2_content" = "• DNA-Strukturvisualisierung und 3D-Rendering\n• Datenbereitstellung für Bildungs- und Forschungszwecke\n• Lokale Datenverarbeitung zur App-Verbesserung\n• In-App-Funktionen zur Verbesserung der Benutzererfahrung";
+
+"privacy_section_3_title" = "3. Informationsschutz und Sicherheit";
+"privacy_section_3_content" = "• Alle Daten werden nur auf dem Benutzergerät gespeichert.\n• Keine Übertragung persönlicher Informationen an externe Server.\n• Nur öffentliche Daten werden bei NCBI-API-Aufrufen angefordert.\n• Alle lokalen Daten werden beim Entfernen der App gelöscht.";
+
+"privacy_section_4_title" = "4. Drittanbieterdienste";
+"privacy_section_4_content" = "• NCBI E-utilities (eutils.ncbi.nlm.nih.gov): Gendatenanbieter\n• NCBI-Gen-Datenbank: Geninformationsanbieter\n• NCBI-Nukleotid-Datenbank: DNA-Sequenzanbieter\n\nAlle Dienste sind öffentliche APIs und erfordern keine persönlichen Informationen.";
+
+"privacy_section_5_title" = "5. Nutzerrechte";
+"privacy_section_5_content" = "• Datenlöschung: Alle Daten durch Entfernen der App löschen.\n• Datenänderung: In der App eingegebene Informationen können jederzeit geändert werden.\n• Anfragen: Nutzen Sie die App-Info-Seite für datenschutzbezogene Anfragen.";
+
+"privacy_section_6_title" = "6. Richtlinienänderungen";
+"privacy_section_6_content" = "Die Datenschutzrichtlinie kann bei Bedarf geändert werden, mit Benachrichtigungen in der App bei Änderungen. Zuletzt aktualisiert: 20. Oktober 2025";
+
 /* Terms */
 "terms_title" = "Nutzungsbedingungen";
 "terms_service_usage" = "Service-Nutzung";
