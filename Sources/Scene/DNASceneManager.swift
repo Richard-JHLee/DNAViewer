@@ -60,7 +60,7 @@ class DNASceneManager: ObservableObject {
     
     // 실제 표시되는 염기서열 수 (안전장치 적용 후)
     var actualDisplayLength: Int {
-        guard let sequence = currentSequence else { return displayLength }
+        guard currentSequence != nil else { return displayLength }
         // 모든 시퀀스에 대해 100개 표시 (제한 제거)
         let maxDisplayLength = 100
         let safeLength = min(displayLength, maxDisplayLength)
