@@ -1,0 +1,110 @@
+/* DNA Viewer Localization - Japanese */
+
+/* App Name */
+"app_name" = "DNA Viewer";
+"app_subtitle" = "遺伝子エクスプローラー";
+
+/* Main Menu */
+"menu_about" = "アプリについて";
+"menu_user_guide" = "ユーザーガイド";
+"menu_features" = "主な機能";
+"menu_help" = "ヘルプ & FAQ";
+"menu_settings" = "設定";
+"menu_privacy" = "プライバシーポリシー";
+"menu_terms" = "利用規約";
+"menu_license" = "ライセンス";
+
+/* Bottom Menu */
+"bottom_sequence" = "塩基配列";
+"bottom_rotation" = "回転";
+"bottom_scissor" = "制限酵素";
+"bottom_cloning" = "クローニング";
+"bottom_analysis" = "分析";
+"bottom_reload" = "リロード";
+
+/* About */
+"about_title" = "DNA Viewerについて";
+"about_description" = "DNA Viewerは遺伝学教育のための3D DNA構造可視化アプリです。NCBIデータベースと連携して実際の遺伝子データをダウンロードし、インタラクティブな3D環境でDNA構造を探索できます。制限酵素分析、タンパク質翻訳、GC含量分析など、さまざまな分析ツールを提供して分子生物学の学習を支援します。";
+"about_developer" = "開発者";
+"about_copyright" = "© 2025 AVAS. All rights reserved.";
+"about_tech_stack" = "技術スタック";
+"about_key_features" = "主な機能";
+
+/* User Guide */
+"guide_title" = "ユーザーガイド";
+"guide_subtitle" = "DNA配列分析と3D可視化のための完全なガイド";
+"guide_getting_started" = "はじめに";
+"guide_gene_library" = "遺伝子ライブラリ";
+"guide_analysis_tools" = "分析ツール";
+"guide_restriction_enzymes" = "制限酵素";
+"guide_tips" = "使い方のコツ";
+
+/* Features */
+"features_title" = "主な機能";
+"features_subtitle" = "DNA Viewerのコア機能と特徴";
+"features_3d_viz" = "3D DNA可視化";
+"features_gene_lib" = "遺伝子ライブラリ";
+"features_analysis" = "分析ツール";
+"features_enzymes" = "制限酵素";
+"features_colors" = "カラーテーマ";
+"features_interaction" = "インタラクション機能";
+"features_performance" = "パフォーマンス最適化";
+"features_education" = "教育機能";
+
+/* Help */
+"help_title" = "ヘルプ & FAQ";
+"help_subtitle" = "よくある質問とトラブルシューティング";
+"help_general" = "一般的な使用";
+"help_3d" = "3D可視化";
+"help_analysis" = "分析ツール";
+"help_enzymes" = "制限酵素";
+"help_troubleshooting" = "トラブルシューティング";
+"help_need_more" = "追加のヘルプが必要です";
+"help_contact_info" = "問題が続く場合や他の質問がある場合は、アプリ情報ページのお問い合わせ情報からご連絡ください。";
+
+/* Privacy */
+"privacy_title" = "プライバシーポリシー";
+"privacy_info_collection" = "収集する情報";
+"privacy_info_usage" = "情報使用目的";
+"privacy_security" = "情報保護とセキュリティ";
+"privacy_third_party" = "サードパーティサービス";
+"privacy_user_rights" = "ユーザーの権利";
+"privacy_policy_changes" = "ポリシーの変更";
+
+/* Terms */
+"terms_title" = "利用規約";
+"terms_service_usage" = "サービス利用";
+"terms_service_usage_content" = "DNA Viewerは有料アプリです。アプリのダウンロードと使用にはApp Storeでの決済が必要です。";
+"terms_payment" = "支払いとサブスクリプション";
+"terms_payment_content" = "• アプリの購入はApp Storeを通じて処理されます。\n• 一回の支払いですべての機能を利用できます。\n• アプリ購入後の追加支払いはありません。\n• 返金はApp Storeのポリシーに従って制限されます。";
+"terms_service_scope" = "サービス範囲";
+"terms_refund" = "返金ポリシー";
+"terms_updates" = "アプリの更新とサポート";
+"terms_liability" = "責任の制限";
+"terms_ip" = "知的財産権";
+"terms_changes" = "規約の変更";
+
+/* License */
+"license_title" = "MITライセンス";
+"license_copyright" = "Copyright (c) 2025 AVAS";
+"license_open_source" = "オープンソースライブラリ";
+"license_app_info" = "アプリ情報";
+
+/* Analysis */
+"analysis_gc_content" = "GC含量";
+"analysis_cpg_islands" = "CpGアイランド";
+"analysis_restriction" = "制限酵素サイト";
+"analysis_protein" = "タンパク質";
+
+/* Common */
+"done" = "完了";
+"close" = "閉じる";
+"cancel" = "キャンセル";
+"ok" = "OK";
+"apply" = "適用";
+"analyze" = "分析";
+"digest" = "消化";
+"show_3d" = "3D表示";
+"show_all" = "すべて表示";
+"show_less" = "簡略表示";
+

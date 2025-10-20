@@ -1,0 +1,110 @@
+/* DNA Viewer Localization - English */
+
+/* App Name */
+"app_name" = "DNA Viewer";
+"app_subtitle" = "Genetic Explorer";
+
+/* Main Menu */
+"menu_about" = "About";
+"menu_user_guide" = "User Guide";
+"menu_features" = "Features";
+"menu_help" = "Help & FAQ";
+"menu_settings" = "Settings";
+"menu_privacy" = "Privacy Policy";
+"menu_terms" = "Terms of Service";
+"menu_license" = "License";
+
+/* Bottom Menu */
+"bottom_sequence" = "Sequence";
+"bottom_rotation" = "Rotation";
+"bottom_scissor" = "Scissor";
+"bottom_cloning" = "Cloning";
+"bottom_analysis" = "Analysis";
+"bottom_reload" = "Reload";
+
+/* About */
+"about_title" = "About DNA Viewer";
+"about_description" = "DNA Viewer is a 3D DNA structure visualization app for genetics education. It integrates with the NCBI database to download real gene data and explore DNA structures in an interactive 3D environment. It provides various analysis tools such as restriction enzyme analysis, protein translation, and GC content analysis to support molecular biology learning.";
+"about_developer" = "Developer";
+"about_copyright" = "© 2025 AVAS. All rights reserved.";
+"about_tech_stack" = "Technology Stack";
+"about_key_features" = "Key Features";
+
+/* User Guide */
+"guide_title" = "User Guide";
+"guide_subtitle" = "Complete guide for DNA sequence analysis and 3D visualization";
+"guide_getting_started" = "Getting Started";
+"guide_gene_library" = "Gene Library";
+"guide_analysis_tools" = "Analysis Tools";
+"guide_restriction_enzymes" = "Restriction Enzymes";
+"guide_tips" = "Tips & Tricks";
+
+/* Features */
+"features_title" = "Key Features";
+"features_subtitle" = "Core features and capabilities of DNA Viewer";
+"features_3d_viz" = "3D DNA Visualization";
+"features_gene_lib" = "Gene Library";
+"features_analysis" = "Analysis Tools";
+"features_enzymes" = "Restriction Enzymes";
+"features_colors" = "Color Themes";
+"features_interaction" = "Interaction Features";
+"features_performance" = "Performance Optimization";
+"features_education" = "Educational Features";
+
+/* Help */
+"help_title" = "Help & FAQ";
+"help_subtitle" = "Frequently asked questions and troubleshooting";
+"help_general" = "General Usage";
+"help_3d" = "3D Visualization";
+"help_analysis" = "Analysis Tools";
+"help_enzymes" = "Restriction Enzymes";
+"help_troubleshooting" = "Troubleshooting";
+"help_need_more" = "Need Additional Help";
+"help_contact_info" = "If problems persist or you have other questions, please contact us through the app info page.";
+
+/* Privacy */
+"privacy_title" = "Privacy Policy";
+"privacy_info_collection" = "Information Collection";
+"privacy_info_usage" = "Information Usage Purpose";
+"privacy_security" = "Information Protection and Security";
+"privacy_third_party" = "Third-Party Services";
+"privacy_user_rights" = "User Rights";
+"privacy_policy_changes" = "Policy Changes";
+
+/* Terms */
+"terms_title" = "Terms of Service";
+"terms_service_usage" = "Service Usage";
+"terms_service_usage_content" = "DNA Viewer is a paid app. Payment through the App Store is required to download and use the app.";
+"terms_payment" = "Payment & Subscription";
+"terms_payment_content" = "• App purchases are processed through the App Store.\n• One-time payment provides access to all app features.\n• No additional payments after app purchase.\n• Refunds are limited according to App Store policy.";
+"terms_service_scope" = "Service Scope";
+"terms_refund" = "Refund Policy";
+"terms_updates" = "App Updates & Support";
+"terms_liability" = "Liability Limitation";
+"terms_ip" = "Intellectual Property";
+"terms_changes" = "Terms Changes";
+
+/* License */
+"license_title" = "MIT License";
+"license_copyright" = "Copyright (c) 2025 AVAS";
+"license_open_source" = "Open Source Libraries";
+"license_app_info" = "App Information";
+
+/* Analysis */
+"analysis_gc_content" = "GC Content";
+"analysis_cpg_islands" = "CpG Islands";
+"analysis_restriction" = "Restriction Sites";
+"analysis_protein" = "Protein";
+
+/* Common */
+"done" = "Done";
+"close" = "Close";
+"cancel" = "Cancel";
+"ok" = "OK";
+"apply" = "Apply";
+"analyze" = "Analyze";
+"digest" = "Digest";
+"show_3d" = "Show 3D";
+"show_all" = "Show All";
+"show_less" = "Show Less";
+

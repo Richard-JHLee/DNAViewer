@@ -1,0 +1,110 @@
+/* DNA Viewer Localization - German */
+
+/* App Name */
+"app_name" = "DNA Viewer";
+"app_subtitle" = "Genetischer Explorer";
+
+/* Main Menu */
+"menu_about" = "Über";
+"menu_user_guide" = "Benutzerhandbuch";
+"menu_features" = "Funktionen";
+"menu_help" = "Hilfe & FAQ";
+"menu_settings" = "Einstellungen";
+"menu_privacy" = "Datenschutz";
+"menu_terms" = "Nutzungsbedingungen";
+"menu_license" = "Lizenz";
+
+/* Bottom Menu */
+"bottom_sequence" = "Sequenz";
+"bottom_rotation" = "Rotation";
+"bottom_scissor" = "Restriktionsenzym";
+"bottom_cloning" = "Klonierung";
+"bottom_analysis" = "Analyse";
+"bottom_reload" = "Neu laden";
+
+/* About */
+"about_title" = "Über DNA Viewer";
+"about_description" = "DNA Viewer ist eine 3D-DNA-Strukturvisualisierungs-App für die Genetikausbildung. Sie integriert sich mit der NCBI-Datenbank, um echte Gendaten herunterzuladen und DNA-Strukturen in einer interaktiven 3D-Umgebung zu erkunden. Sie bietet verschiedene Analysetools wie Restriktionsenzymanalyse, Proteinübersetzung und GC-Gehaltsanalyse zur Unterstützung des Molekularbiologieunterrichts.";
+"about_developer" = "Entwickler";
+"about_copyright" = "© 2025 AVAS. Alle Rechte vorbehalten.";
+"about_tech_stack" = "Technologie-Stack";
+"about_key_features" = "Hauptfunktionen";
+
+/* User Guide */
+"guide_title" = "Benutzerhandbuch";
+"guide_subtitle" = "Vollständiger Leitfaden für DNA-Sequenzanalyse und 3D-Visualisierung";
+"guide_getting_started" = "Erste Schritte";
+"guide_gene_library" = "Genbibliothek";
+"guide_analysis_tools" = "Analysewerkzeuge";
+"guide_restriction_enzymes" = "Restriktionsenzyme";
+"guide_tips" = "Tipps & Tricks";
+
+/* Features */
+"features_title" = "Hauptfunktionen";
+"features_subtitle" = "Kernfunktionen und -fähigkeiten von DNA Viewer";
+"features_3d_viz" = "3D-DNA-Visualisierung";
+"features_gene_lib" = "Genbibliothek";
+"features_analysis" = "Analysewerkzeuge";
+"features_enzymes" = "Restriktionsenzyme";
+"features_colors" = "Farbthemen";
+"features_interaction" = "Interaktionsfunktionen";
+"features_performance" = "Leistungsoptimierung";
+"features_education" = "Bildungsfunktionen";
+
+/* Help */
+"help_title" = "Hilfe & FAQ";
+"help_subtitle" = "Häufig gestellte Fragen und Fehlerbehebung";
+"help_general" = "Allgemeine Nutzung";
+"help_3d" = "3D-Visualisierung";
+"help_analysis" = "Analysewerkzeuge";
+"help_enzymes" = "Restriktionsenzyme";
+"help_troubleshooting" = "Fehlerbehebung";
+"help_need_more" = "Benötigen Sie weitere Hilfe";
+"help_contact_info" = "Wenn Probleme weiterhin bestehen oder Sie weitere Fragen haben, kontaktieren Sie uns bitte über die Kontaktinformationen auf der App-Info-Seite.";
+
+/* Privacy */
+"privacy_title" = "Datenschutzrichtlinie";
+"privacy_info_collection" = "Erfasste Informationen";
+"privacy_info_usage" = "Zweck der Informationsnutzung";
+"privacy_security" = "Informationsschutz und Sicherheit";
+"privacy_third_party" = "Drittanbieterdienste";
+"privacy_user_rights" = "Nutzerrechte";
+"privacy_policy_changes" = "Richtlinienänderungen";
+
+/* Terms */
+"terms_title" = "Nutzungsbedingungen";
+"terms_service_usage" = "Service-Nutzung";
+"terms_service_usage_content" = "DNA Viewer ist eine kostenpflichtige App. Für das Herunterladen und Nutzen der App ist eine Zahlung über den App Store erforderlich.";
+"terms_payment" = "Zahlung & Abonnement";
+"terms_payment_content" = "• App-Käufe werden über den App Store abgewickelt.\n• Eine einmalige Zahlung ermöglicht den Zugriff auf alle App-Funktionen.\n• Keine zusätzlichen Zahlungen nach dem App-Kauf.\n• Rückerstattungen sind gemäß der App Store-Richtlinien begrenzt.";
+"terms_service_scope" = "Service-Umfang";
+"terms_refund" = "Rückerstattungsrichtlinie";
+"terms_updates" = "App-Updates & Support";
+"terms_liability" = "Haftungsbeschränkung";
+"terms_ip" = "Geistiges Eigentum";
+"terms_changes" = "Änderungen der Bedingungen";
+
+/* License */
+"license_title" = "MIT-Lizenz";
+"license_copyright" = "Copyright (c) 2025 AVAS";
+"license_open_source" = "Open-Source-Bibliotheken";
+"license_app_info" = "App-Informationen";
+
+/* Analysis */
+"analysis_gc_content" = "GC-Gehalt";
+"analysis_cpg_islands" = "CpG-Inseln";
+"analysis_restriction" = "Restriktionsstellen";
+"analysis_protein" = "Protein";
+
+/* Common */
+"done" = "Fertig";
+"close" = "Schließen";
+"cancel" = "Abbrechen";
+"ok" = "OK";
+"apply" = "Anwenden";
+"analyze" = "Analysieren";
+"digest" = "Verdauen";
+"show_3d" = "3D anzeigen";
+"show_all" = "Alle anzeigen";
+"show_less" = "Weniger anzeigen";
+

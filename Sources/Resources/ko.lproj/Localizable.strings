@@ -1,0 +1,110 @@
+/* DNA Viewer Localization - Korean */
+
+/* App Name */
+"app_name" = "DNA Viewer";
+"app_subtitle" = "유전자 탐색기";
+
+/* Main Menu */
+"menu_about" = "앱 정보";
+"menu_user_guide" = "사용 가이드";
+"menu_features" = "주요 기능";
+"menu_help" = "도움말 & FAQ";
+"menu_settings" = "설정";
+"menu_privacy" = "개인정보 처리방침";
+"menu_terms" = "이용약관";
+"menu_license" = "라이센스";
+
+/* Bottom Menu */
+"bottom_sequence" = "염기서열";
+"bottom_rotation" = "회전";
+"bottom_scissor" = "절단효소";
+"bottom_cloning" = "클로닝";
+"bottom_analysis" = "분석";
+"bottom_reload" = "새로고침";
+
+/* About */
+"about_title" = "DNA Viewer 소개";
+"about_description" = "DNA Viewer는 유전학 교육을 위한 3D DNA 구조 시각화 앱입니다. NCBI 데이터베이스와 연동하여 실제 유전자 데이터를 다운로드하고, 인터랙티브한 3D 환경에서 DNA 구조를 탐색할 수 있습니다. 제한 효소 분석, 단백질 번역, GC 함량 분석 등 다양한 분석 도구를 제공하여 분자생물학 학습을 돕습니다.";
+"about_developer" = "개발자";
+"about_copyright" = "© 2025 AVAS. 모든 권리 보유.";
+"about_tech_stack" = "기술 스택";
+"about_key_features" = "주요 기능";
+
+/* User Guide */
+"guide_title" = "사용 가이드";
+"guide_subtitle" = "DNA 시퀀스 분석과 3D 시각화를 위한 완전한 가이드";
+"guide_getting_started" = "시작하기";
+"guide_gene_library" = "유전자 라이브러리";
+"guide_analysis_tools" = "분석 도구";
+"guide_restriction_enzymes" = "제한 효소";
+"guide_tips" = "사용 팁";
+
+/* Features */
+"features_title" = "주요 기능";
+"features_subtitle" = "DNA Viewer의 핵심 기능과 특징";
+"features_3d_viz" = "3D DNA 시각화";
+"features_gene_lib" = "유전자 라이브러리";
+"features_analysis" = "분석 도구";
+"features_enzymes" = "제한 효소";
+"features_colors" = "색상 테마";
+"features_interaction" = "인터랙션 기능";
+"features_performance" = "성능 최적화";
+"features_education" = "교육적 기능";
+
+/* Help */
+"help_title" = "도움말 & FAQ";
+"help_subtitle" = "자주 묻는 질문과 문제 해결";
+"help_general" = "일반 사용";
+"help_3d" = "3D 시각화";
+"help_analysis" = "분석 도구";
+"help_enzymes" = "제한 효소";
+"help_troubleshooting" = "문제 해결";
+"help_need_more" = "추가 도움이 필요합니다";
+"help_contact_info" = "문제가 지속되거나 다른 질문이 있으시면 앱 정보 페이지의 문의 정보를 통해 연락해주세요.";
+
+/* Privacy */
+"privacy_title" = "개인정보 처리방침";
+"privacy_info_collection" = "수집하는 정보";
+"privacy_info_usage" = "정보 사용 목적";
+"privacy_security" = "정보 보호 및 보안";
+"privacy_third_party" = "제3자 서비스";
+"privacy_user_rights" = "사용자 권리";
+"privacy_policy_changes" = "정책 변경";
+
+/* Terms */
+"terms_title" = "이용약관";
+"terms_service_usage" = "서비스 이용";
+"terms_service_usage_content" = "DNA Viewer는 유료 앱입니다. 앱 다운로드 및 사용을 위해서는 App Store에서 결제가 필요합니다.";
+"terms_payment" = "결제 및 구독";
+"terms_payment_content" = "• 앱 구매는 App Store를 통해 처리됩니다.\n• 일회성 결제로 앱의 모든 기능을 이용할 수 있습니다.\n• 앱 구매 후 추가 결제는 없습니다.\n• 환불은 App Store 정책에 따라 제한적입니다.";
+"terms_service_scope" = "서비스 범위";
+"terms_refund" = "환불 정책";
+"terms_updates" = "앱 업데이트 및 지원";
+"terms_liability" = "책임의 제한";
+"terms_ip" = "지적 재산권";
+"terms_changes" = "약관 변경";
+
+/* License */
+"license_title" = "MIT 라이센스";
+"license_copyright" = "Copyright (c) 2025 AVAS";
+"license_open_source" = "오픈소스 라이브러리";
+"license_app_info" = "앱 정보";
+
+/* Analysis */
+"analysis_gc_content" = "GC 함량";
+"analysis_cpg_islands" = "CpG 아일랜드";
+"analysis_restriction" = "제한 효소 분석";
+"analysis_protein" = "단백질 번역";
+
+/* Common */
+"done" = "완료";
+"close" = "닫기";
+"cancel" = "취소";
+"ok" = "확인";
+"apply" = "적용";
+"analyze" = "분석";
+"digest" = "절단";
+"show_3d" = "3D 보기";
+"show_all" = "전체 보기";
+"show_less" = "간단히 보기";
+

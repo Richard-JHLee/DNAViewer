@@ -34,6 +34,16 @@
 		6A523A250495A7881D47ACF2 /* DNASceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2933C9A3D6A5A0E1C930132E /* DNASceneManager.swift */; };
 		6A66D44EB0746A857D352B77 /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080DBD403D2C8D0D1851E208 /* ColorSettings.swift */; };
 		6E419D245A3959A6FE5F8A64 /* MutationSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A075A54DE5086635EAB4625 /* MutationSimulator.swift */; };
+		793611A02EA60434002217E5 /* LanguageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7936119F2EA60434002217E5 /* LanguageHelper.swift */; };
+		793611A12EA60434002217E5 /* LanguageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7936119F2EA60434002217E5 /* LanguageHelper.swift */; };
+		793611AE2EA60476002217E5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 793611A92EA60476002217E5 /* Localizable.strings */; };
+		793611AF2EA60476002217E5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 793611A32EA60476002217E5 /* Localizable.strings */; };
+		793611B02EA60476002217E5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 793611AC2EA60476002217E5 /* Localizable.strings */; };
+		793611B12EA60476002217E5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 793611A62EA60476002217E5 /* Localizable.strings */; };
+		793611B22EA60476002217E5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 793611A92EA60476002217E5 /* Localizable.strings */; };
+		793611B32EA60476002217E5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 793611A32EA60476002217E5 /* Localizable.strings */; };
+		793611B42EA60476002217E5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 793611AC2EA60476002217E5 /* Localizable.strings */; };
+		793611B52EA60476002217E5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 793611A62EA60476002217E5 /* Localizable.strings */; };
 		7981B4F82EA3D1E700D02BA7 /* VirtualCloningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7981B4F72EA3D1E700D02BA7 /* VirtualCloningView.swift */; };
 		7981B4F92EA3D1E700D02BA7 /* RestrictionEnzymeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7981B4F62EA3D1E700D02BA7 /* RestrictionEnzymeView.swift */; };
 		7981B4FA2EA3D1E700D02BA7 /* VirtualCloningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7981B4F72EA3D1E700D02BA7 /* VirtualCloningView.swift */; };
@@ -128,6 +138,11 @@
 		65B8A4AD2F9C33F51C5870D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		66A96B5E1B0F288E95529D4A /* DNAViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNAViewModel.swift; sourceTree = "<group>"; };
 		78CB62E2F8F22E49B4747143 /* ViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerView.swift; sourceTree = "<group>"; };
+		7936119F2EA60434002217E5 /* LanguageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageHelper.swift; sourceTree = "<group>"; };
+		793611A22EA60476002217E5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Localizable.strings; sourceTree = "<group>"; };
+		793611A52EA60476002217E5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
+		793611A82EA60476002217E5 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Localizable.strings; sourceTree = "<group>"; };
+		793611AB2EA60476002217E5 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = Localizable.strings; sourceTree = "<group>"; };
 		7981B4F62EA3D1E700D02BA7 /* RestrictionEnzymeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionEnzymeView.swift; sourceTree = "<group>"; };
 		7981B4F72EA3D1E700D02BA7 /* VirtualCloningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualCloningView.swift; sourceTree = "<group>"; };
 		7981B4FC2EA48BE700D02BA7 /* CloningVisualizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloningVisualizationView.swift; sourceTree = "<group>"; };
@@ -193,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				8A075A54DE5086635EAB4625 /* MutationSimulator.swift */,
+				7936119F2EA60434002217E5 /* LanguageHelper.swift */,
 				CF284579B996092849B64A0F /* RestrictionEnzymes.swift */,
 				2C435A58633CA370AC6D6E2E /* SequenceAnalyzer.swift */,
 			);
@@ -221,8 +237,44 @@
 			isa = PBXGroup;
 			children = (
 				DC54D377B007B7D3ABA58CD6 /* Assets.xcassets */,
+				793611A42EA60476002217E5 /* de.lproj */,
+				793611A72EA60476002217E5 /* en.lproj */,
+				793611AA2EA60476002217E5 /* ja.lproj */,
+				793611AD2EA60476002217E5 /* ko.lproj */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		793611A42EA60476002217E5 /* de.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				793611A32EA60476002217E5 /* Localizable.strings */,
+			);
+			path = de.lproj;
+			sourceTree = "<group>";
+		};
+		793611A72EA60476002217E5 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				793611A62EA60476002217E5 /* Localizable.strings */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
+		793611AA2EA60476002217E5 /* ja.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				793611A92EA60476002217E5 /* Localizable.strings */,
+			);
+			path = ja.lproj;
+			sourceTree = "<group>";
+		};
+		793611AD2EA60476002217E5 /* ko.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				793611AC2EA60476002217E5 /* Localizable.strings */,
+			);
+			path = ko.lproj;
 			sourceTree = "<group>";
 		};
 		839650E6E2BB151DB60F390B /* Scene */ = {
@@ -391,6 +443,9 @@
 			knownRegions = (
 				Base,
 				en,
+				de,
+				ja,
+				ko,
 			);
 			mainGroup = 749E0DDF7A4A6F3744025994;
 			minimizedProjectReferenceProxies = 1;
@@ -412,6 +467,10 @@
 				BA287B9F09C18621E3E8DE86 /* QuizData.json in Resources */,
 				4C6A24C34A2D56BCBA93A527 /* RestrictionEnzymes.json in Resources */,
 				83041FB103CBBD04B33D3FB5 /* RestrictionSites.json in Resources */,
+				793611B22EA60476002217E5 /* Localizable.strings in Resources */,
+				793611B32EA60476002217E5 /* Localizable.strings in Resources */,
+				793611B42EA60476002217E5 /* Localizable.strings in Resources */,
+				793611B52EA60476002217E5 /* Localizable.strings in Resources */,
 				238949F2F149851A01D027D7 /* SampleGenes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -424,6 +483,10 @@
 				7C8079EC5B3B5E0958AAA270 /* QuizData.json in Resources */,
 				D7CEA895C00D28F9823D0FAD /* RestrictionEnzymes.json in Resources */,
 				8BFEE05B17E1BC71AC050A6D /* RestrictionSites.json in Resources */,
+				793611AE2EA60476002217E5 /* Localizable.strings in Resources */,
+				793611AF2EA60476002217E5 /* Localizable.strings in Resources */,
+				793611B02EA60476002217E5 /* Localizable.strings in Resources */,
+				793611B12EA60476002217E5 /* Localizable.strings in Resources */,
 				7D6DB0B74EDDFB6CEF3687C7 /* SampleGenes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -438,6 +501,7 @@
 				8B314E4DB3C0C91B7D968102 /* AnalysisSheet.swift in Sources */,
 				219C9FAE10DBA54880459FF3 /* BallStickBuilder.swift in Sources */,
 				F7E0020FAA68CA727CBC08F8 /* CacheManager.swift in Sources */,
+				793611A02EA60434002217E5 /* LanguageHelper.swift in Sources */,
 				7BB490E25768CC91B5B11D60 /* Codon.swift in Sources */,
 				6A66D44EB0746A857D352B77 /* ColorSettings.swift in Sources */,
 				49ED7795548935F2D3838D5B /* ContentView.swift in Sources */,
@@ -485,6 +549,7 @@
 				5E851E8BCB1814AA41771E4C /* AnalysisSheet.swift in Sources */,
 				C86DFF47B88C25258F2AB1D4 /* BallStickBuilder.swift in Sources */,
 				F74B7C6CEB7610139476E074 /* CacheManager.swift in Sources */,
+				793611A12EA60434002217E5 /* LanguageHelper.swift in Sources */,
 				68CA1C5E3A25C8C53EFC06C7 /* Codon.swift in Sources */,
 				CE4B20AD19E9D4B04218EE43 /* ColorSettings.swift in Sources */,
 				8D6F578C277C8DB6668612BB /* ContentView.swift in Sources */,
@@ -534,6 +599,38 @@
 				1616514D0778128027F527B6 /* Base */,
 			);
 			name = DNAViewer.entitlements;
+			sourceTree = "<group>";
+		};
+		793611A32EA60476002217E5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				793611A22EA60476002217E5 /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		793611A62EA60476002217E5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				793611A52EA60476002217E5 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		793611A92EA60476002217E5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				793611A82EA60476002217E5 /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		793611AC2EA60476002217E5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				793611AB2EA60476002217E5 /* ko */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

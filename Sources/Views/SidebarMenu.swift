@@ -13,9 +13,13 @@ struct SidebarMenu: View {
     let onAnalysis: () -> Void
     let onRestrictionEnzymes: () -> Void
     let onUserGuide: () -> Void
+    let onFeatures: () -> Void
     let onHelp: () -> Void
     let onSettings: () -> Void
     let onAbout: () -> Void
+    let onPrivacy: () -> Void
+    let onTerms: () -> Void
+    let onLicense: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -61,33 +65,13 @@ struct SidebarMenu: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     MenuItem(
-                        icon: "books.vertical.fill",
-                        title: "Gene Library",
-                        subtitle: "Browse NCBI gene database",
-                        color: .purple
+                        icon: "info.circle.fill",
+                        title: "About",
+                        subtitle: "App information and version",
+                        color: .indigo
                     ) {
                         isPresented = false
-                        onLibrary()
-                    }
-                    
-                    MenuItem(
-                        icon: "chart.bar.fill",
-                        title: "Analysis Tools",
-                        subtitle: "GC Content, CpG Islands, Analysis",
-                        color: .blue
-                    ) {
-                        isPresented = false
-                        onAnalysis()
-                    }
-                    
-                    MenuItem(
-                        icon: "scissors.badge.ellipsis",
-                        title: "Restriction Enzymes",
-                        subtitle: "Cut DNA & Educational Features",
-                        color: .orange
-                    ) {
-                        isPresented = false
-                        onRestrictionEnzymes()
+                        onAbout()
                     }
                     
                     MenuItem(
@@ -98,6 +82,16 @@ struct SidebarMenu: View {
                     ) {
                         isPresented = false
                         onUserGuide()
+                    }
+                    
+                    MenuItem(
+                        icon: "star.fill",
+                        title: "Features",
+                        subtitle: "Key features and capabilities",
+                        color: .yellow
+                    ) {
+                        isPresented = false
+                        onFeatures()
                     }
                     
                     MenuItem(
@@ -121,13 +115,33 @@ struct SidebarMenu: View {
                     }
                     
                     MenuItem(
-                        icon: "info.circle.fill",
-                        title: "About",
-                        subtitle: "Version 1.0.0 • App information",
-                        color: .indigo
+                        icon: "hand.raised.fill",
+                        title: "Privacy Policy",
+                        subtitle: "Data protection and privacy",
+                        color: .brown
                     ) {
                         isPresented = false
-                        onAbout()
+                        onPrivacy()
+                    }
+                    
+                    MenuItem(
+                        icon: "doc.text.fill",
+                        title: "Terms of Service",
+                        subtitle: "Usage terms and conditions",
+                        color: .cyan
+                    ) {
+                        isPresented = false
+                        onTerms()
+                    }
+                    
+                    MenuItem(
+                        icon: "doc.plaintext.fill",
+                        title: "License",
+                        subtitle: "MIT License and open source",
+                        color: .mint
+                    ) {
+                        isPresented = false
+                        onLicense()
                     }
                 }
                 .padding(.horizontal, 20)
@@ -217,8 +231,12 @@ struct MenuItem: View {
         onAnalysis: {},
         onRestrictionEnzymes: {},
         onUserGuide: {},
+        onFeatures: {},
         onHelp: {},
         onSettings: {},
-        onAbout: {}
+        onAbout: {},
+        onPrivacy: {},
+        onTerms: {},
+        onLicense: {}
     )
 }

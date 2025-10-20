@@ -26,8 +26,13 @@ struct ViewerView: View {
     @State private var showSettings = false
     @State private var showRestrictionEnzyme = false
     @State private var showVirtualCloning = false
+    @State private var showAbout = false
     @State private var showUserGuide = false
+    @State private var showFeatures = false
     @State private var showHelp = false
+    @State private var showPrivacy = false
+    @State private var showTerms = false
+    @State private var showLicense = false
     
     // Digest and Educational Features
     @State private var showDigestionResult = false
@@ -228,11 +233,76 @@ struct ViewerView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
+        .sheet(isPresented: $showAbout) {
+            AboutContentView()
+        }
+        .onChange(of: showAbout) { newValue in
+            if !newValue {
+                // About 화면이 닫히면 사이드바 다시 열기
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showSidebar = true
+                }
+            }
+        }
         .sheet(isPresented: $showUserGuide) {
             UserGuideContentView()
         }
+        .onChange(of: showUserGuide) { newValue in
+            if !newValue {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showSidebar = true
+                }
+            }
+        }
+        .sheet(isPresented: $showFeatures) {
+            FeaturesContentView()
+        }
+        .onChange(of: showFeatures) { newValue in
+            if !newValue {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showSidebar = true
+                }
+            }
+        }
         .sheet(isPresented: $showHelp) {
             HelpContentView()
+        }
+        .onChange(of: showHelp) { newValue in
+            if !newValue {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showSidebar = true
+                }
+            }
+        }
+        .sheet(isPresented: $showPrivacy) {
+            PrivacyContentView()
+        }
+        .onChange(of: showPrivacy) { newValue in
+            if !newValue {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showSidebar = true
+                }
+            }
+        }
+        .sheet(isPresented: $showTerms) {
+            TermsContentView()
+        }
+        .onChange(of: showTerms) { newValue in
+            if !newValue {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showSidebar = true
+                }
+            }
+        }
+        .sheet(isPresented: $showLicense) {
+            LicenseContentView()
+        }
+        .onChange(of: showLicense) { newValue in
+            if !newValue {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showSidebar = true
+                }
+            }
         }
         .sheet(isPresented: $showVirtualCloning) {
             VirtualCloningView(sequence: sequence)
@@ -301,11 +371,13 @@ struct ViewerView: View {
                             onAnalysis: { showAnalysis = true },
                             onRestrictionEnzymes: { showRestrictionEnzyme = true },
                             onUserGuide: { showUserGuide = true },
+                            onFeatures: { showFeatures = true },
                             onHelp: { showHelp = true },
                             onSettings: { showSettings = true },
-                            onAbout: { 
-                                // TODO: About sheet (향후 구현)
-                            }
+                            onAbout: { showAbout = true },
+                            onPrivacy: { showPrivacy = true },
+                            onTerms: { showTerms = true },
+                            onLicense: { showLicense = true }
                         )
                         .frame(width: 280)
                         .transition(.move(edge: .leading))
@@ -454,6 +526,205 @@ struct ScaleButtonStyle: ButtonStyle {
     }
 }
 
+// MARK: - About Content View
+
+struct AboutContentView: View {
+    @Environment(\.dismiss) var dismiss
+    
+    private var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+    }
+    
+    private var buildNumber: String {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
+    }
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    // 앱 아이콘 및 이름
+                    HStack(spacing: 16) {
+                        Image("DNAViewerLogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 80, height: 80)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color.blue.opacity(0.3), lineWidth: 2)
+                            )
+                            .shadow(color: .blue.opacity(0.2), radius: 8, x: 0, y: 4)
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(LanguageHelper.string("app_name"))
+                                .font(.title)
+                                .fontWeight(.bold)
+                            
+                            Text("Version \(appVersion) (Build \(buildNumber))")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    
+                    Divider()
+                    
+                    // 앱 설명
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text(LanguageHelper.string("about_title"))
+                            .font(.headline)
+                        
+                        Text(LanguageHelper.string("about_description"))
+                            .font(.body)
+                            .foregroundColor(.primary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    
+                    // 주요 기능
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text(LanguageHelper.string("about_key_features"))
+                            .font(.headline)
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            AboutFeatureRow(
+                                icon: "cube.fill",
+                                title: "3D DNA 시각화",
+                                description: "SceneKit 기반 고품질 3D 렌더링으로 Double Helix, Ladder, Ball & Stick 스타일 지원"
+                            )
+                            AboutFeatureRow(
+                                icon: "books.vertical.fill",
+                                title: "NCBI 유전자 라이브러리",
+                                description: "실시간 NCBI 데이터베이스 연동으로 수천 개의 유전자 정보 제공"
+                            )
+                            AboutFeatureRow(
+                                icon: "chart.bar.fill",
+                                title: "고급 분석 도구",
+                                description: "GC 함량, CpG 아일랜드, 제한 효소, 단백질 번역 등 포괄적인 분석"
+                            )
+                            AboutFeatureRow(
+                                icon: "scissors",
+                                title: "제한 효소 시뮬레이션",
+                                description: "200+ 제한 효소로 DNA 절단 위치 시각화 및 가상 실험"
+                            )
+                            AboutFeatureRow(
+                                icon: "paintpalette.fill",
+                                title: "색상 테마",
+                                description: "Classic, Vivid, Pastel, Neon 등 다양한 색상 테마와 커스터마이징"
+                            )
+                            AboutFeatureRow(
+                                icon: "hand.tap.fill",
+                                title: "인터랙티브 조작",
+                                description: "드래그, 핀치, 자동 회전 등 직관적인 3D 조작"
+                            )
+                            AboutFeatureRow(
+                                icon: "graduationcap.fill",
+                                title: "교육적 기능",
+                                description: "분자생물학 실험 시뮬레이션과 클로닝 프로세스 시각화"
+                            )
+                        }
+                    }
+                    
+                    Divider()
+                    
+                    // 개발자 정보
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(LanguageHelper.string("about_developer"))
+                            .font(.headline)
+                        
+                        Text("AVAS")
+                            .font(.body)
+                            .foregroundColor(.primary)
+                        
+                        Text(LanguageHelper.string("about_copyright"))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .padding(.top, 8)
+                    }
+                    
+                    Divider()
+                    
+                    // 기술 정보
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(LanguageHelper.string("about_tech_stack"))
+                            .font(.headline)
+                        
+                        VStack(alignment: .leading, spacing: 6) {
+                            TechStackRow(name: "SwiftUI", description: "Modern UI Framework")
+                            TechStackRow(name: "SceneKit", description: "3D Graphics Rendering")
+                            TechStackRow(name: "NCBI E-utilities", description: "Gene Database API")
+                            TechStackRow(name: "Charts Framework", description: "Data Visualization")
+                        }
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle(LanguageHelper.string("menu_about"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(LanguageHelper.string("done")) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct AboutFeatureRow: View {
+    let icon: String
+    let title: String
+    let description: String
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.title3)
+                .foregroundColor(.blue)
+                .frame(width: 24, height: 24)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .multilineTextAlignment(.leading)
+            }
+            
+            Spacer()
+        }
+    }
+}
+
+struct TechStackRow: View {
+    let name: String
+    let description: String
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.caption)
+                .foregroundColor(.green)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(name)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+        }
+    }
+}
+
 // MARK: - User Guide Content View
 
 struct UserGuideContentView: View {
@@ -517,11 +788,11 @@ struct UserGuideContentView: View {
                 }
                 .padding()
             }
-            .navigationTitle("사용 가이드")
+            .navigationTitle(LanguageHelper.string("guide_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("완료") {
+                    Button(LanguageHelper.string("done")) {
                         dismiss()
                     }
                 }
@@ -737,11 +1008,11 @@ struct HelpContentView: View {
                 }
                 .padding()
             }
-            .navigationTitle("도움말")
+            .navigationTitle(LanguageHelper.string("help_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("완료") {
+                    Button(LanguageHelper.string("done")) {
                         dismiss()
                     }
                 }
@@ -801,6 +1072,562 @@ struct FAQSection: View {
         .padding()
         .background(Color(.systemGray6))
         .cornerRadius(12)
+    }
+}
+
+// MARK: - Features Content View
+
+struct FeaturesContentView: View {
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    // Header
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("주요 기능")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        
+                        Text("DNA Viewer의 핵심 기능과 특징")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.bottom, 8)
+                    
+                    // 3D DNA 시각화
+                    FeatureCard(
+                        title: "3D DNA 시각화",
+                        icon: "cube.fill",
+                        color: .blue,
+                        features: [
+                            "SceneKit 기반 고품질 3D 렌더링",
+                            "실시간 인터랙티브 조작 (회전, 확대/축소)",
+                            "Double Helix, Ladder, Ball & Stick 스타일 지원",
+                            "그룹별 염기서열 탐색 (100bp 단위)"
+                        ]
+                    )
+                    
+                    // 유전자 라이브러리
+                    FeatureCard(
+                        title: "유전자 라이브러리",
+                        icon: "books.vertical.fill",
+                        color: .purple,
+                        features: [
+                            "NCBI 데이터베이스 실시간 연동",
+                            "카테고리별 유전자 검색 및 필터링",
+                            "Organism, Gene Type, Chromosome 등 분류",
+                            "FASTA 형식 DNA 시퀀스 자동 로드"
+                        ]
+                    )
+                    
+                    // 분석 도구
+                    FeatureCard(
+                        title: "분석 도구",
+                        icon: "chart.bar.fill",
+                        color: .green,
+                        features: [
+                            "GC 함량 분석 및 윈도우 플롯",
+                            "CpG 아일랜드 자동 탐지",
+                            "제한 효소 절단 부위 분석",
+                            "DNA → 단백질 번역 (코돈 테이블)",
+                            "아미노산 조성 막대그래프",
+                            "Open Reading Frame (ORF) 탐지"
+                        ]
+                    )
+                    
+                    // 제한 효소 기능
+                    FeatureCard(
+                        title: "제한 효소",
+                        icon: "scissors",
+                        color: .orange,
+                        features: [
+                            "200+ 제한 효소 데이터베이스",
+                            "IUPAC 코드 지원 (정규표현식 변환)",
+                            "절단 위치 3D 시각화 (빨간 마커)",
+                            "SequenceBar scissors 아이콘 표시",
+                            "가상 DNA 절단 시뮬레이션",
+                            "교육용 Gel Electrophoresis 시각화"
+                        ]
+                    )
+                    
+                    // 색상 테마
+                    FeatureCard(
+                        title: "색상 테마",
+                        icon: "paintpalette.fill",
+                        color: .pink,
+                        features: [
+                            "Classic, Vivid, Pastel, Neon 테마",
+                            "염기별 색상 커스터마이징 (A, T, G, C)",
+                            "수소 결합 색상 설정",
+                            "실시간 색상 변경 및 미리보기"
+                        ]
+                    )
+                    
+                    // 인터랙션 기능
+                    FeatureCard(
+                        title: "인터랙션 기능",
+                        icon: "hand.tap.fill",
+                        color: .teal,
+                        features: [
+                            "드래그로 3D 모델 회전",
+                            "핀치 제스처로 확대/축소",
+                            "자동 360도 회전 애니메이션",
+                            "개별 염기 선택 및 하이라이트",
+                            "그룹 단위 네비게이션",
+                            "Reload로 초기 상태 복원"
+                        ]
+                    )
+                    
+                    // 성능 최적화
+                    FeatureCard(
+                        title: "성능 최적화",
+                        icon: "speedometer",
+                        color: .indigo,
+                        features: [
+                            "그룹 단위 로딩으로 메모리 효율화",
+                            "대용량 DNA 시퀀스 처리 가능",
+                            "백그라운드 스레드 3D 렌더링",
+                            "스마트 캐싱 시스템",
+                            "자동 메모리 정리 (autoreleasepool)"
+                        ]
+                    )
+                    
+                    // 교육적 기능
+                    FeatureCard(
+                        title: "교육적 기능",
+                        icon: "graduationcap.fill",
+                        color: .red,
+                        features: [
+                            "분자생물학 실험 시뮬레이션",
+                            "DNA 클로닝 프로세스 시각화",
+                            "유전자 변환 애니메이션",
+                            "실험 검증 과정 학습",
+                            "상세한 사용 가이드 제공"
+                        ]
+                    )
+                }
+                .padding()
+            }
+            .navigationTitle(LanguageHelper.string("features_title"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(LanguageHelper.string("done")) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct FeatureCard: View {
+    let title: String
+    let icon: String
+    let color: Color
+    let features: [String]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Header
+            HStack(spacing: 12) {
+                Image(systemName: icon)
+                    .font(.title2)
+                    .foregroundColor(color)
+                    .frame(width: 40, height: 40)
+                    .background(
+                        Circle()
+                            .fill(color.opacity(0.15))
+                    )
+                
+                Text(title)
+                    .font(.title2)
+                    .fontWeight(.bold)
+            }
+            
+            // Features list
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(features, id: \.self) { feature in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.body)
+                            .foregroundColor(color)
+                        
+                        Text(feature)
+                            .font(.subheadline)
+                            .foregroundColor(.primary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        Spacer()
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemBackground))
+                .shadow(color: color.opacity(0.1), radius: 8, x: 0, y: 4)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(color.opacity(0.2), lineWidth: 1)
+        )
+    }
+}
+
+// MARK: - Privacy Policy Content View
+
+struct PrivacyContentView: View {
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text(LanguageHelper.string("privacy_title"))
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    VStack(alignment: .leading, spacing: 16) {
+                        PrivacySection(
+                            title: "1. 수집하는 정보",
+                            content: "DNA Viewer는 사용자의 개인정보를 수집하지 않습니다.\n\n• Gene ID: 유전자 데이터를 다운로드하기 위한 공개 식별자로, 개인정보가 아닙니다.\n• 앱 사용 데이터: 앱 내에서 생성되는 모든 데이터는 기기에만 저장됩니다.\n• 네트워크 요청: DNA 시퀀스 데이터 다운로드를 위한 API 호출만 수행합니다."
+                        )
+                        
+                        PrivacySection(
+                            title: "2. 정보 사용 목적",
+                            content: "• DNA 구조 시각화 및 3D 렌더링\n• 교육 및 연구 목적의 데이터 제공\n• 앱 기능 향상을 위한 로컬 데이터 처리\n• 사용자 경험 개선을 위한 앱 내 기능 제공"
+                        )
+                        
+                        PrivacySection(
+                            title: "3. 정보 보호 및 보안",
+                            content: "• 모든 데이터는 사용자 기기에만 저장됩니다.\n• 외부 서버로 개인정보가 전송되지 않습니다.\n• NCBI API 호출 시에는 공개 데이터만 요청합니다.\n• 앱 삭제 시 모든 로컬 데이터가 함께 삭제됩니다."
+                        )
+                        
+                        PrivacySection(
+                            title: "4. 제3자 서비스",
+                            content: "• NCBI E-utilities (eutils.ncbi.nlm.nih.gov): 유전자 데이터 제공\n• NCBI Gene Database: 유전자 정보 제공\n• NCBI Nucleotide Database: DNA 시퀀스 제공\n\n이들 서비스는 모두 공개 API이며 개인정보를 요구하지 않습니다."
+                        )
+                        
+                        PrivacySection(
+                            title: "5. 사용자 권리",
+                            content: "• 데이터 삭제: 앱 삭제를 통해 모든 데이터를 삭제할 수 있습니다.\n• 데이터 수정: 앱 내에서 입력한 정보는 언제든 수정 가능합니다.\n• 문의: 개인정보 관련 문의는 앱 정보 페이지를 이용해주세요."
+                        )
+                        
+                        PrivacySection(
+                            title: "6. 정책 변경",
+                            content: "개인정보 처리방침은 필요에 따라 변경될 수 있으며, 변경 시 앱 내에서 공지합니다. 마지막 업데이트: 2025년 10월 20일"
+                        )
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle(LanguageHelper.string("menu_privacy"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(LanguageHelper.string("done")) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct PrivacySection: View {
+    let title: String
+    let content: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.headline)
+            
+            Text(content)
+                .font(.body)
+                .foregroundColor(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+}
+
+// MARK: - Terms of Service Content View
+
+struct TermsContentView: View {
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text(LanguageHelper.string("terms_title"))
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    VStack(alignment: .leading, spacing: 16) {
+                        TermsSection(
+                            title: "서비스 이용",
+                            content: "DNA Viewer는 유료 앱입니다. 앱 다운로드 및 사용을 위해서는 App Store에서 결제가 필요합니다."
+                        )
+                        
+                        TermsSection(
+                            title: "결제 및 구독",
+                            content: "• 앱 구매는 App Store를 통해 처리됩니다.\n• 일회성 결제로 앱의 모든 기능을 이용할 수 있습니다.\n• 앱 구매 후 추가 결제는 없습니다.\n• 환불은 App Store 정책에 따라 제한적입니다."
+                        )
+                        
+                        TermsSection(
+                            title: "서비스 범위",
+                            content: "• 3D DNA 구조 시각화\n• NCBI 유전자 라이브러리 접근\n• 고급 분석 도구 (GC 함량, CpG 아일랜드, 제한 효소)\n• 단백질 번역 및 ORF 탐지\n• 오프라인 데이터 저장\n• 고객 지원 서비스\n• 모든 기능이 앱 구매 시 포함됩니다."
+                        )
+                        
+                        TermsSection(
+                            title: "환불 정책",
+                            content: "• 앱 구매 환불은 Apple App Store 정책에 따라 처리됩니다.\n• 환불 요청은 App Store에서 직접 신청해주세요.\n• Apple의 환불 정책: https://support.apple.com/HT204084\n• 개발자는 환불 처리 권한이 없으며, Apple이 모든 환불을 관리합니다."
+                        )
+                        
+                        TermsSection(
+                            title: "사용자 책임",
+                            content: "• 앱은 교육 및 연구 목적으로만 사용하세요.\n• NCBI 데이터는 학술 및 비상업적 용도로만 사용하세요.\n• 앱을 통해 얻은 정보의 정확성은 사용자가 직접 확인해야 합니다.\n• 중요한 연구나 의료 결정에는 전문가의 검토가 필요합니다."
+                        )
+                        
+                        TermsSection(
+                            title: "앱 업데이트 및 지원",
+                            content: "• 앱 업데이트는 무료로 제공됩니다.\n• 새로운 기능을 추가 비용 없이 사용할 수 있습니다.\n• 앱 지원 중단 시 30일 전 사전 공지합니다.\n• 지원 중단으로 인한 데이터 손실에 대해 책임지지 않습니다."
+                        )
+                        
+                        TermsSection(
+                            title: "책임의 제한",
+                            content: "• DNA Viewer는 \"있는 그대로\" 제공됩니다.\n• 앱 사용으로 인한 결과에 대해 개발자는 책임지지 않습니다.\n• NCBI 데이터의 정확성은 NCBI에서 보장합니다.\n• 앱 오작동이나 데이터 손실에 대한 책임은 제한적입니다."
+                        )
+                        
+                        TermsSection(
+                            title: "지적 재산권",
+                            content: "• DNA Viewer 앱의 저작권은 AVAS에 있습니다.\n• DNA 시퀀스 데이터는 NCBI의 공개 데이터입니다.\n• 앱 코드는 MIT 라이센스로 제공됩니다.\n• 사용자가 생성한 데이터는 사용자의 소유입니다."
+                        )
+                        
+                        TermsSection(
+                            title: "약관 변경",
+                            content: "이용약관은 필요에 따라 변경될 수 있으며, 변경 시 앱 내에서 공지합니다. 마지막 업데이트: 2025년 10월 20일"
+                        )
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle(LanguageHelper.string("menu_terms"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(LanguageHelper.string("done")) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct TermsSection: View {
+    let title: String
+    let content: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.headline)
+            
+            Text(content)
+                .font(.body)
+                .foregroundColor(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+}
+
+// MARK: - License Content View
+
+struct LicenseContentView: View {
+    @Environment(\.dismiss) var dismiss
+    
+    private var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+    }
+    
+    private var buildNumber: String {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
+    }
+    
+    private var appName: String {
+        Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "DNAViewer"
+    }
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    // MIT 라이센스 헤더
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text(LanguageHelper.string("license_title"))
+                            .font(.title)
+                            .fontWeight(.bold)
+                        
+                        Text(LanguageHelper.string("license_copyright"))
+                            .font(.headline)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Divider()
+                    
+                    // 라이센스 본문
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("이 소프트웨어와 관련 문서 파일들(\"소프트웨어\")의 사본을 얻은 모든 사람에게는 소프트웨어를 제한 없이 취급할 수 있는 권한이 무료로 부여됩니다. 여기에는 사용, 복사, 수정, 병합, 게시, 배포, 서브라이센스 및/또는 소프트웨어의 사본을 판매할 권리와 소프트웨어가 제공된 사람들이 그러할 수 있도록 허가하는 권리가 제한 없이 포함됩니다. 단, 다음 조건에 따릅니다:")
+                            .font(.body)
+                            .foregroundColor(.primary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        Text("위의 저작권 고지와 이 허가 고지는 소프트웨어의 모든 사본이나 중요한 부분에 포함되어야 합니다.")
+                            .font(.body)
+                            .foregroundColor(.primary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        Text("소프트웨어는 \"있는 그대로\" 제공되며, 상품성, 특정 목적에의 적합성 및 비침해에 대한 보증을 포함하되 이에 국한되지 않는 모든 종류의 명시적 또는 묵시적 보증 없이 제공됩니다. 어떤 경우에도 저자나 저작권 보유자는 계약 행위, 불법 행위 또는 기타 행위에서, 소프트웨어와 관련하여, 소프트웨어의 사용 또는 기타 거래에서 발생하는 청구, 손해 또는 기타 책임에 대해 책임지지 않습니다.")
+                            .font(.body)
+                            .foregroundColor(.primary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    
+                    Divider()
+                    
+                    // 오픈소스 라이브러리
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text(LanguageHelper.string("license_open_source"))
+                            .font(.headline)
+                        
+                        VStack(alignment: .leading, spacing: 12) {
+                            LibraryItem(
+                                name: "SceneKit",
+                                description: "Apple의 3D 그래픽 프레임워크",
+                                license: "Apple 라이센스"
+                            )
+                            
+                            LibraryItem(
+                                name: "SwiftUI",
+                                description: "Apple의 선언적 UI 프레임워크",
+                                license: "Apple 라이센스"
+                            )
+                            
+                            LibraryItem(
+                                name: "Charts",
+                                description: "Apple의 데이터 시각화 프레임워크",
+                                license: "Apple 라이센스"
+                            )
+                            
+                            LibraryItem(
+                                name: "NCBI E-utilities",
+                                description: "유전자 데이터베이스 공개 API",
+                                license: "퍼블릭 도메인"
+                            )
+                        }
+                    }
+                    
+                    Divider()
+                    
+                    // 앱 정보
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(LanguageHelper.string("license_app_info"))
+                            .font(.headline)
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            LicenseInfoRow(
+                                title: "앱 이름",
+                                value: appName,
+                                description: "애플리케이션 이름"
+                            )
+                            LicenseInfoRow(
+                                title: "버전",
+                                value: appVersion,
+                                description: "현재 앱 버전"
+                            )
+                            LicenseInfoRow(
+                                title: "빌드",
+                                value: buildNumber,
+                                description: "빌드 번호"
+                            )
+                            LicenseInfoRow(
+                                title: "플랫폼",
+                                value: "iOS 15.0+",
+                                description: "최소 지원 iOS 버전"
+                            )
+                            LicenseInfoRow(
+                                title: "마지막 업데이트",
+                                value: "2025년 10월",
+                                description: "마지막 업데이트 날짜"
+                            )
+                        }
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle(LanguageHelper.string("menu_license"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(LanguageHelper.string("done")) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct LibraryItem: View {
+    let name: String
+    let description: String
+    let license: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text(name)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                
+                Spacer()
+                
+                Text(license)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Text(description)
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+struct LicenseInfoRow: View {
+    let title: String
+    let value: String
+    let description: String
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            Spacer()
+            
+            Text(value)
+                .font(.subheadline)
+                .fontWeight(.medium)
+        }
     }
 }
 
