@@ -227,3 +227,57 @@
 "features_education_4" = "実験検証過程学習";
 "features_education_5" = "詳細ユーザーガイド提供";
 
+/* Help Content */
+"help_title" = "Help";
+"help_general_title" = "一般的な使用";
+"help_3d_viz_title" = "3D可視化";
+"help_analysis_title" = "解析ツール";
+"help_enzyme_title" = "制限酵素";
+"help_troubleshooting_title" = "トラブルシューティング";
+"help_additional_help_title" = "追加のヘルプが必要です";
+
+"help_general_1_q" = "DNA配列をどのようにロードしますか？";
+"help_general_1_a" = "メニュー（☰）からGene Libraryを選択し、目的の遺伝子を検索してから「Apply」ボタンを押してください。NCBIデータベースからリアルタイムでデータを取得します。";
+"help_general_2_q" = "アプリが遅く動作します";
+"help_general_2_a" = "大きなDNA配列の場合、ロードに時間がかかる場合があります。配列はグループ（100bp）に分けて表示されるため、グループ間の切り替え時は少しお待ちください。";
+"help_general_3_q" = "配列情報はどこで確認できますか？";
+"help_general_3_a" = "上部のInfoボタン（ℹ️）を押すと、現在のDNA配列の詳細情報（名前、長さ、染色体、生物など）を確認できます。";
+
+"help_3d_1_q" = "3Dビューが動きません";
+"help_3d_1_a" = "ドラッグジェスチャーで回転、ピンチジェスチャーでズームイン/アウトしてください。Reloadボタン（↻）で初期状態に戻すことができます。";
+"help_3d_2_q" = "3Dスタイルを変更するには？";
+"help_3d_2_a" = "目のアイコン（👁）ボタンを押すとStyleセクションが表示されます。Double Helix、Ladder、Ball & Stickから希望のスタイルを選択してください。";
+"help_3d_3_q" = "色が変更されません";
+"help_3d_3_a" = "目のアイコン（👁）ボタンを押し、Colorセクションで希望のカラーテーマを選択してください。Classic、Vivid、Pastel、Neonなど様々なテーマがあります。";
+"help_3d_4_q" = "自動回転はどのようにしますか？";
+"help_3d_4_a" = "ボトムメニューのRotationボタンを押すと、DNAが360度自動で回転します。もう一度押すと停止します。";
+
+"help_analysis_1_q" = "GC含量とは何ですか？";
+"help_analysis_1_a" = "グアニン（G）とシトシン（C）塩基の比率です。高いGC含量はより安定したDNA構造を示し、遺伝子発現と進化研究に重要です。";
+"help_analysis_2_q" = "CpGアイランドはなぜ重要ですか？";
+"help_analysis_2_a" = "CpGアイランドはCGジヌクレオチドが豊富な領域で、遺伝子のプロモーター領域に多く位置します。DNAメチル化による遺伝子調節に重要な役割を果たします。";
+"help_analysis_3_q" = "タンパク質翻訳結果はどのように見ますか？";
+"help_analysis_3_a" = "Analysisメニューで「Protein」タブを選択してください。DNAが自動的にアミノ酸に翻訳され、コドン別の詳細情報とORF（Open Reading Frame）を確認できます。";
+"help_analysis_4_q" = "アミノ酸組成グラフとは何ですか？";
+"help_analysis_4_a" = "翻訳されたタンパク質に含まれる各アミノ酸の数と比率を棒グラフで表示します。色はアミノ酸の化学的特性（疎水性、極性、電荷）を表します。";
+
+"help_enzyme_1_q" = "制限酵素切断部位が表示されません";
+"help_enzyme_1_a" = "ボトムメニューのScissorボタンを押し、希望の制限酵素を選択してから「Show 3D」ボタンを押してください。3Dビューに赤いマーカーが表示されます。";
+"help_enzyme_2_q" = "複数の酵素を同時に選択できますか？";
+"help_enzyme_2_a" = "はい！複数の制限酵素を選択すると、すべての切断位置が一緒に表示されます。「Digest」ボタンで仮想切断シミュレーションも可能です。";
+"help_enzyme_3_q" = "切断マーカーを削除するには？";
+"help_enzyme_3_a" = "ボトムメニューのReloadボタン（↻）を押すと、すべてのハイライトとマーカーが削除され、初期状態に戻ります。";
+"help_enzyme_4_q" = "SequenceBarにscissorsアイコンが表示されます";
+"help_enzyme_4_a" = "これはその位置が制限酵素切断部位であることを示します。赤い境界線と一緒に表示され、正確な切断位置を簡単に確認できます。";
+
+"help_troubleshooting_1_q" = "アプリがフリーズまたは応答しません";
+"help_troubleshooting_1_a" = "非常に大きなDNA配列の場合、3Dレンダリングに時間がかかる場合があります。Reloadボタンを押してリセットするか、アプリを再起動してみてください。";
+"help_troubleshooting_2_q" = "Gene Libraryで遺伝子が見つかりません";
+"help_troubleshooting_2_a" = "インターネット接続を確認し、正確な遺伝子名やシンボルを入力したか確認してください。NCBIデータベースに登録された遺伝子のみ検索可能です。";
+"help_troubleshooting_3_q" = "解析結果を保存できますか？";
+"help_troubleshooting_3_a" = "現在のバージョンでは、スクリーンショットで解析結果を保存できます。今後のアップデートでデータエクスポート機能が追加される予定です。";
+
+"help_additional_help_desc" = "問題が続く場合や他の質問がある場合は、アプリ情報ページのお問い合わせ情報を通じてご連絡ください。";
+"help_version" = "DNA Viewer v1.0";
+"help_copyright" = "© 2025 AVAS. All rights reserved";
+

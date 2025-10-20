@@ -227,3 +227,57 @@
 "features_education_4" = "Experimentelle Verifikationsprozess-Lernen";
 "features_education_5" = "Detaillierte Benutzeranleitung bereitgestellt";
 
+/* Help Content */
+"help_title" = "Help";
+"help_general_title" = "Allgemeine Nutzung";
+"help_3d_viz_title" = "3D-Visualisierung";
+"help_analysis_title" = "Analysetools";
+"help_enzyme_title" = "Restriktionsenzyme";
+"help_troubleshooting_title" = "Fehlerbehebung";
+"help_additional_help_title" = "Zusätzliche Hilfe benötigt";
+
+"help_general_1_q" = "Wie lade ich eine DNA-Sequenz?";
+"help_general_1_a" = "Wählen Sie Gene Library aus dem Menü (☰), suchen Sie nach dem gewünschten Gen und drücken Sie die 'Apply'-Taste. Daten werden in Echtzeit aus der NCBI-Datenbank abgerufen.";
+"help_general_2_q" = "Die App läuft langsam";
+"help_general_2_a" = "Große DNA-Sequenzen können länger zum Laden benötigen. Die Sequenz wird in Gruppen (100bp) für die Anzeige aufgeteilt, bitte warten Sie kurz beim Wechseln zwischen Gruppen.";
+"help_general_3_q" = "Wo kann ich Sequenzinformationen überprüfen?";
+"help_general_3_a" = "Drücken Sie die Info-Taste (ℹ️) oben, um detaillierte Informationen über die aktuelle DNA-Sequenz (Name, Länge, Chromosom, Organismus, etc.) anzuzeigen.";
+
+"help_3d_1_q" = "Die 3D-Ansicht bewegt sich nicht";
+"help_3d_1_a" = "Verwenden Sie Zieh-Gesten zum Drehen und Pinch-Gesten zum Zoomen. Sie können mit der Reload-Taste (↻) zum Ausgangszustand zurückkehren.";
+"help_3d_2_q" = "Wie ändere ich den 3D-Stil?";
+"help_3d_2_a" = "Drücken Sie die Augen-Symbol-Taste (👁), um den Style-Bereich anzuzeigen. Wählen Sie aus Double Helix, Ladder, Ball & Stick Stilen.";
+"help_3d_3_q" = "Farben ändern sich nicht";
+"help_3d_3_a" = "Drücken Sie die Augen-Symbol-Taste (👁) und wählen Sie Ihr gewünschtes Farbschema im Color-Bereich. Verschiedene Themen wie Classic, Vivid, Pastel, Neon sind verfügbar.";
+"help_3d_4_q" = "Wie funktioniert die automatische Drehung?";
+"help_3d_4_a" = "Drücken Sie die Rotation-Taste im unteren Menü, um DNA automatisch 360 Grad zu drehen. Drücken Sie erneut zum Stoppen.";
+
+"help_analysis_1_q" = "Was ist GC-Gehalt?";
+"help_analysis_1_a" = "Es ist das Verhältnis von Guanin (G) und Cytosin (C) Basen. Hoher GC-Gehalt zeigt eine stabilere DNA-Struktur an und ist wichtig für Genexpression und Evolutionsstudien.";
+"help_analysis_2_q" = "Warum sind CpG-Inseln wichtig?";
+"help_analysis_2_a" = "CpG-Inseln sind Regionen reich an CG-Dinukleotiden, oft in Gen-Promotor-Bereichen gelegen. Sie spielen eine Schlüsselrolle bei der Genregulation durch DNA-Methylierung.";
+"help_analysis_3_q" = "Wie sehe ich Protein-Übersetzungsergebnisse?";
+"help_analysis_3_a" = "Wählen Sie den 'Protein'-Tab im Analysis-Menü. DNA wird automatisch zu Aminosäuren übersetzt, und Sie können detaillierte Codon-Informationen und ORFs (Open Reading Frames) anzeigen.";
+"help_analysis_4_q" = "Was ist das Aminosäure-Zusammensetzungsdiagramm?";
+"help_analysis_4_a" = "Es zeigt die Anzahl und das Verhältnis jeder Aminosäure im übersetzten Protein als Balkendiagramm. Farben repräsentieren die chemischen Eigenschaften von Aminosäuren (hydrophob, polar, geladen).";
+
+"help_enzyme_1_q" = "Restriktionsenzym-Schnittstellen werden nicht angezeigt";
+"help_enzyme_1_a" = "Drücken Sie die Scissor-Taste im unteren Menü, wählen Sie das gewünschte Restriktionsenzym und drücken Sie dann die 'Show 3D'-Taste. Rote Marker erscheinen in der 3D-Ansicht.";
+"help_enzyme_2_q" = "Kann ich mehrere Enzyme gleichzeitig auswählen?";
+"help_enzyme_2_a" = "Ja! Wenn Sie mehrere Restriktionsenzyme auswählen, werden alle Schnittpositionen zusammen angezeigt. Sie können auch virtuelle Verdauung mit der 'Digest'-Taste simulieren.";
+"help_enzyme_3_q" = "Wie entferne ich Schnittmarker?";
+"help_enzyme_3_a" = "Drücken Sie die Reload-Taste (↻) im unteren Menü, um alle Hervorhebungen und Marker zu entfernen und zum Ausgangszustand zurückzukehren.";
+"help_enzyme_4_q" = "Scheren-Symbole erscheinen auf der SequenceBar";
+"help_enzyme_4_a" = "Dies zeigt an, dass die Position eine Restriktionsenzym-Schnittstelle ist. Es wird mit einem roten Rahmen angezeigt, um die genaue Schnittposition leicht zu identifizieren.";
+
+"help_troubleshooting_1_q" = "Die App friert ein oder reagiert nicht";
+"help_troubleshooting_1_a" = "Sehr große DNA-Sequenzen können Zeit für 3D-Rendering benötigen. Versuchen Sie, die Reload-Taste zu drücken, um zurückzusetzen oder die App neu zu starten.";
+"help_troubleshooting_2_q" = "Ich kann keine Gene in der Gene Library finden";
+"help_troubleshooting_2_a" = "Überprüfen Sie Ihre Internetverbindung und stellen Sie sicher, dass Sie den korrekten Gen-Namen oder -Symbol eingegeben haben. Nur in der NCBI-Datenbank registrierte Gene können durchsucht werden.";
+"help_troubleshooting_3_q" = "Kann ich Analyseergebnisse speichern?";
+"help_troubleshooting_3_a" = "In der aktuellen Version können Sie Analyseergebnisse durch Screenshots speichern. Datenexport-Funktionalität wird in zukünftigen Updates hinzugefügt.";
+
+"help_additional_help_desc" = "Wenn Probleme bestehen bleiben oder Sie andere Fragen haben, kontaktieren Sie uns bitte über die Anfrageinformationen auf der App-Info-Seite.";
+"help_version" = "DNA Viewer v1.0";
+"help_copyright" = "© 2025 AVAS. All rights reserved";
+

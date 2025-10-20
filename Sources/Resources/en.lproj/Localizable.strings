@@ -155,6 +155,60 @@
 "features_education_4" = "Experimental verification process learning";
 "features_education_5" = "Detailed user guide provided";
 
+/* Help Content */
+"help_title" = "Help";
+"help_general_title" = "General Usage";
+"help_3d_viz_title" = "3D Visualization";
+"help_analysis_title" = "Analysis Tools";
+"help_enzyme_title" = "Restriction Enzymes";
+"help_troubleshooting_title" = "Troubleshooting";
+"help_additional_help_title" = "Need Additional Help";
+
+"help_general_1_q" = "How do I load a DNA sequence?";
+"help_general_1_a" = "Select Gene Library from the menu (☰), search for the desired gene, and press the 'Apply' button. Data is fetched in real-time from the NCBI database.";
+"help_general_2_q" = "The app runs slowly";
+"help_general_2_a" = "Large DNA sequences may take longer to load. The sequence is divided into groups (100bp) for display, so please wait briefly when switching between groups.";
+"help_general_3_q" = "Where can I check sequence information?";
+"help_general_3_a" = "Press the Info button (ℹ️) at the top to view detailed information about the current DNA sequence (name, length, chromosome, organism, etc.).";
+
+"help_3d_1_q" = "The 3D view doesn't move";
+"help_3d_1_a" = "Use drag gestures to rotate and pinch gestures to zoom in/out. You can return to the initial state with the Reload button (↻).";
+"help_3d_2_q" = "How do I change the 3D style?";
+"help_3d_2_a" = "Press the eye icon (👁) button to show the Style section. Choose from Double Helix, Ladder, Ball & Stick styles.";
+"help_3d_3_q" = "Colors don't change";
+"help_3d_3_a" = "Press the eye icon (👁) button and select your desired color theme in the Color section. Various themes like Classic, Vivid, Pastel, Neon are available.";
+"help_3d_4_q" = "How do I auto-rotate?";
+"help_3d_4_a" = "Press the Rotation button in the bottom menu to automatically rotate DNA 360 degrees. Press again to stop.";
+
+"help_analysis_1_q" = "What is GC content?";
+"help_analysis_1_a" = "It's the ratio of guanine (G) and cytosine (C) bases. High GC content indicates more stable DNA structure and is important for gene expression and evolutionary studies.";
+"help_analysis_2_q" = "Why are CpG islands important?";
+"help_analysis_2_a" = "CpG islands are regions rich in CG dinucleotides, often located in gene promoter regions. They play a key role in gene regulation through DNA methylation.";
+"help_analysis_3_q" = "How do I view protein translation results?";
+"help_analysis_3_a" = "Select the 'Protein' tab in the Analysis menu. DNA is automatically translated to amino acids, and you can view detailed codon information and ORFs (Open Reading Frames).";
+"help_analysis_4_q" = "What is the amino acid composition graph?";
+"help_analysis_4_a" = "It shows the count and ratio of each amino acid in the translated protein as a bar chart. Colors represent the chemical properties of amino acids (hydrophobic, polar, charged).";
+
+"help_enzyme_1_q" = "Restriction enzyme cutting sites don't show";
+"help_enzyme_1_a" = "Press the Scissor button in the bottom menu, select the desired restriction enzyme, then press the 'Show 3D' button. Red markers will appear in the 3D view.";
+"help_enzyme_2_q" = "Can I select multiple enzymes at once?";
+"help_enzyme_2_a" = "Yes! When you select multiple restriction enzymes, all cutting positions are displayed together. You can also simulate virtual digestion with the 'Digest' button.";
+"help_enzyme_3_q" = "How do I remove cutting markers?";
+"help_enzyme_3_a" = "Press the Reload button (↻) in the bottom menu to remove all highlights and markers and return to the initial state.";
+"help_enzyme_4_q" = "Scissors icons appear on SequenceBar";
+"help_enzyme_4_a" = "This indicates that the position is a restriction enzyme cutting site. It's displayed with a red border to easily identify the exact cutting position.";
+
+"help_troubleshooting_1_q" = "The app freezes or doesn't respond";
+"help_troubleshooting_1_a" = "Very large DNA sequences may take time for 3D rendering. Try pressing the Reload button to reset or restart the app.";
+"help_troubleshooting_2_q" = "I can't find genes in Gene Library";
+"help_troubleshooting_2_a" = "Check your internet connection and verify that you've entered the correct gene name or symbol. Only genes registered in the NCBI database can be searched.";
+"help_troubleshooting_3_q" = "Can I save analysis results?";
+"help_troubleshooting_3_a" = "In the current version, you can save analysis results by taking screenshots. Data export functionality will be added in future updates.";
+
+"help_additional_help_desc" = "If problems persist or you have other questions, please contact us through the inquiry information on the app info page.";
+"help_version" = "DNA Viewer v1.0";
+"help_copyright" = "© 2025 AVAS. All rights reserved";
+
 "guide_start_1_title" = "View Basic DNA Sequence";
 "guide_start_1_desc" = "Default DNA sequence (BRCA1) loads on start. Drag to rotate, pinch to zoom.";
 "guide_start_2_title" = "Group Navigation";
