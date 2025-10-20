@@ -163,6 +163,36 @@
 "analysis_restriction" = "制限酵素サイト";
 "analysis_protein" = "タンパク質";
 
+"analysis_title" = "分析";
+"analysis_gc_title" = "GC含量分析";
+"analysis_gc_overall" = "全体GC含量：";
+"analysis_gc_window_plot" = "GC含量ウィンドウプロット";
+
+"analysis_cpg_title" = "CpGアイランド";
+"analysis_cpg_none" = "CpGアイランドが見つかりませんでした";
+"analysis_cpg_island" = "CpGアイランド";
+"analysis_cpg_position" = "位置：";
+"analysis_cpg_length" = "長さ：";
+"analysis_cpg_gc" = "GC：";
+"analysis_cpg_ratio" = "CpG比：";
+
+"analysis_restriction_title" = "制限酵素サイト分析";
+"analysis_dna_sequence" = "DNA配列";
+"analysis_restriction_sites" = "制限酵素サイト";
+"analysis_restriction_paste" = "DNA配列を貼り付けて分析をタップしてください。";
+"analysis_analyzing" = "制限酵素サイトを分析中...";
+
+"analysis_protein_title" = "タンパク質翻訳";
+"analysis_protein_reading_frame" = "リーディングフレーム";
+"analysis_protein_amino_seq" = "アミノ酸配列";
+"analysis_protein_amino_acids" = "個のアミノ酸";
+"analysis_protein_composition" = "アミノ酸組成";
+"analysis_protein_orf" = "オープンリーディングフレーム";
+"analysis_protein_orf_none" = "ORFが見つかりませんでした（最小75 bp）";
+"analysis_protein_codon_detail" = "コドン翻訳詳細";
+"analysis_protein_codon_more" = "%d個のコドンをさらに表示";
+"analysis_protein_tap_expand" = "タップして展開";
+
 /* Common */
 "done" = "完了";
 "close" = "閉じる";

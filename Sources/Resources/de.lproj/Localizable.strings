@@ -163,6 +163,36 @@
 "analysis_restriction" = "Restriktionsstellen";
 "analysis_protein" = "Protein";
 
+"analysis_title" = "Analyse";
+"analysis_gc_title" = "GC-Gehaltsanalyse";
+"analysis_gc_overall" = "Gesamt-GC-Gehalt:";
+"analysis_gc_window_plot" = "GC-Gehalt-Fensterdiagramm";
+
+"analysis_cpg_title" = "CpG-Inseln";
+"analysis_cpg_none" = "Keine CpG-Inseln gefunden";
+"analysis_cpg_island" = "CpG-Insel";
+"analysis_cpg_position" = "Position:";
+"analysis_cpg_length" = "Länge:";
+"analysis_cpg_gc" = "GC:";
+"analysis_cpg_ratio" = "CpG-Verhältnis:";
+
+"analysis_restriction_title" = "Restriktionsstellenanalyse";
+"analysis_dna_sequence" = "DNA-Sequenz";
+"analysis_restriction_sites" = "Restriktionsstellen";
+"analysis_restriction_paste" = "DNA-Sequenz einfügen und Analysieren tippen.";
+"analysis_analyzing" = "Restriktionsstellen werden analysiert...";
+
+"analysis_protein_title" = "Proteinübersetzung";
+"analysis_protein_reading_frame" = "Leserahmen";
+"analysis_protein_amino_seq" = "Aminosäuresequenz";
+"analysis_protein_amino_acids" = "Aminosäuren";
+"analysis_protein_composition" = "Aminosäurezusammensetzung";
+"analysis_protein_orf" = "Offene Leserahmen";
+"analysis_protein_orf_none" = "Keine ORFs gefunden (mindestens 75 bp)";
+"analysis_protein_codon_detail" = "Codon-Übersetzungsdetails";
+"analysis_protein_codon_more" = "%d weitere Codons anzeigen";
+"analysis_protein_tap_expand" = "Tippen zum Erweitern";
+
 /* Common */
 "done" = "Fertig";
 "close" = "Schließen";
