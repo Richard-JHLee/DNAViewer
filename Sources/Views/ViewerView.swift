@@ -26,6 +26,8 @@ struct ViewerView: View {
     @State private var showSettings = false
     @State private var showRestrictionEnzyme = false
     @State private var showVirtualCloning = false
+    @State private var showUserGuide = false
+    @State private var showHelp = false
     
     // Digest and Educational Features
     @State private var showDigestionResult = false
@@ -226,6 +228,12 @@ struct ViewerView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
+        .sheet(isPresented: $showUserGuide) {
+            UserGuideView()
+        }
+        .sheet(isPresented: $showHelp) {
+            HelpView()
+        }
         .sheet(isPresented: $showVirtualCloning) {
             VirtualCloningView(sequence: sequence)
         }
@@ -292,11 +300,11 @@ struct ViewerView: View {
                             onLibrary: { showLibrary = true },
                             onAnalysis: { showAnalysis = true },
                             onRestrictionEnzymes: { showRestrictionEnzyme = true },
-                            onSettings: { 
-                                showSettings = true
-                            },
+                            onUserGuide: { showUserGuide = true },
+                            onHelp: { showHelp = true },
+                            onSettings: { showSettings = true },
                             onAbout: { 
-                                // TODO: About sheet
+                                // TODO: About sheet (향후 구현)
                             }
                         )
                         .frame(width: 280)

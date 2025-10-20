@@ -12,6 +12,8 @@ struct SidebarMenu: View {
     let onLibrary: () -> Void
     let onAnalysis: () -> Void
     let onRestrictionEnzymes: () -> Void
+    let onUserGuide: () -> Void
+    let onHelp: () -> Void
     let onSettings: () -> Void
     let onAbout: () -> Void
     
@@ -56,58 +58,80 @@ struct SidebarMenu: View {
             }
             
             // Menu Items
-            VStack(alignment: .leading, spacing: 0) {
-                MenuItem(
-                    icon: "books.vertical.fill",
-                    title: "Sample Genes Library",
-                    subtitle: "Explore 10 important human genes",
-                    color: .purple
-                ) {
-                    isPresented = false
-                    onLibrary()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    MenuItem(
+                        icon: "books.vertical.fill",
+                        title: "Gene Library",
+                        subtitle: "Browse NCBI gene database",
+                        color: .purple
+                    ) {
+                        isPresented = false
+                        onLibrary()
+                    }
+                    
+                    MenuItem(
+                        icon: "chart.bar.fill",
+                        title: "Analysis Tools",
+                        subtitle: "GC Content, CpG Islands, Analysis",
+                        color: .blue
+                    ) {
+                        isPresented = false
+                        onAnalysis()
+                    }
+                    
+                    MenuItem(
+                        icon: "scissors.badge.ellipsis",
+                        title: "Restriction Enzymes",
+                        subtitle: "Cut DNA & Educational Features",
+                        color: .orange
+                    ) {
+                        isPresented = false
+                        onRestrictionEnzymes()
+                    }
+                    
+                    MenuItem(
+                        icon: "book.fill",
+                        title: "User Guide",
+                        subtitle: "Learn how to use DNA Viewer",
+                        color: .green
+                    ) {
+                        isPresented = false
+                        onUserGuide()
+                    }
+                    
+                    MenuItem(
+                        icon: "questionmark.circle.fill",
+                        title: "Help & FAQ",
+                        subtitle: "Common questions and troubleshooting",
+                        color: .teal
+                    ) {
+                        isPresented = false
+                        onHelp()
+                    }
+                    
+                    MenuItem(
+                        icon: "gear",
+                        title: "Settings",
+                        subtitle: "App preferences and configuration",
+                        color: .gray
+                    ) {
+                        isPresented = false
+                        onSettings()
+                    }
+                    
+                    MenuItem(
+                        icon: "info.circle.fill",
+                        title: "About",
+                        subtitle: "Version 1.0.0 • App information",
+                        color: .indigo
+                    ) {
+                        isPresented = false
+                        onAbout()
+                    }
                 }
-                
-                MenuItem(
-                    icon: "chart.bar.fill",
-                    title: "Analysis Tools",
-                    subtitle: "GC Content, CpG Islands, Restriction Sites",
-                    color: .blue
-                ) {
-                    isPresented = false
-                    onAnalysis()
-                }
-                
-                MenuItem(
-                    icon: "scissors.badge.ellipsis",
-                    title: "Restriction Enzymes",
-                    subtitle: "Cut DNA & Educational Features",
-                    color: .orange
-                ) {
-                    isPresented = false
-                    onRestrictionEnzymes()
-                }
-                
-                MenuItem(
-                    icon: "gear",
-                    title: "Settings",
-                    subtitle: "App preferences and configuration",
-                    color: .gray
-                ) {
-                    isPresented = false
-                    onSettings()
-                }
-                
-                MenuItem(
-                    icon: "info.circle.fill",
-                    title: "About",
-                    subtitle: "Version 1.0.0 • Learn more",
-                    color: .green
-                ) {
-                    isPresented = false
-                    onAbout()
-                }
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 20)
             
             Spacer()
             
@@ -192,6 +216,8 @@ struct MenuItem: View {
         onLibrary: {},
         onAnalysis: {},
         onRestrictionEnzymes: {},
+        onUserGuide: {},
+        onHelp: {},
         onSettings: {},
         onAbout: {}
     )
