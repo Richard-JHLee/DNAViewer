@@ -281,3 +281,22 @@
 "help_version" = "DNA Viewer v1.0";
 "help_copyright" = "© 2025 AVAS. All rights reserved";
 
+/* License Content */
+"license_scenekit_desc" = "Appleの3Dグラフィックフレームワーク";
+"license_swiftui_desc" = "Appleの宣言的UIフレームワーク";
+"license_charts_desc" = "Appleのデータ可視化フレームワーク";
+"license_ncbi_desc" = "遺伝子データベース公開API";
+"license_apple_license" = "Appleライセンス";
+"license_public_domain" = "パブリックドメイン";
+
+"license_app_name_title" = "アプリ名";
+"license_app_name_desc" = "アプリケーション名";
+"license_version_title" = "バージョン";
+"license_version_desc" = "現在のアプリバージョン";
+"license_build_title" = "ビルド";
+"license_build_desc" = "ビルド番号";
+"license_platform_title" = "プラットフォーム";
+"license_platform_desc" = "最小サポートiOSバージョン";
+"license_last_update_title" = "最終更新";
+"license_last_update_desc" = "最終更新日";
+

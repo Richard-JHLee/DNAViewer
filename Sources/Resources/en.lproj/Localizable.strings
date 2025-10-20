@@ -209,6 +209,25 @@
 "help_version" = "DNA Viewer v1.0";
 "help_copyright" = "© 2025 AVAS. All rights reserved";
 
+/* License Content */
+"license_scenekit_desc" = "Apple's 3D graphics framework";
+"license_swiftui_desc" = "Apple's declarative UI framework";
+"license_charts_desc" = "Apple's data visualization framework";
+"license_ncbi_desc" = "Public gene database API";
+"license_apple_license" = "Apple License";
+"license_public_domain" = "Public Domain";
+
+"license_app_name_title" = "App Name";
+"license_app_name_desc" = "Application name";
+"license_version_title" = "Version";
+"license_version_desc" = "Current app version";
+"license_build_title" = "Build";
+"license_build_desc" = "Build number";
+"license_platform_title" = "Platform";
+"license_platform_desc" = "Minimum supported iOS version";
+"license_last_update_title" = "Last Update";
+"license_last_update_desc" = "Last update date";
+
 "guide_start_1_title" = "View Basic DNA Sequence";
 "guide_start_1_desc" = "Default DNA sequence (BRCA1) loads on start. Drag to rotate, pinch to zoom.";
 "guide_start_2_title" = "Group Navigation";

@@ -525,3 +525,22 @@
 "help_additional_help_desc" = "문제가 지속되거나 다른 질문이 있으시면 앱 정보 페이지의 문의 정보를 통해 연락해주세요.";
 "help_version" = "DNA Viewer v1.0";
 "help_copyright" = "© 2025 AVAS. All rights reserved";
+
+/* License Content */
+"license_scenekit_desc" = "Apple의 3D 그래픽 프레임워크";
+"license_swiftui_desc" = "Apple의 선언적 UI 프레임워크";
+"license_charts_desc" = "Apple의 데이터 시각화 프레임워크";
+"license_ncbi_desc" = "유전자 데이터베이스 공개 API";
+"license_apple_license" = "Apple 라이센스";
+"license_public_domain" = "퍼블릭 도메인";
+
+"license_app_name_title" = "앱 이름";
+"license_app_name_desc" = "애플리케이션 이름";
+"license_version_title" = "버전";
+"license_version_desc" = "현재 앱 버전";
+"license_build_title" = "빌드";
+"license_build_desc" = "빌드 번호";
+"license_platform_title" = "플랫폼";
+"license_platform_desc" = "최소 지원 iOS 버전";
+"license_last_update_title" = "마지막 업데이트";
+"license_last_update_desc" = "마지막 업데이트 날짜";

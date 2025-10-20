@@ -1474,26 +1474,26 @@ struct LicenseContentView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             LibraryItem(
                                 name: "SceneKit",
-                                description: "Apple의 3D 그래픽 프레임워크",
-                                license: "Apple 라이센스"
+                                description: LanguageHelper.string("license_scenekit_desc"),
+                                license: LanguageHelper.string("license_apple_license")
                             )
                             
                             LibraryItem(
                                 name: "SwiftUI",
-                                description: "Apple의 선언적 UI 프레임워크",
-                                license: "Apple 라이센스"
+                                description: LanguageHelper.string("license_swiftui_desc"),
+                                license: LanguageHelper.string("license_apple_license")
                             )
                             
                             LibraryItem(
                                 name: "Charts",
-                                description: "Apple의 데이터 시각화 프레임워크",
-                                license: "Apple 라이센스"
+                                description: LanguageHelper.string("license_charts_desc"),
+                                license: LanguageHelper.string("license_apple_license")
                             )
                             
                             LibraryItem(
                                 name: "NCBI E-utilities",
-                                description: "유전자 데이터베이스 공개 API",
-                                license: "퍼블릭 도메인"
+                                description: LanguageHelper.string("license_ncbi_desc"),
+                                license: LanguageHelper.string("license_public_domain")
                             )
                         }
                     }
@@ -1507,29 +1507,29 @@ struct LicenseContentView: View {
                         
                         VStack(alignment: .leading, spacing: 4) {
                             LicenseInfoRow(
-                                title: "앱 이름",
+                                title: LanguageHelper.string("license_app_name_title"),
                                 value: appName,
-                                description: "애플리케이션 이름"
+                                description: LanguageHelper.string("license_app_name_desc")
                             )
                             LicenseInfoRow(
-                                title: "버전",
+                                title: LanguageHelper.string("license_version_title"),
                                 value: appVersion,
-                                description: "현재 앱 버전"
+                                description: LanguageHelper.string("license_version_desc")
                             )
                             LicenseInfoRow(
-                                title: "빌드",
+                                title: LanguageHelper.string("license_build_title"),
                                 value: buildNumber,
-                                description: "빌드 번호"
+                                description: LanguageHelper.string("license_build_desc")
                             )
                             LicenseInfoRow(
-                                title: "플랫폼",
+                                title: LanguageHelper.string("license_platform_title"),
                                 value: "iOS 15.0+",
-                                description: "최소 지원 iOS 버전"
+                                description: LanguageHelper.string("license_platform_desc")
                             )
                             LicenseInfoRow(
-                                title: "마지막 업데이트",
+                                title: LanguageHelper.string("license_last_update_title"),
                                 value: "2025년 10월",
-                                description: "마지막 업데이트 날짜"
+                                description: LanguageHelper.string("license_last_update_desc")
                             )
                         }
                     }
