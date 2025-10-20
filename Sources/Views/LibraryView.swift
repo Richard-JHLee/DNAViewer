@@ -172,7 +172,7 @@ struct LibraryView: View {
                 .foregroundColor(.primary)
             
             if let category = selectedCategory {
-                Text(category.koreanName)
+                Text(category.localizedName)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
@@ -193,12 +193,12 @@ struct LibraryView: View {
                 GridItem(.flexible()),
                 GridItem(.flexible())
             ], spacing: 16) {
-                ForEach(GeneCategory.allCases, id: \.self) { category in
-                    CategoryCard(
-                        title: category.koreanName,
-                        subtitle: category.rawValue,
-                        icon: iconForCategory(category)
-                    ) {
+            ForEach(GeneCategory.allCases, id: \.self) { category in
+                CategoryCard(
+                    title: category.localizedName,
+                    subtitle: category.rawValue,
+                    icon: iconForCategory(category)
+                ) {
                         selectedCategory = category
                     }
                 }

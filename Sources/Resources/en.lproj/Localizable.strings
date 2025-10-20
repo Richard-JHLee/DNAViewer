@@ -429,6 +429,29 @@
 "license_platform" = "Platform";
 "license_last_update" = "Last Updated";
 
+/* Gene Library */
+"gene_library_title" = "Gene Library";
+"gene_library_dna_atlas" = "DNA Atlas";
+"gene_library_basic_info" = "Basic Information";
+"gene_library_description" = "Description";
+"gene_library_aliases" = "Aliases";
+"gene_library_error_loading" = "Error loading genes";
+"gene_library_load_more" = "Load More";
+"gene_library_loading" = "Loading...";
+"gene_library_genes_count" = "genes";
+"gene_library_tap_to_load" = "Tap to load";
+"gene_library_info" = "Info";
+"gene_library_apply" = "Apply";
+"gene_library_unknown_gene" = "Unknown Gene";
+"gene_library_id" = "ID";
+
+/* Gene Categories */
+"gene_category_organism" = "By Organism";
+"gene_category_gene_type" = "By Function";
+"gene_category_chromosome" = "By Chromosome";
+"gene_category_status" = "By Status";
+"gene_category_symbol_prefix" = "By Gene Family";
+
 /* Common */
 "done" = "Done";
 "close" = "Close";

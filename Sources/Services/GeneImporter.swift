@@ -38,13 +38,13 @@ enum GeneCategory: String, CaseIterable {
     case status = "Status"
     case symbolPrefix = "Symbol Prefix"
     
-    var koreanName: String {
+    var localizedName: String {
         switch self {
-        case .organism: return "종별"
-        case .geneType: return "기능별"
-        case .chromosome: return "염색체별"
-        case .status: return "상태별"
-        case .symbolPrefix: return "유전자 패밀리별"
+        case .organism: return LanguageHelper.string("gene_category_organism")
+        case .geneType: return LanguageHelper.string("gene_category_gene_type")
+        case .chromosome: return LanguageHelper.string("gene_category_chromosome")
+        case .status: return LanguageHelper.string("gene_category_status")
+        case .symbolPrefix: return LanguageHelper.string("gene_category_symbol_prefix")
         }
     }
 }

@@ -371,3 +371,26 @@
 "license_platform" = "プラットフォーム";
 "license_last_update" = "最終更新";
 
+/* Gene Library */
+"gene_library_title" = "Gene Library";
+"gene_library_dna_atlas" = "DNA Atlas";
+"gene_library_basic_info" = "基本情報";
+"gene_library_description" = "説明";
+"gene_library_aliases" = "別名";
+"gene_library_error_loading" = "遺伝子の読み込みエラー";
+"gene_library_load_more" = "さらに読み込む";
+"gene_library_loading" = "読み込み中...";
+"gene_library_genes_count" = "個の遺伝子";
+"gene_library_tap_to_load" = "タップして読み込む";
+"gene_library_info" = "情報";
+"gene_library_apply" = "適用";
+"gene_library_unknown_gene" = "不明な遺伝子";
+"gene_library_id" = "ID";
+
+/* Gene Categories */
+"gene_category_organism" = "種別";
+"gene_category_gene_type" = "機能別";
+"gene_category_chromosome" = "染色体別";
+"gene_category_status" = "ステータス別";
+"gene_category_symbol_prefix" = "遺伝子ファミリー別";
+

@@ -544,3 +544,26 @@
 "license_platform_desc" = "최소 지원 iOS 버전";
 "license_last_update_title" = "마지막 업데이트";
 "license_last_update_desc" = "마지막 업데이트 날짜";
+
+/* Gene Library */
+"gene_library_title" = "Gene Library";
+"gene_library_dna_atlas" = "DNA Atlas";
+"gene_library_basic_info" = "기본 정보";
+"gene_library_description" = "설명";
+"gene_library_aliases" = "별칭";
+"gene_library_error_loading" = "유전자 로딩 오류";
+"gene_library_load_more" = "더 보기";
+"gene_library_loading" = "로딩 중...";
+"gene_library_genes_count" = "개 유전자";
+"gene_library_tap_to_load" = "탭하여 로드";
+"gene_library_info" = "정보";
+"gene_library_apply" = "적용";
+"gene_library_unknown_gene" = "알 수 없는 유전자";
+"gene_library_id" = "ID";
+
+/* Gene Categories */
+"gene_category_organism" = "종별";
+"gene_category_gene_type" = "기능별";
+"gene_category_chromosome" = "염색체별";
+"gene_category_status" = "상태별";
+"gene_category_symbol_prefix" = "유전자 패밀리별";
