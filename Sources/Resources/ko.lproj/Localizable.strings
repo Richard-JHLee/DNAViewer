@@ -14,14 +14,6 @@
 "menu_terms" = "이용약관";
 "menu_license" = "라이센스";
 
-/* Bottom Menu */
-"bottom_sequence" = "염기서열";
-"bottom_rotation" = "회전";
-"bottom_scissor" = "절단효소";
-"bottom_cloning" = "클로닝";
-"bottom_analysis" = "분석";
-"bottom_reload" = "새로고침";
-
 /* About */
 "about_title" = "DNA Viewer 소개";
 "about_description" = "DNA Viewer는 유전학 교육을 위한 3D DNA 구조 시각화 앱입니다. NCBI 데이터베이스와 연동하여 실제 유전자 데이터를 다운로드하고, 인터랙티브한 3D 환경에서 DNA 구조를 탐색할 수 있습니다. 제한 효소 분석, 단백질 번역, GC 함량 분석 등 다양한 분석 도구를 제공하여 분자생물학 학습을 돕습니다.";
@@ -29,17 +21,76 @@
 "about_copyright" = "© 2025 AVAS. 모든 권리 보유.";
 "about_tech_stack" = "기술 스택";
 "about_key_features" = "주요 기능";
+"about_feature_3d_title" = "3D DNA 시각화";
+"about_feature_3d_desc" = "SceneKit 기반 고품질 3D 렌더링으로 Double Helix, Ladder, Ball & Stick 스타일 지원";
+"about_feature_ncbi_title" = "NCBI 유전자 라이브러리";
+"about_feature_ncbi_desc" = "실시간 NCBI 데이터베이스 연동으로 수천 개의 유전자 정보 제공";
+"about_feature_analysis_title" = "고급 분석 도구";
+"about_feature_analysis_desc" = "GC 함량, CpG 아일랜드, 제한 효소, 단백질 번역 등 포괄적인 분석";
+"about_feature_enzyme_title" = "제한 효소 시뮬레이션";
+"about_feature_enzyme_desc" = "200+ 제한 효소로 DNA 절단 위치 시각화 및 가상 실험";
+"about_feature_color_title" = "색상 테마";
+"about_feature_color_desc" = "Classic, Vivid, Pastel, Neon 등 다양한 색상 테마와 커스터마이징";
+"about_feature_interact_title" = "인터랙티브 조작";
+"about_feature_interact_desc" = "드래그, 핀치, 자동 회전 등 직관적인 3D 조작";
+"about_feature_edu_title" = "교육적 기능";
+"about_feature_edu_desc" = "분자생물학 실험 시뮬레이션과 클로닝 프로세스 시각화";
 
-/* User Guide */
+/* User Guide Sections */
 "guide_title" = "사용 가이드";
 "guide_subtitle" = "DNA 시퀀스 분석과 3D 시각화를 위한 완전한 가이드";
-"guide_getting_started" = "시작하기";
-"guide_gene_library" = "유전자 라이브러리";
-"guide_analysis_tools" = "분석 도구";
-"guide_restriction_enzymes" = "제한 효소";
-"guide_tips" = "사용 팁";
+"guide_getting_started" = "🚀 시작하기";
+"guide_gene_library" = "📚 유전자 라이브러리";
+"guide_analysis_tools" = "📊 분석 도구";
+"guide_restriction_enzymes" = "✂️ 제한 효소";
+"guide_tips" = "💡 사용 팁";
 
-/* Features */
+"guide_start_1_title" = "기본 DNA 시퀀스 보기";
+"guide_start_1_desc" = "앱 시작 시 기본 DNA 시퀀스(BRCA1)가 로드됩니다. 드래그로 회전, 핀치로 확대/축소하세요.";
+"guide_start_2_title" = "그룹별 탐색";
+"guide_start_2_desc" = "DNA는 100bp 단위로 그룹화됩니다. G1, G2, G3... 버튼으로 섹션을 이동하세요.";
+"guide_start_3_title" = "시퀀스 읽기";
+"guide_start_3_desc" = "'Sequence' 버튼으로 하단에 염기서열(A, T, G, C)을 표시합니다.";
+"guide_start_4_title" = "3D 스타일 변경";
+"guide_start_4_desc" = "눈 아이콘(👁)으로 Double Helix, Ladder, Ball & Stick 등 다양한 3D 모드를 선택하세요.";
+
+"guide_lib_1_title" = "라이브러리 열기";
+"guide_lib_1_desc" = "메뉴(☰) → Gene Library로 NCBI 데이터베이스의 유전자를 탐색하세요.";
+"guide_lib_2_title" = "카테고리별 검색";
+"guide_lib_2_desc" = "Organism, Gene Type, Chromosome, Status, Gene Family로 필터링하세요.";
+"guide_lib_3_title" = "유전자 적용";
+"guide_lib_3_desc" = "유전자 선택 후 'Apply'로 해당 DNA 시퀀스를 3D로 로드합니다.";
+"guide_lib_4_title" = "실시간 데이터";
+"guide_lib_4_desc" = "모든 데이터는 NCBI에서 실시간으로 가져오므로 항상 최신입니다.";
+
+"guide_analysis_1_title" = "GC 함량";
+"guide_analysis_1_desc" = "구아닌(G)과 시토신(C) 염기의 비율을 분석합니다. 높은 GC 함량은 안정적인 DNA를 의미합니다.";
+"guide_analysis_2_title" = "CpG 아일랜드";
+"guide_analysis_2_desc" = "CG 빈도가 높은 영역을 탐지합니다. 유전자 조절에 중요한 역할을 합니다.";
+"guide_analysis_3_title" = "제한 효소";
+"guide_analysis_3_desc" = "DNA 절단 가능한 효소들을 분석하고 절단 위치를 확인합니다.";
+"guide_analysis_4_title" = "단백질 번역";
+"guide_analysis_4_desc" = "DNA를 아미노산으로 번역하고, ORF를 찾고, 아미노산 조성을 분석합니다.";
+
+"guide_enzyme_1_title" = "효소 선택";
+"guide_enzyme_1_desc" = "Scissor 버튼으로 현재 시퀀스에 사용 가능한 제한 효소 목록을 확인하세요.";
+"guide_enzyme_2_title" = "3D 시각화";
+"guide_enzyme_2_desc" = "'Show 3D'로 절단 위치를 3D에서 빨간 마커로 표시합니다.";
+"guide_enzyme_3_title" = "가상 절단";
+"guide_enzyme_3_desc" = "'Digest' 버튼으로 DNA 절단을 시뮬레이션하고 단편을 확인하세요.";
+"guide_enzyme_4_title" = "교육적 활용";
+"guide_enzyme_4_desc" = "각 효소의 인식 서열과 절단 패턴을 학습할 수 있습니다.";
+
+"guide_tip_1_title" = "회전";
+"guide_tip_1_desc" = "3D 뷰를 드래그하여 DNA 구조를 자유롭게 회전시키세요.";
+"guide_tip_2_title" = "확대/축소";
+"guide_tip_2_desc" = "핀치 제스처로 3D 구조를 확대하거나 축소하세요.";
+"guide_tip_3_title" = "자동 회전";
+"guide_tip_3_desc" = "Rotation 버튼으로 DNA를 360도 자동 회전시킵니다.";
+"guide_tip_4_title" = "뷰 초기화";
+"guide_tip_4_desc" = "Reload 버튼으로 카메라를 기본 위치로 재설정합니다.";
+
+/* Features Content */
 "features_title" = "주요 기능";
 "features_subtitle" = "DNA Viewer의 핵심 기능과 특징";
 "features_3d_viz" = "3D DNA 시각화";
@@ -51,7 +102,109 @@
 "features_performance" = "성능 최적화";
 "features_education" = "교육적 기능";
 
-/* Help */
+"features_3d_viz_desc_1" = "SceneKit 기반 고품질 3D 렌더링";
+"features_3d_viz_desc_2" = "실시간 인터랙티브 조작 (회전, 확대/축소)";
+"features_3d_viz_desc_3" = "Double Helix, Ladder, Ball & Stick 스타일 지원";
+"features_3d_viz_desc_4" = "그룹별 염기서열 탐색 (100bp 단위)";
+
+"features_gene_lib_desc_1" = "NCBI 데이터베이스 실시간 연동";
+"features_gene_lib_desc_2" = "카테고리별 유전자 검색 및 필터링";
+"features_gene_lib_desc_3" = "Organism, Gene Type, Chromosome 등 분류";
+"features_gene_lib_desc_4" = "FASTA 형식 DNA 시퀀스 자동 로드";
+
+"features_analysis_desc_1" = "GC 함량 분석 및 윈도우 플롯";
+"features_analysis_desc_2" = "CpG 아일랜드 자동 탐지";
+"features_analysis_desc_3" = "제한 효소 절단 부위 분석";
+"features_analysis_desc_4" = "DNA → 단백질 번역 (코돈 테이블)";
+"features_analysis_desc_5" = "아미노산 조성 막대그래프";
+"features_analysis_desc_6" = "Open Reading Frame (ORF) 탐지";
+
+"features_enzyme_desc_1" = "200+ 제한 효소 데이터베이스";
+"features_enzyme_desc_2" = "IUPAC 코드 지원 (정규표현식 변환)";
+"features_enzyme_desc_3" = "절단 위치 3D 시각화 (빨간 마커)";
+"features_enzyme_desc_4" = "SequenceBar scissors 아이콘 표시";
+"features_enzyme_desc_5" = "가상 DNA 절단 시뮬레이션";
+"features_enzyme_desc_6" = "교육용 Gel Electrophoresis 시각화";
+
+"features_color_desc_1" = "Classic, Vivid, Pastel, Neon 테마";
+"features_color_desc_2" = "염기별 색상 커스터마이징 (A, T, G, C)";
+"features_color_desc_3" = "수소 결합 색상 설정";
+"features_color_desc_4" = "실시간 색상 변경 및 미리보기";
+
+"features_interact_desc_1" = "드래그로 3D 모델 회전";
+"features_interact_desc_2" = "핀치 제스처로 확대/축소";
+"features_interact_desc_3" = "자동 360도 회전 애니메이션";
+"features_interact_desc_4" = "개별 염기 선택 및 하이라이트";
+"features_interact_desc_5" = "그룹 단위 네비게이션";
+"features_interact_desc_6" = "Reload로 초기 상태 복원";
+
+"features_perf_desc_1" = "그룹 단위 로딩으로 메모리 효율화";
+"features_perf_desc_2" = "대용량 DNA 시퀀스 처리 가능";
+"features_perf_desc_3" = "백그라운드 스레드 3D 렌더링";
+"features_perf_desc_4" = "스마트 캐싱 시스템";
+"features_perf_desc_5" = "자동 메모리 정리 (autoreleasepool)";
+
+"features_edu_desc_1" = "분자생물학 실험 시뮬레이션";
+"features_edu_desc_2" = "DNA 클로닝 프로세스 시각화";
+"features_edu_desc_3" = "유전자 변환 애니메이션";
+"features_edu_desc_4" = "실험 검증 과정 학습";
+"features_edu_desc_5" = "상세한 사용 가이드 제공";
+
+/* User Guide Sections */
+"guide_title" = "사용 가이드";
+"guide_subtitle" = "DNA 시퀀스 분석과 3D 시각화를 위한 완전한 가이드";
+"guide_getting_started" = "🚀 시작하기";
+"guide_gene_library" = "📚 유전자 라이브러리";
+"guide_analysis_tools" = "📊 분석 도구";
+"guide_restriction_enzymes" = "✂️ 제한 효소";
+"guide_tips" = "💡 사용 팁";
+
+"guide_start_1_title" = "기본 DNA 시퀀스 보기";
+"guide_start_1_desc" = "앱 시작 시 기본 DNA 시퀀스(BRCA1)가 로드됩니다. 드래그로 회전, 핀치로 확대/축소하세요.";
+"guide_start_2_title" = "그룹별 탐색";
+"guide_start_2_desc" = "DNA는 100bp 단위로 그룹화됩니다. G1, G2, G3... 버튼으로 섹션을 이동하세요.";
+"guide_start_3_title" = "시퀀스 읽기";
+"guide_start_3_desc" = "'Sequence' 버튼으로 하단에 염기서열(A, T, G, C)을 표시합니다.";
+"guide_start_4_title" = "3D 스타일 변경";
+"guide_start_4_desc" = "눈 아이콘(👁)으로 Double Helix, Ladder, Ball & Stick 등 다양한 3D 모드를 선택하세요.";
+
+"guide_lib_1_title" = "라이브러리 열기";
+"guide_lib_1_desc" = "메뉴(☰) → Gene Library로 NCBI 데이터베이스의 유전자를 탐색하세요.";
+"guide_lib_2_title" = "카테고리별 검색";
+"guide_lib_2_desc" = "Organism, Gene Type, Chromosome, Status, Gene Family로 필터링하세요.";
+"guide_lib_3_title" = "유전자 적용";
+"guide_lib_3_desc" = "유전자 선택 후 'Apply'로 해당 DNA 시퀀스를 3D로 로드합니다.";
+"guide_lib_4_title" = "실시간 데이터";
+"guide_lib_4_desc" = "모든 데이터는 NCBI에서 실시간으로 가져오므로 항상 최신입니다.";
+
+"guide_analysis_1_title" = "GC 함량";
+"guide_analysis_1_desc" = "구아닌(G)과 시토신(C) 염기의 비율을 분석합니다. 높은 GC 함량은 안정적인 DNA를 의미합니다.";
+"guide_analysis_2_title" = "CpG 아일랜드";
+"guide_analysis_2_desc" = "CG 빈도가 높은 영역을 탐지합니다. 유전자 조절에 중요한 역할을 합니다.";
+"guide_analysis_3_title" = "제한 효소";
+"guide_analysis_3_desc" = "DNA 절단 가능한 효소들을 분석하고 절단 위치를 확인합니다.";
+"guide_analysis_4_title" = "단백질 번역";
+"guide_analysis_4_desc" = "DNA를 아미노산으로 번역하고, ORF를 찾고, 아미노산 조성을 분석합니다.";
+
+"guide_enzyme_1_title" = "효소 선택";
+"guide_enzyme_1_desc" = "Scissor 버튼으로 현재 시퀀스에 사용 가능한 제한 효소 목록을 확인하세요.";
+"guide_enzyme_2_title" = "3D 시각화";
+"guide_enzyme_2_desc" = "'Show 3D'로 절단 위치를 3D에서 빨간 마커로 표시합니다.";
+"guide_enzyme_3_title" = "가상 절단";
+"guide_enzyme_3_desc" = "'Digest' 버튼으로 DNA 절단을 시뮬레이션하고 단편을 확인하세요.";
+"guide_enzyme_4_title" = "교육적 활용";
+"guide_enzyme_4_desc" = "각 효소의 인식 서열과 절단 패턴을 학습할 수 있습니다.";
+
+"guide_tip_1_title" = "회전";
+"guide_tip_1_desc" = "3D 뷰를 드래그하여 DNA 구조를 자유롭게 회전시키세요.";
+"guide_tip_2_title" = "확대/축소";
+"guide_tip_2_desc" = "핀치 제스처로 3D 구조를 확대하거나 축소하세요.";
+"guide_tip_3_title" = "자동 회전";
+"guide_tip_3_desc" = "Rotation 버튼으로 DNA를 360도 자동 회전시킵니다.";
+"guide_tip_4_title" = "뷰 초기화";
+"guide_tip_4_desc" = "Reload 버튼으로 카메라를 기본 위치로 재설정합니다.";
+
+/* Help FAQ */
 "help_title" = "도움말 & FAQ";
 "help_subtitle" = "자주 묻는 질문과 문제 해결";
 "help_general" = "일반 사용";
@@ -62,39 +215,107 @@
 "help_need_more" = "추가 도움이 필요합니다";
 "help_contact_info" = "문제가 지속되거나 다른 질문이 있으시면 앱 정보 페이지의 문의 정보를 통해 연락해주세요.";
 
-/* Privacy */
-"privacy_title" = "개인정보 처리방침";
-"privacy_info_collection" = "수집하는 정보";
-"privacy_info_usage" = "정보 사용 목적";
-"privacy_security" = "정보 보호 및 보안";
-"privacy_third_party" = "제3자 서비스";
-"privacy_user_rights" = "사용자 권리";
-"privacy_policy_changes" = "정책 변경";
+"help_general_q1" = "DNA 시퀀스를 어떻게 로드하나요?";
+"help_general_a1" = "메뉴(☰)에서 Gene Library를 선택하고 원하는 유전자를 검색한 후 'Apply' 버튼을 누르세요. NCBI 데이터베이스에서 실시간으로 데이터를 가져옵니다.";
+"help_general_q2" = "앱이 느리게 실행됩니다";
+"help_general_a2" = "대용량 DNA 시퀀스의 경우 로딩 시간이 오래 걸릴 수 있습니다. 그룹 단위(100bp)로 나누어 표시하므로 각 그룹 전환 시 잠시 기다려주세요.";
+"help_general_q3" = "시퀀스 정보는 어디서 확인하나요?";
+"help_general_a3" = "상단의 Info 버튼(ℹ️)을 누르면 현재 DNA 시퀀스의 상세 정보(이름, 길이, 염색체, 생물체 등)를 확인할 수 있습니다.";
 
-/* Terms */
-"terms_title" = "이용약관";
-"terms_service_usage" = "서비스 이용";
-"terms_service_usage_content" = "DNA Viewer는 유료 앱입니다. 앱 다운로드 및 사용을 위해서는 App Store에서 결제가 필요합니다.";
-"terms_payment" = "결제 및 구독";
-"terms_payment_content" = "• 앱 구매는 App Store를 통해 처리됩니다.\n• 일회성 결제로 앱의 모든 기능을 이용할 수 있습니다.\n• 앱 구매 후 추가 결제는 없습니다.\n• 환불은 App Store 정책에 따라 제한적입니다.";
-"terms_service_scope" = "서비스 범위";
-"terms_refund" = "환불 정책";
-"terms_updates" = "앱 업데이트 및 지원";
-"terms_liability" = "책임의 제한";
-"terms_ip" = "지적 재산권";
-"terms_changes" = "약관 변경";
+"help_3d_q1" = "3D 뷰가 움직이지 않아요";
+"help_3d_a1" = "드래그 제스처로 회전, 핀치 제스처로 확대/축소하세요. Reload 버튼(↻)으로 초기 상태로 되돌릴 수 있습니다.";
+"help_3d_q2" = "3D 스타일을 변경하려면?";
+"help_3d_a2" = "눈 아이콘(👁) 버튼을 누르면 Style 섹션이 나타납니다. Double Helix, Ladder, Ball & Stick 중 원하는 스타일을 선택하세요.";
+"help_3d_q3" = "색상이 변경되지 않습니다";
+"help_3d_a3" = "눈 아이콘(👁) 버튼을 누르고 Color 섹션에서 원하는 색상 테마를 선택하세요. Classic, Vivid, Pastel, Neon 등 다양한 테마가 있습니다.";
+"help_3d_q4" = "자동 회전은 어떻게 하나요?";
+"help_3d_a4" = "Bottom menu에서 Rotation 버튼을 누르면 DNA가 360도 자동으로 회전합니다. 다시 누르면 정지합니다.";
 
-/* License */
+"help_analysis_q1" = "GC 함량이란 무엇인가요?";
+"help_analysis_a1" = "구아닌(G)과 시토신(C) 염기의 비율입니다. 높은 GC 함량은 더 안정적인 DNA 구조를 의미하며, 유전자 발현과 진화 연구에 중요합니다.";
+"help_analysis_q2" = "CpG 아일랜드는 왜 중요한가요?";
+"help_analysis_a2" = "CpG 아일랜드는 CG 디뉴클레오티드가 풍부한 영역으로, 유전자의 프로모터 부위에 많이 위치합니다. DNA 메틸화를 통한 유전자 조절에 핵심적인 역할을 합니다.";
+"help_analysis_q3" = "단백질 번역 결과는 어떻게 보나요?";
+"help_analysis_a3" = "Analysis 메뉴에서 'Protein' 탭을 선택하세요. DNA가 자동으로 아미노산으로 번역되며, 코돈별 상세 정보와 ORF(Open Reading Frame)를 확인할 수 있습니다.";
+"help_analysis_q4" = "아미노산 조성 그래프는 무엇인가요?";
+"help_analysis_a4" = "번역된 단백질에 포함된 각 아미노산의 개수와 비율을 막대그래프로 보여줍니다. 색상은 아미노산의 화학적 특성(소수성, 극성, 전하)을 나타냅니다.";
+
+"help_enzyme_q1" = "제한 효소 절단 위치가 안 보여요";
+"help_enzyme_a1" = "Bottom menu의 Scissor 버튼을 누르고, 원하는 제한 효소를 선택한 후 'Show 3D' 버튼을 눌러주세요. 3D 뷰에 빨간색 마커가 표시됩니다.";
+"help_enzyme_q2" = "여러 효소를 동시에 선택할 수 있나요?";
+"help_enzyme_a2" = "네! 여러 제한 효소를 선택하면 모든 절단 위치가 함께 표시됩니다. 'Digest' 버튼으로 가상 절단 시뮬레이션도 가능합니다.";
+"help_enzyme_q3" = "절단 마커를 제거하려면?";
+"help_enzyme_a3" = "Bottom menu의 Reload 버튼(↻)을 누르면 모든 하이라이트와 마커가 제거되고 초기 상태로 돌아갑니다.";
+"help_enzyme_q4" = "SequenceBar에 scissors 아이콘이 나타납니다";
+"help_enzyme_a4" = "이것은 해당 위치가 제한 효소 절단 위치임을 나타냅니다. 빨간색 테두리와 함께 표시되어 정확한 절단 위치를 쉽게 확인할 수 있습니다.";
+
+"help_trouble_q1" = "앱이 멈추거나 응답하지 않습니다";
+"help_trouble_a1" = "매우 큰 DNA 시퀀스의 경우 3D 렌더링에 시간이 걸릴 수 있습니다. Reload 버튼을 눌러 초기화하거나, 앱을 재시작해보세요.";
+"help_trouble_q2" = "Gene Library에서 유전자를 찾을 수 없어요";
+"help_trouble_a2" = "인터넷 연결을 확인하고, 정확한 유전자 이름이나 심볼을 입력했는지 확인하세요. NCBI 데이터베이스에 등록된 유전자만 검색 가능합니다.";
+"help_trouble_q3" = "분석 결과를 저장할 수 있나요?";
+"help_trouble_a3" = "현재 버전에서는 화면 캡처(스크린샷)로 분석 결과를 저장할 수 있습니다. 향후 업데이트에서 데이터 내보내기 기능이 추가될 예정입니다.";
+
+/* Privacy Content */
+"privacy_section_1_title" = "1. 수집하는 정보";
+"privacy_section_1_content" = "DNA Viewer는 사용자의 개인정보를 수집하지 않습니다.\n\n• Gene ID: 유전자 데이터를 다운로드하기 위한 공개 식별자로, 개인정보가 아닙니다.\n• 앱 사용 데이터: 앱 내에서 생성되는 모든 데이터는 기기에만 저장됩니다.\n• 네트워크 요청: DNA 시퀀스 데이터 다운로드를 위한 API 호출만 수행합니다.";
+
+"privacy_section_2_title" = "2. 정보 사용 목적";
+"privacy_section_2_content" = "• DNA 구조 시각화 및 3D 렌더링\n• 교육 및 연구 목적의 데이터 제공\n• 앱 기능 향상을 위한 로컬 데이터 처리\n• 사용자 경험 개선을 위한 앱 내 기능 제공";
+
+"privacy_section_3_title" = "3. 정보 보호 및 보안";
+"privacy_section_3_content" = "• 모든 데이터는 사용자 기기에만 저장됩니다.\n• 외부 서버로 개인정보가 전송되지 않습니다.\n• NCBI API 호출 시에는 공개 데이터만 요청합니다.\n• 앱 삭제 시 모든 로컬 데이터가 함께 삭제됩니다.";
+
+"privacy_section_4_title" = "4. 제3자 서비스";
+"privacy_section_4_content" = "• NCBI E-utilities (eutils.ncbi.nlm.nih.gov): 유전자 데이터 제공\n• NCBI Gene Database: 유전자 정보 제공\n• NCBI Nucleotide Database: DNA 시퀀스 제공\n\n이들 서비스는 모두 공개 API이며 개인정보를 요구하지 않습니다.";
+
+"privacy_section_5_title" = "5. 사용자 권리";
+"privacy_section_5_content" = "• 데이터 삭제: 앱 삭제를 통해 모든 데이터를 삭제할 수 있습니다.\n• 데이터 수정: 앱 내에서 입력한 정보는 언제든 수정 가능합니다.\n• 문의: 개인정보 관련 문의는 앱 정보 페이지를 이용해주세요.";
+
+"privacy_section_6_title" = "6. 정책 변경";
+"privacy_section_6_content" = "개인정보 처리방침은 필요에 따라 변경될 수 있으며, 변경 시 앱 내에서 공지합니다. 마지막 업데이트: 2025년 10월 20일";
+
+/* Terms Content */
+"terms_section_1_title" = "서비스 이용";
+"terms_section_1_content" = "DNA Viewer는 유료 앱입니다. 앱 다운로드 및 사용을 위해서는 App Store에서 결제가 필요합니다.";
+
+"terms_section_2_title" = "결제 및 구독";
+"terms_section_2_content" = "• 앱 구매는 App Store를 통해 처리됩니다.\n• 일회성 결제로 앱의 모든 기능을 이용할 수 있습니다.\n• 앱 구매 후 추가 결제는 없습니다.\n• 환불은 App Store 정책에 따라 제한적입니다.";
+
+"terms_section_3_title" = "서비스 범위";
+"terms_section_3_content" = "• 3D DNA 구조 시각화\n• NCBI 유전자 라이브러리 접근\n• 고급 분석 도구 (GC 함량, CpG 아일랜드, 제한 효소)\n• 단백질 번역 및 ORF 탐지\n• 오프라인 데이터 저장\n• 고객 지원 서비스\n• 모든 기능이 앱 구매 시 포함됩니다.";
+
+"terms_section_4_title" = "환불 정책";
+"terms_section_4_content" = "• 앱 구매 환불은 Apple App Store 정책에 따라 처리됩니다.\n• 환불 요청은 App Store에서 직접 신청해주세요.\n• Apple의 환불 정책: https://support.apple.com/HT204084\n• 개발자는 환불 처리 권한이 없으며, Apple이 모든 환불을 관리합니다.";
+
+"terms_section_5_title" = "사용자 책임";
+"terms_section_5_content" = "• 앱은 교육 및 연구 목적으로만 사용하세요.\n• NCBI 데이터는 학술 및 비상업적 용도로만 사용하세요.\n• 앱을 통해 얻은 정보의 정확성은 사용자가 직접 확인해야 합니다.\n• 중요한 연구나 의료 결정에는 전문가의 검토가 필요합니다.";
+
+"terms_section_6_title" = "앱 업데이트 및 지원";
+"terms_section_6_content" = "• 앱 업데이트는 무료로 제공됩니다.\n• 새로운 기능을 추가 비용 없이 사용할 수 있습니다.\n• 앱 지원 중단 시 30일 전 사전 공지합니다.\n• 지원 중단으로 인한 데이터 손실에 대해 책임지지 않습니다.";
+
+"terms_section_7_title" = "책임의 제한";
+"terms_section_7_content" = "• DNA Viewer는 \"있는 그대로\" 제공됩니다.\n• 앱 사용으로 인한 결과에 대해 개발자는 책임지지 않습니다.\n• NCBI 데이터의 정확성은 NCBI에서 보장합니다.\n• 앱 오작동이나 데이터 손실에 대한 책임은 제한적입니다.";
+
+"terms_section_8_title" = "지적 재산권";
+"terms_section_8_content" = "• DNA Viewer 앱의 저작권은 AVAS에 있습니다.\n• DNA 시퀀스 데이터는 NCBI의 공개 데이터입니다.\n• 앱 코드는 MIT 라이센스로 제공됩니다.\n• 사용자가 생성한 데이터는 사용자의 소유입니다.";
+
+"terms_section_9_title" = "약관 변경";
+"terms_section_9_content" = "이용약관은 필요에 따라 변경될 수 있으며, 변경 시 앱 내에서 공지합니다. 마지막 업데이트: 2025년 10월 20일";
+
+/* License Content */
 "license_title" = "MIT 라이센스";
 "license_copyright" = "Copyright (c) 2025 AVAS";
+"license_permission_text" = "이 소프트웨어와 관련 문서 파일들(\"소프트웨어\")의 사본을 얻은 모든 사람에게는 소프트웨어를 제한 없이 취급할 수 있는 권한이 무료로 부여됩니다. 여기에는 사용, 복사, 수정, 병합, 게시, 배포, 서브라이센스 및/또는 소프트웨어의 사본을 판매할 권리와 소프트웨어가 제공된 사람들이 그러할 수 있도록 허가하는 권리가 제한 없이 포함됩니다. 단, 다음 조건에 따릅니다:";
+"license_notice_text" = "위의 저작권 고지와 이 허가 고지는 소프트웨어의 모든 사본이나 중요한 부분에 포함되어야 합니다.";
+"license_warranty_text" = "소프트웨어는 \"있는 그대로\" 제공되며, 상품성, 특정 목적에의 적합성 및 비침해에 대한 보증을 포함하되 이에 국한되지 않는 모든 종류의 명시적 또는 묵시적 보증 없이 제공됩니다. 어떤 경우에도 저자나 저작권 보유자는 계약 행위, 불법 행위 또는 기타 행위에서, 소프트웨어와 관련하여, 소프트웨어의 사용 또는 기타 거래에서 발생하는 청구, 손해 또는 기타 책임에 대해 책임지지 않습니다.";
 "license_open_source" = "오픈소스 라이브러리";
 "license_app_info" = "앱 정보";
-
-/* Analysis */
-"analysis_gc_content" = "GC 함량";
-"analysis_cpg_islands" = "CpG 아일랜드";
-"analysis_restriction" = "제한 효소 분석";
-"analysis_protein" = "단백질 번역";
+"license_app_name" = "앱 이름";
+"license_version" = "버전";
+"license_build" = "빌드";
+"license_platform" = "플랫폼";
+"license_last_update" = "마지막 업데이트";
 
 /* Common */
 "done" = "완료";
@@ -107,4 +328,3 @@
 "show_3d" = "3D 보기";
 "show_all" = "전체 보기";
 "show_less" = "간단히 보기";
-

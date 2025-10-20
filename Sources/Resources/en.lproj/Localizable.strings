@@ -14,14 +14,6 @@
 "menu_terms" = "Terms of Service";
 "menu_license" = "License";
 
-/* Bottom Menu */
-"bottom_sequence" = "Sequence";
-"bottom_rotation" = "Rotation";
-"bottom_scissor" = "Scissor";
-"bottom_cloning" = "Cloning";
-"bottom_analysis" = "Analysis";
-"bottom_reload" = "Reload";
-
 /* About */
 "about_title" = "About DNA Viewer";
 "about_description" = "DNA Viewer is a 3D DNA structure visualization app for genetics education. It integrates with the NCBI database to download real gene data and explore DNA structures in an interactive 3D environment. It provides various analysis tools such as restriction enzyme analysis, protein translation, and GC content analysis to support molecular biology learning.";
@@ -29,72 +21,230 @@
 "about_copyright" = "© 2025 AVAS. All rights reserved.";
 "about_tech_stack" = "Technology Stack";
 "about_key_features" = "Key Features";
+"about_feature_3d_title" = "3D DNA Visualization";
+"about_feature_3d_desc" = "High-quality 3D rendering with SceneKit supporting Double Helix, Ladder, Ball & Stick styles";
+"about_feature_ncbi_title" = "NCBI Gene Library";
+"about_feature_ncbi_desc" = "Real-time NCBI database integration providing thousands of gene information";
+"about_feature_analysis_title" = "Advanced Analysis Tools";
+"about_feature_analysis_desc" = "Comprehensive analysis including GC content, CpG islands, restriction enzymes, protein translation";
+"about_feature_enzyme_title" = "Restriction Enzyme Simulation";
+"about_feature_enzyme_desc" = "Visualize DNA cutting positions and virtual experiments with 200+ restriction enzymes";
+"about_feature_color_title" = "Color Themes";
+"about_feature_color_desc" = "Various color themes including Classic, Vivid, Pastel, Neon with customization";
+"about_feature_interact_title" = "Interactive Control";
+"about_feature_interact_desc" = "Intuitive 3D manipulation with drag, pinch, auto-rotation";
+"about_feature_edu_title" = "Educational Features";
+"about_feature_edu_desc" = "Molecular biology experiment simulation and cloning process visualization";
 
-/* User Guide */
+/* User Guide Sections */
 "guide_title" = "User Guide";
 "guide_subtitle" = "Complete guide for DNA sequence analysis and 3D visualization";
-"guide_getting_started" = "Getting Started";
-"guide_gene_library" = "Gene Library";
-"guide_analysis_tools" = "Analysis Tools";
-"guide_restriction_enzymes" = "Restriction Enzymes";
-"guide_tips" = "Tips & Tricks";
+"guide_getting_started" = "🚀 Getting Started";
+"guide_gene_library" = "📚 Gene Library";
+"guide_analysis_tools" = "📊 Analysis Tools";
+"guide_restriction_enzymes" = "✂️ Restriction Enzymes";
+"guide_tips" = "💡 Tips & Tricks";
 
-/* Features */
-"features_title" = "Key Features";
-"features_subtitle" = "Core features and capabilities of DNA Viewer";
-"features_3d_viz" = "3D DNA Visualization";
-"features_gene_lib" = "Gene Library";
-"features_analysis" = "Analysis Tools";
-"features_enzymes" = "Restriction Enzymes";
-"features_colors" = "Color Themes";
-"features_interaction" = "Interaction Features";
-"features_performance" = "Performance Optimization";
-"features_education" = "Educational Features";
+"guide_start_1_title" = "View Basic DNA Sequence";
+"guide_start_1_desc" = "Default DNA sequence (BRCA1) loads on start. Drag to rotate, pinch to zoom.";
+"guide_start_2_title" = "Group Navigation";
+"guide_start_2_desc" = "DNA is grouped in 100bp units. Move between sections using G1, G2, G3... buttons.";
+"guide_start_3_title" = "Read Sequence";
+"guide_start_3_desc" = "'Sequence' button displays nucleotide bases (A, T, G, C) at the bottom.";
+"guide_start_4_title" = "Change 3D Style";
+"guide_start_4_desc" = "Tap eye icon (👁) to select various 3D modes like Double Helix, Ladder, Ball & Stick.";
 
-/* Help */
-"help_title" = "Help & FAQ";
-"help_subtitle" = "Frequently asked questions and troubleshooting";
-"help_general" = "General Usage";
-"help_3d" = "3D Visualization";
-"help_analysis" = "Analysis Tools";
-"help_enzymes" = "Restriction Enzymes";
-"help_troubleshooting" = "Troubleshooting";
+"guide_lib_1_title" = "Open Library";
+"guide_lib_1_desc" = "Menu(☰) → Gene Library to explore genes from NCBI database.";
+"guide_lib_2_title" = "Category Search";
+"guide_lib_2_desc" = "Filter by Organism, Gene Type, Chromosome, Status, Gene Family.";
+"guide_lib_3_title" = "Apply Gene";
+"guide_lib_3_desc" = "Select gene and tap 'Apply' to load DNA sequence in 3D.";
+"guide_lib_4_title" = "Real-time Data";
+"guide_lib_4_desc" = "All data is fetched real-time from NCBI, always up-to-date.";
+
+"guide_analysis_1_title" = "GC Content";
+"guide_analysis_1_desc" = "Analyze ratio of Guanine(G) and Cytosine(C) bases. High GC content means more stable DNA structure.";
+"guide_analysis_2_title" = "CpG Islands";
+"guide_analysis_2_desc" = "Detect regions with high CG dinucleotide frequency. Important for gene regulation.";
+"guide_analysis_3_title" = "Restriction Enzymes";
+"guide_analysis_3_desc" = "Analyze enzymes that can cut DNA and check cutting positions.";
+"guide_analysis_4_title" = "Protein Translation";
+"guide_analysis_4_desc" = "Translate DNA to amino acids, find ORFs, analyze amino acid composition.";
+
+"guide_enzyme_1_title" = "Select Enzymes";
+"guide_enzyme_1_desc" = "Tap Scissor button to check available restriction enzymes for current sequence.";
+"guide_enzyme_2_title" = "3D Visualization";
+"guide_enzyme_2_desc" = "'Show 3D' displays cutting positions with red markers in 3D.";
+"guide_enzyme_3_title" = "Virtual Digestion";
+"guide_enzyme_3_desc" = "'Digest' button simulates DNA cutting and shows fragments.";
+"guide_enzyme_4_title" = "Educational Use";
+"guide_enzyme_4_desc" = "Learn recognition sequences and cutting patterns of each enzyme.";
+
+"guide_tip_1_title" = "Rotation";
+"guide_tip_1_desc" = "Drag 3D view to freely rotate DNA structure.";
+"guide_tip_2_title" = "Zoom";
+"guide_tip_2_desc" = "Use pinch gesture to zoom in/out 3D structure.";
+"guide_tip_3_title" = "Auto Rotation";
+"guide_tip_3_desc" = "Rotation button makes DNA rotate 360 degrees automatically.";
+"guide_tip_4_title" = "Reset View";
+"guide_tip_4_desc" = "Reload button resets camera to default position.";
+
+/* Features Content */
+"features_3d_viz_desc_1" = "High-quality 3D rendering based on SceneKit";
+"features_3d_viz_desc_2" = "Real-time interactive manipulation (rotation, zoom)";
+"features_3d_viz_desc_3" = "Support for Double Helix, Ladder, Ball & Stick styles";
+"features_3d_viz_desc_4" = "Group-based sequence exploration (100bp units)";
+
+"features_gene_lib_desc_1" = "Real-time NCBI database integration";
+"features_gene_lib_desc_2" = "Category-based gene search and filtering";
+"features_gene_lib_desc_3" = "Classification by Organism, Gene Type, Chromosome";
+"features_gene_lib_desc_4" = "Automatic FASTA format DNA sequence loading";
+
+"features_analysis_desc_1" = "GC content analysis and window plot";
+"features_analysis_desc_2" = "Automatic CpG island detection";
+"features_analysis_desc_3" = "Restriction enzyme cutting site analysis";
+"features_analysis_desc_4" = "DNA → Protein translation (codon table)";
+"features_analysis_desc_5" = "Amino acid composition bar chart";
+"features_analysis_desc_6" = "Open Reading Frame (ORF) detection";
+
+"features_enzyme_desc_1" = "200+ restriction enzyme database";
+"features_enzyme_desc_2" = "IUPAC code support (regex conversion)";
+"features_enzyme_desc_3" = "3D visualization of cutting positions (red markers)";
+"features_enzyme_desc_4" = "SequenceBar scissors icon display";
+"features_enzyme_desc_5" = "Virtual DNA digestion simulation";
+"features_enzyme_desc_6" = "Educational Gel Electrophoresis visualization";
+
+"features_color_desc_1" = "Classic, Vivid, Pastel, Neon themes";
+"features_color_desc_2" = "Base-specific color customization (A, T, G, C)";
+"features_color_desc_3" = "Hydrogen bond color settings";
+"features_color_desc_4" = "Real-time color change and preview";
+
+"features_interact_desc_1" = "Drag to rotate 3D model";
+"features_interact_desc_2" = "Pinch gesture to zoom";
+"features_interact_desc_3" = "Auto 360-degree rotation animation";
+"features_interact_desc_4" = "Individual base selection and highlight";
+"features_interact_desc_5" = "Group-based navigation";
+"features_interact_desc_6" = "Reload to restore initial state";
+
+"features_perf_desc_1" = "Memory efficiency through group-based loading";
+"features_perf_desc_2" = "Large DNA sequence processing capability";
+"features_perf_desc_3" = "Background thread 3D rendering";
+"features_perf_desc_4" = "Smart caching system";
+"features_perf_desc_5" = "Automatic memory cleanup (autoreleasepool)";
+
+"features_edu_desc_1" = "Molecular biology experiment simulation";
+"features_edu_desc_2" = "DNA cloning process visualization";
+"features_edu_desc_3" = "Gene transformation animation";
+"features_edu_desc_4" = "Experimental verification process learning";
+"features_edu_desc_5" = "Detailed user guide provided";
+
+/* Help FAQ */
+"help_general_q1" = "How to load DNA sequence?";
+"help_general_a1" = "Menu(☰) → Gene Library, select desired gene, then tap 'Apply' button. Data is fetched real-time from NCBI database.";
+"help_general_q2" = "App runs slowly";
+"help_general_a2" = "Large DNA sequences may take longer to load. Groups are divided into 100bp units, please wait briefly when switching groups.";
+"help_general_q3" = "Where to check sequence info?";
+"help_general_a3" = "Tap Info button(ℹ️) at the top to view detailed information (name, length, chromosome, organism, etc.) of current DNA sequence.";
+
+"help_3d_q1" = "3D view doesn't move";
+"help_3d_a1" = "Use drag gesture to rotate, pinch gesture to zoom. Reload button(↻) returns to initial state.";
+"help_3d_q2" = "How to change 3D style?";
+"help_3d_a2" = "Tap eye icon(👁) button to show Style section. Choose from Double Helix, Ladder, Ball & Stick.";
+"help_3d_q3" = "Colors don't change";
+"help_3d_a3" = "Tap eye icon(👁) button and select desired color theme from Color section. Various themes like Classic, Vivid, Pastel, Neon available.";
+"help_3d_q4" = "How to auto-rotate?";
+"help_3d_a4" = "Tap Rotation button in bottom menu to rotate DNA 360 degrees automatically. Tap again to stop.";
+
+"help_analysis_q1" = "What is GC content?";
+"help_analysis_a1" = "Ratio of Guanine(G) and Cytosine(C) bases. High GC content means more stable DNA structure, important for gene expression and evolution research.";
+"help_analysis_q2" = "Why are CpG islands important?";
+"help_analysis_a2" = "CpG islands are regions rich in CG dinucleotides, often located in gene promoter regions. They play key role in gene regulation through DNA methylation.";
+"help_analysis_q3" = "How to view protein translation results?";
+"help_analysis_a3" = "Select 'Protein' tab in Analysis menu. DNA automatically translates to amino acids, showing detailed codon info and ORF (Open Reading Frame).";
+"help_analysis_q4" = "What is amino acid composition graph?";
+"help_analysis_a4" = "Bar graph showing count and ratio of each amino acid in translated protein. Colors indicate chemical properties (hydrophobic, polar, charge).";
+
+"help_enzyme_q1" = "Enzyme cut sites don't appear";
+"help_enzyme_a1" = "Tap Scissor button in bottom menu, select desired restriction enzyme, then tap 'Show 3D' button. Red markers will appear in 3D view.";
+"help_enzyme_q2" = "Can I select multiple enzymes?";
+"help_enzyme_a2" = "Yes! All cutting positions will be displayed together when multiple restriction enzymes are selected. Virtual cutting simulation also available with 'Digest' button.";
+"help_enzyme_q3" = "How to remove cutting markers?";
+"help_enzyme_a3" = "Tap Reload button(↻) in bottom menu to remove all highlights and markers, returning to initial state.";
+"help_enzyme_q4" = "Scissors icon appears in SequenceBar";
+"help_enzyme_a4" = "This indicates that position is a restriction enzyme cutting site. Displayed with red border for easy identification of exact cutting position.";
+
+"help_trouble_q1" = "App freezes or doesn't respond";
+"help_trouble_a1" = "Very large DNA sequences may take time for 3D rendering. Try Reload button or restart the app.";
+"help_trouble_q2" = "Can't find gene in Gene Library";
+"help_trouble_a2" = "Check internet connection and ensure correct gene name or symbol. Only genes registered in NCBI database are searchable.";
+"help_trouble_q3" = "Can I save analysis results?";
+"help_trouble_a3" = "Current version supports saving analysis results via screenshot. Data export feature will be added in future updates.";
+
 "help_need_more" = "Need Additional Help";
-"help_contact_info" = "If problems persist or you have other questions, please contact us through the app info page.";
+"help_contact_info" = "If problems persist or you have other questions, please contact us through the contact information on the app info page.";
 
-/* Privacy */
-"privacy_title" = "Privacy Policy";
-"privacy_info_collection" = "Information Collection";
-"privacy_info_usage" = "Information Usage Purpose";
-"privacy_security" = "Information Protection and Security";
-"privacy_third_party" = "Third-Party Services";
-"privacy_user_rights" = "User Rights";
-"privacy_policy_changes" = "Policy Changes";
+/* Privacy Content */
+"privacy_section_1_title" = "1. Information Collection";
+"privacy_section_1_content" = "DNA Viewer does not collect personal information.\n\n• Gene ID: Public identifier for downloading gene data, not personal information.\n• App usage data: All data generated within app is stored only on device.\n• Network requests: Only API calls for downloading DNA sequence data.";
 
-/* Terms */
-"terms_title" = "Terms of Service";
-"terms_service_usage" = "Service Usage";
-"terms_service_usage_content" = "DNA Viewer is a paid app. Payment through the App Store is required to download and use the app.";
-"terms_payment" = "Payment & Subscription";
-"terms_payment_content" = "• App purchases are processed through the App Store.\n• One-time payment provides access to all app features.\n• No additional payments after app purchase.\n• Refunds are limited according to App Store policy.";
-"terms_service_scope" = "Service Scope";
-"terms_refund" = "Refund Policy";
-"terms_updates" = "App Updates & Support";
-"terms_liability" = "Liability Limitation";
-"terms_ip" = "Intellectual Property";
-"terms_changes" = "Terms Changes";
+"privacy_section_2_title" = "2. Information Usage Purpose";
+"privacy_section_2_content" = "• DNA structure visualization and 3D rendering\n• Data provision for educational and research purposes\n• Local data processing for app improvement\n• In-app features for user experience enhancement";
 
-/* License */
-"license_title" = "MIT License";
-"license_copyright" = "Copyright (c) 2025 AVAS";
+"privacy_section_3_title" = "3. Information Protection and Security";
+"privacy_section_3_content" = "• All data stored only on user device.\n• No personal information transmitted to external servers.\n• Only public data requested during NCBI API calls.\n• All local data deleted when app is removed.";
+
+"privacy_section_4_title" = "4. Third-Party Services";
+"privacy_section_4_content" = "• NCBI E-utilities (eutils.ncbi.nlm.nih.gov): Gene data provider\n• NCBI Gene Database: Gene information provider\n• NCBI Nucleotide Database: DNA sequence provider\n\nAll services are public APIs and do not require personal information.";
+
+"privacy_section_5_title" = "5. User Rights";
+"privacy_section_5_content" = "• Data deletion: Delete all data by removing app.\n• Data modification: Information entered in app can be modified anytime.\n• Inquiries: Use app info page for privacy-related inquiries.";
+
+"privacy_section_6_title" = "6. Policy Changes";
+"privacy_section_6_content" = "Privacy policy may change as needed, with notifications in app when changed. Last updated: October 20, 2025";
+
+/* Terms Content */
+"terms_section_1_title" = "Service Usage";
+"terms_section_1_content" = "DNA Viewer is a paid app. Payment through the App Store is required to download and use the app.";
+
+"terms_section_2_title" = "Payment & Subscription";
+"terms_section_2_content" = "• App purchases are processed through the App Store.\n• One-time payment provides access to all app features.\n• No additional payments after app purchase.\n• Refunds are limited according to App Store policy.";
+
+"terms_section_3_title" = "Service Scope";
+"terms_section_3_content" = "• 3D DNA structure visualization\n• NCBI gene library access\n• Advanced analysis tools (GC content, CpG islands, restriction enzymes)\n• Protein translation and ORF detection\n• Offline data storage\n• Customer support service\n• All features included with app purchase.";
+
+"terms_section_4_title" = "Refund Policy";
+"terms_section_4_content" = "• App purchase refunds processed according to Apple App Store policy.\n• Please request refunds directly through App Store.\n• Apple's refund policy: https://support.apple.com/HT204084\n• Developers have no refund processing authority; Apple manages all refunds.";
+
+"terms_section_5_title" = "User Responsibility";
+"terms_section_5_content" = "• Use app for educational and research purposes only.\n• Use NCBI data for academic and non-commercial purposes only.\n• Users must verify accuracy of information obtained through app.\n• Important research or medical decisions require expert review.";
+
+"terms_section_6_title" = "App Updates & Support";
+"terms_section_6_content" = "• App updates provided free of charge.\n• New features available without additional payment.\n• 30-day advance notice before app support discontinuation.\n• Not responsible for data loss due to support discontinuation.";
+
+"terms_section_7_title" = "Liability Limitation";
+"terms_section_7_content" = "• DNA Viewer is provided \"as is\".\n• Developer not responsible for results from app usage.\n• NCBI guarantees accuracy of NCBI data.\n• Liability for app malfunction or data loss is limited.";
+
+"terms_section_8_title" = "Intellectual Property";
+"terms_section_8_content" = "• Copyright of DNA Viewer app belongs to AVAS.\n• DNA sequence data is public data from NCBI.\n• App code provided under MIT license.\n• User-generated data belongs to user.";
+
+"terms_section_9_title" = "Terms Changes";
+"terms_section_9_content" = "Terms may change as needed, with notifications in app when changed. Last updated: October 20, 2025";
+
+/* License Content */
+"license_permission_text" = "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:";
+
+"license_notice_text" = "The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.";
+
+"license_warranty_text" = "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
+
 "license_open_source" = "Open Source Libraries";
 "license_app_info" = "App Information";
-
-/* Analysis */
-"analysis_gc_content" = "GC Content";
-"analysis_cpg_islands" = "CpG Islands";
-"analysis_restriction" = "Restriction Sites";
-"analysis_protein" = "Protein";
+"license_app_name" = "App Name";
+"license_version" = "Version";
+"license_build" = "Build";
+"license_platform" = "Platform";
+"license_last_update" = "Last Updated";
 
 /* Common */
 "done" = "Done";
@@ -107,4 +257,3 @@
 "show_3d" = "Show 3D";
 "show_all" = "Show All";
 "show_less" = "Show Less";
-

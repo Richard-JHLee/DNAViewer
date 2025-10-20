@@ -588,38 +588,38 @@ struct AboutContentView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             AboutFeatureRow(
                                 icon: "cube.fill",
-                                title: "3D DNA 시각화",
-                                description: "SceneKit 기반 고품질 3D 렌더링으로 Double Helix, Ladder, Ball & Stick 스타일 지원"
+                                title: LanguageHelper.string("about_feature_3d_title"),
+                                description: LanguageHelper.string("about_feature_3d_desc")
                             )
                             AboutFeatureRow(
                                 icon: "books.vertical.fill",
-                                title: "NCBI 유전자 라이브러리",
-                                description: "실시간 NCBI 데이터베이스 연동으로 수천 개의 유전자 정보 제공"
+                                title: LanguageHelper.string("about_feature_ncbi_title"),
+                                description: LanguageHelper.string("about_feature_ncbi_desc")
                             )
                             AboutFeatureRow(
                                 icon: "chart.bar.fill",
-                                title: "고급 분석 도구",
-                                description: "GC 함량, CpG 아일랜드, 제한 효소, 단백질 번역 등 포괄적인 분석"
+                                title: LanguageHelper.string("about_feature_analysis_title"),
+                                description: LanguageHelper.string("about_feature_analysis_desc")
                             )
                             AboutFeatureRow(
                                 icon: "scissors",
-                                title: "제한 효소 시뮬레이션",
-                                description: "200+ 제한 효소로 DNA 절단 위치 시각화 및 가상 실험"
+                                title: LanguageHelper.string("about_feature_enzyme_title"),
+                                description: LanguageHelper.string("about_feature_enzyme_desc")
                             )
                             AboutFeatureRow(
                                 icon: "paintpalette.fill",
-                                title: "색상 테마",
-                                description: "Classic, Vivid, Pastel, Neon 등 다양한 색상 테마와 커스터마이징"
+                                title: LanguageHelper.string("about_feature_color_title"),
+                                description: LanguageHelper.string("about_feature_color_desc")
                             )
                             AboutFeatureRow(
                                 icon: "hand.tap.fill",
-                                title: "인터랙티브 조작",
-                                description: "드래그, 핀치, 자동 회전 등 직관적인 3D 조작"
+                                title: LanguageHelper.string("about_feature_interact_title"),
+                                description: LanguageHelper.string("about_feature_interact_desc")
                             )
                             AboutFeatureRow(
                                 icon: "graduationcap.fill",
-                                title: "교육적 기능",
-                                description: "분자생물학 실험 시뮬레이션과 클로닝 프로세스 시각화"
+                                title: LanguageHelper.string("about_feature_edu_title"),
+                                description: LanguageHelper.string("about_feature_edu_desc")
                             )
                         }
                     }
@@ -736,11 +736,7 @@ struct UserGuideContentView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     // Header
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("DNA Viewer 사용 가이드")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                        
-                        Text("DNA 시퀀스 분석과 3D 시각화를 위한 완전한 가이드")
+                        Text(LanguageHelper.string("guide_subtitle"))
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -854,13 +850,9 @@ struct HelpContentView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    // Title
+                    // Subtitle
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("도움말 & FAQ")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                        
-                        Text("자주 묻는 질문과 문제 해결")
+                        Text(LanguageHelper.string("help_subtitle"))
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -1084,13 +1076,9 @@ struct FeaturesContentView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    // Header
+                    // Subtitle
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("주요 기능")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                        
-                        Text("DNA Viewer의 핵심 기능과 특징")
+                        Text(LanguageHelper.string("features_subtitle"))
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -1287,39 +1275,35 @@ struct PrivacyContentView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    Text(LanguageHelper.string("privacy_title"))
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
                     VStack(alignment: .leading, spacing: 16) {
                         PrivacySection(
-                            title: "1. 수집하는 정보",
-                            content: "DNA Viewer는 사용자의 개인정보를 수집하지 않습니다.\n\n• Gene ID: 유전자 데이터를 다운로드하기 위한 공개 식별자로, 개인정보가 아닙니다.\n• 앱 사용 데이터: 앱 내에서 생성되는 모든 데이터는 기기에만 저장됩니다.\n• 네트워크 요청: DNA 시퀀스 데이터 다운로드를 위한 API 호출만 수행합니다."
+                            title: LanguageHelper.string("privacy_section_1_title"),
+                            content: LanguageHelper.string("privacy_section_1_content")
                         )
                         
                         PrivacySection(
-                            title: "2. 정보 사용 목적",
-                            content: "• DNA 구조 시각화 및 3D 렌더링\n• 교육 및 연구 목적의 데이터 제공\n• 앱 기능 향상을 위한 로컬 데이터 처리\n• 사용자 경험 개선을 위한 앱 내 기능 제공"
+                            title: LanguageHelper.string("privacy_section_2_title"),
+                            content: LanguageHelper.string("privacy_section_2_content")
                         )
                         
                         PrivacySection(
-                            title: "3. 정보 보호 및 보안",
-                            content: "• 모든 데이터는 사용자 기기에만 저장됩니다.\n• 외부 서버로 개인정보가 전송되지 않습니다.\n• NCBI API 호출 시에는 공개 데이터만 요청합니다.\n• 앱 삭제 시 모든 로컬 데이터가 함께 삭제됩니다."
+                            title: LanguageHelper.string("privacy_section_3_title"),
+                            content: LanguageHelper.string("privacy_section_3_content")
                         )
                         
                         PrivacySection(
-                            title: "4. 제3자 서비스",
-                            content: "• NCBI E-utilities (eutils.ncbi.nlm.nih.gov): 유전자 데이터 제공\n• NCBI Gene Database: 유전자 정보 제공\n• NCBI Nucleotide Database: DNA 시퀀스 제공\n\n이들 서비스는 모두 공개 API이며 개인정보를 요구하지 않습니다."
+                            title: LanguageHelper.string("privacy_section_4_title"),
+                            content: LanguageHelper.string("privacy_section_4_content")
                         )
                         
                         PrivacySection(
-                            title: "5. 사용자 권리",
-                            content: "• 데이터 삭제: 앱 삭제를 통해 모든 데이터를 삭제할 수 있습니다.\n• 데이터 수정: 앱 내에서 입력한 정보는 언제든 수정 가능합니다.\n• 문의: 개인정보 관련 문의는 앱 정보 페이지를 이용해주세요."
+                            title: LanguageHelper.string("privacy_section_5_title"),
+                            content: LanguageHelper.string("privacy_section_5_content")
                         )
                         
                         PrivacySection(
-                            title: "6. 정책 변경",
-                            content: "개인정보 처리방침은 필요에 따라 변경될 수 있으며, 변경 시 앱 내에서 공지합니다. 마지막 업데이트: 2025년 10월 20일"
+                            title: LanguageHelper.string("privacy_section_6_title"),
+                            content: LanguageHelper.string("privacy_section_6_content")
                         )
                     }
                 }
@@ -1364,54 +1348,50 @@ struct TermsContentView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    Text(LanguageHelper.string("terms_title"))
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
                     VStack(alignment: .leading, spacing: 16) {
                         TermsSection(
-                            title: "서비스 이용",
-                            content: "DNA Viewer는 유료 앱입니다. 앱 다운로드 및 사용을 위해서는 App Store에서 결제가 필요합니다."
+                            title: LanguageHelper.string("terms_section_1_title"),
+                            content: LanguageHelper.string("terms_section_1_content")
                         )
                         
                         TermsSection(
-                            title: "결제 및 구독",
-                            content: "• 앱 구매는 App Store를 통해 처리됩니다.\n• 일회성 결제로 앱의 모든 기능을 이용할 수 있습니다.\n• 앱 구매 후 추가 결제는 없습니다.\n• 환불은 App Store 정책에 따라 제한적입니다."
+                            title: LanguageHelper.string("terms_section_2_title"),
+                            content: LanguageHelper.string("terms_section_2_content")
                         )
                         
                         TermsSection(
-                            title: "서비스 범위",
-                            content: "• 3D DNA 구조 시각화\n• NCBI 유전자 라이브러리 접근\n• 고급 분석 도구 (GC 함량, CpG 아일랜드, 제한 효소)\n• 단백질 번역 및 ORF 탐지\n• 오프라인 데이터 저장\n• 고객 지원 서비스\n• 모든 기능이 앱 구매 시 포함됩니다."
+                            title: LanguageHelper.string("terms_section_3_title"),
+                            content: LanguageHelper.string("terms_section_3_content")
                         )
                         
                         TermsSection(
-                            title: "환불 정책",
-                            content: "• 앱 구매 환불은 Apple App Store 정책에 따라 처리됩니다.\n• 환불 요청은 App Store에서 직접 신청해주세요.\n• Apple의 환불 정책: https://support.apple.com/HT204084\n• 개발자는 환불 처리 권한이 없으며, Apple이 모든 환불을 관리합니다."
+                            title: LanguageHelper.string("terms_section_4_title"),
+                            content: LanguageHelper.string("terms_section_4_content")
                         )
                         
                         TermsSection(
-                            title: "사용자 책임",
-                            content: "• 앱은 교육 및 연구 목적으로만 사용하세요.\n• NCBI 데이터는 학술 및 비상업적 용도로만 사용하세요.\n• 앱을 통해 얻은 정보의 정확성은 사용자가 직접 확인해야 합니다.\n• 중요한 연구나 의료 결정에는 전문가의 검토가 필요합니다."
+                            title: LanguageHelper.string("terms_section_5_title"),
+                            content: LanguageHelper.string("terms_section_5_content")
                         )
                         
                         TermsSection(
-                            title: "앱 업데이트 및 지원",
-                            content: "• 앱 업데이트는 무료로 제공됩니다.\n• 새로운 기능을 추가 비용 없이 사용할 수 있습니다.\n• 앱 지원 중단 시 30일 전 사전 공지합니다.\n• 지원 중단으로 인한 데이터 손실에 대해 책임지지 않습니다."
+                            title: LanguageHelper.string("terms_section_6_title"),
+                            content: LanguageHelper.string("terms_section_6_content")
                         )
                         
                         TermsSection(
-                            title: "책임의 제한",
-                            content: "• DNA Viewer는 \"있는 그대로\" 제공됩니다.\n• 앱 사용으로 인한 결과에 대해 개발자는 책임지지 않습니다.\n• NCBI 데이터의 정확성은 NCBI에서 보장합니다.\n• 앱 오작동이나 데이터 손실에 대한 책임은 제한적입니다."
+                            title: LanguageHelper.string("terms_section_7_title"),
+                            content: LanguageHelper.string("terms_section_7_content")
                         )
                         
                         TermsSection(
-                            title: "지적 재산권",
-                            content: "• DNA Viewer 앱의 저작권은 AVAS에 있습니다.\n• DNA 시퀀스 데이터는 NCBI의 공개 데이터입니다.\n• 앱 코드는 MIT 라이센스로 제공됩니다.\n• 사용자가 생성한 데이터는 사용자의 소유입니다."
+                            title: LanguageHelper.string("terms_section_8_title"),
+                            content: LanguageHelper.string("terms_section_8_content")
                         )
                         
                         TermsSection(
-                            title: "약관 변경",
-                            content: "이용약관은 필요에 따라 변경될 수 있으며, 변경 시 앱 내에서 공지합니다. 마지막 업데이트: 2025년 10월 20일"
+                            title: LanguageHelper.string("terms_section_9_title"),
+                            content: LanguageHelper.string("terms_section_9_content")
                         )
                     }
                 }
@@ -1483,17 +1463,17 @@ struct LicenseContentView: View {
                     
                     // 라이센스 본문
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("이 소프트웨어와 관련 문서 파일들(\"소프트웨어\")의 사본을 얻은 모든 사람에게는 소프트웨어를 제한 없이 취급할 수 있는 권한이 무료로 부여됩니다. 여기에는 사용, 복사, 수정, 병합, 게시, 배포, 서브라이센스 및/또는 소프트웨어의 사본을 판매할 권리와 소프트웨어가 제공된 사람들이 그러할 수 있도록 허가하는 권리가 제한 없이 포함됩니다. 단, 다음 조건에 따릅니다:")
+                        Text(LanguageHelper.string("license_permission_text"))
                             .font(.body)
                             .foregroundColor(.primary)
                             .fixedSize(horizontal: false, vertical: true)
                         
-                        Text("위의 저작권 고지와 이 허가 고지는 소프트웨어의 모든 사본이나 중요한 부분에 포함되어야 합니다.")
+                        Text(LanguageHelper.string("license_notice_text"))
                             .font(.body)
                             .foregroundColor(.primary)
                             .fixedSize(horizontal: false, vertical: true)
                         
-                        Text("소프트웨어는 \"있는 그대로\" 제공되며, 상품성, 특정 목적에의 적합성 및 비침해에 대한 보증을 포함하되 이에 국한되지 않는 모든 종류의 명시적 또는 묵시적 보증 없이 제공됩니다. 어떤 경우에도 저자나 저작권 보유자는 계약 행위, 불법 행위 또는 기타 행위에서, 소프트웨어와 관련하여, 소프트웨어의 사용 또는 기타 거래에서 발생하는 청구, 손해 또는 기타 책임에 대해 책임지지 않습니다.")
+                        Text(LanguageHelper.string("license_warranty_text"))
                             .font(.body)
                             .foregroundColor(.primary)
                             .fixedSize(horizontal: false, vertical: true)
