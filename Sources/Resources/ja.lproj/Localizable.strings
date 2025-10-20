@@ -124,6 +124,33 @@
 "terms_ip" = "知的財産権";
 "terms_changes" = "規約の変更";
 
+"terms_section_1_title" = "サービス利用";
+"terms_section_1_content" = "DNA Viewerは有料アプリです。アプリのダウンロードと使用にはApp Storeでの決済が必要です。";
+
+"terms_section_2_title" = "支払いとサブスクリプション";
+"terms_section_2_content" = "• アプリの購入はApp Storeを通じて処理されます。\n• 一回の支払いですべての機能を利用できます。\n• アプリ購入後の追加支払いはありません。\n• 返金はApp Storeのポリシーに従って制限されます。";
+
+"terms_section_3_title" = "サービス範囲";
+"terms_section_3_content" = "• 3D DNA構造可視化\n• NCBI遺伝子ライブラリアクセス\n• 高度な分析ツール（GC含量、CpGアイランド、制限酵素）\n• タンパク質翻訳とORF検出\n• オフラインデータ保存\n• カスタマーサポートサービス\n• アプリ購入ですべての機能が含まれます。";
+
+"terms_section_4_title" = "返金ポリシー";
+"terms_section_4_content" = "• アプリ購入の返金はApple App Storeのポリシーに従って処理されます。\n• 返金はApp Storeから直接リクエストしてください。\n• Appleの返金ポリシー：https://support.apple.com/HT204084\n• 開発者には返金処理権限がありません。すべての返金はAppleが管理します。";
+
+"terms_section_5_title" = "ユーザーの責任";
+"terms_section_5_content" = "• アプリは教育・研究目的のみに使用してください。\n• NCBIデータは学術的かつ非商業的目的のみに使用してください。\n• アプリから取得した情報の正確性はユーザーが確認する必要があります。\n• 重要な研究や医療判断には専門家のレビューが必要です。";
+
+"terms_section_6_title" = "アプリの更新とサポート";
+"terms_section_6_content" = "• アプリの更新は無料で提供されます。\n• 新機能は追加支払いなしで利用できます。\n• アプリサポート終了の30日前に事前通知します。\n• サポート終了によるデータ損失については責任を負いません。";
+
+"terms_section_7_title" = "責任の制限";
+"terms_section_7_content" = "• DNA Viewerは「現状のまま」で提供されます。\n• 開発者はアプリ使用による結果について責任を負いません。\n• NCBIはNCBIデータの正確性を保証します。\n• アプリの誤動作やデータ損失に対する責任は制限されます。";
+
+"terms_section_8_title" = "知的財産権";
+"terms_section_8_content" = "• DNA Viewerアプリの著作権はAVASに帰属します。\n• DNA配列データはNCBIからの公開データです。\n• アプリコードはMITライセンスで提供されます。\n• ユーザー生成データはユーザーに帰属します。";
+
+"terms_section_9_title" = "規約の変更";
+"terms_section_9_content" = "規約は必要に応じて変更される場合があり、変更時はアプリ内で通知されます。最終更新日：2025年10月20日";
+
 /* License */
 "license_title" = "MITライセンス";
 "license_copyright" = "Copyright (c) 2025 AVAS";

@@ -124,6 +124,33 @@
 "terms_ip" = "Geistiges Eigentum";
 "terms_changes" = "Änderungen der Bedingungen";
 
+"terms_section_1_title" = "Service-Nutzung";
+"terms_section_1_content" = "DNA Viewer ist eine kostenpflichtige App. Für das Herunterladen und Nutzen der App ist eine Zahlung über den App Store erforderlich.";
+
+"terms_section_2_title" = "Zahlung & Abonnement";
+"terms_section_2_content" = "• App-Käufe werden über den App Store abgewickelt.\n• Eine einmalige Zahlung ermöglicht den Zugriff auf alle App-Funktionen.\n• Keine zusätzlichen Zahlungen nach dem App-Kauf.\n• Rückerstattungen sind gemäß der App Store-Richtlinien begrenzt.";
+
+"terms_section_3_title" = "Service-Umfang";
+"terms_section_3_content" = "• 3D-DNA-Strukturvisualisierung\n• NCBI-Gen-Bibliothekszugriff\n• Erweiterte Analysetools (GC-Gehalt, CpG-Inseln, Restriktionsenzyme)\n• Proteinübersetzung und ORF-Erkennung\n• Offline-Datenspeicherung\n• Kundensupport-Service\n• Alle Funktionen im App-Kauf enthalten.";
+
+"terms_section_4_title" = "Rückerstattungsrichtlinie";
+"terms_section_4_content" = "• Rückerstattungen für App-Käufe werden gemäß der Apple App Store-Richtlinie abgewickelt.\n• Bitte fordern Sie Rückerstattungen direkt über den App Store an.\n• Apples Rückerstattungsrichtlinie: https://support.apple.com/HT204084\n• Entwickler haben keine Rückerstattungsbefugnisse; Apple verwaltet alle Rückerstattungen.";
+
+"terms_section_5_title" = "Nutzerverantwortung";
+"terms_section_5_content" = "• Verwenden Sie die App nur für Bildungs- und Forschungszwecke.\n• Verwenden Sie NCBI-Daten nur für akademische und nicht-kommerzielle Zwecke.\n• Nutzer müssen die Genauigkeit der über die App erhaltenen Informationen überprüfen.\n• Wichtige Forschungs- oder medizinische Entscheidungen erfordern eine Expertenprüfung.";
+
+"terms_section_6_title" = "App-Updates & Support";
+"terms_section_6_content" = "• App-Updates werden kostenlos bereitgestellt.\n• Neue Funktionen sind ohne zusätzliche Zahlung verfügbar.\n• 30-tägige Vorankündigung vor App-Support-Einstellung.\n• Keine Haftung für Datenverlust aufgrund von Support-Einstellung.";
+
+"terms_section_7_title" = "Haftungsbeschränkung";
+"terms_section_7_content" = "• DNA Viewer wird \"wie besehen\" bereitgestellt.\n• Entwickler haften nicht für Ergebnisse aus der App-Nutzung.\n• NCBI garantiert die Genauigkeit von NCBI-Daten.\n• Haftung für App-Fehlfunktionen oder Datenverlust ist begrenzt.";
+
+"terms_section_8_title" = "Geistiges Eigentum";
+"terms_section_8_content" = "• Urheberrecht der DNA Viewer App gehört AVAS.\n• DNA-Sequenzdaten sind öffentliche Daten von NCBI.\n• App-Code wird unter MIT-Lizenz bereitgestellt.\n• Benutzergenerierte Daten gehören dem Benutzer.";
+
+"terms_section_9_title" = "Änderungen der Bedingungen";
+"terms_section_9_content" = "Die Bedingungen können bei Bedarf geändert werden, mit Benachrichtigungen in der App bei Änderungen. Zuletzt aktualisiert: 20. Oktober 2025";
+
 /* License */
 "license_title" = "MIT-Lizenz";
 "license_copyright" = "Copyright (c) 2025 AVAS";
