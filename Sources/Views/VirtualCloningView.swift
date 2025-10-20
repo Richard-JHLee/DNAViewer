@@ -175,10 +175,22 @@ struct VirtualCloningView: View {
                             }
                             
                             if selectedEnzyme1 != nil && selectedEnzyme2 != nil {
-                                Button("Continue") {
+                                Button(action: {
                                     step = 3
+                                }) {
+                                    VStack(spacing: 6) {
+                                        Image(systemName: "arrow.right.circle.fill")
+                                            .font(.title2)
+                                        Text("Continue")
+                                            .font(.caption)
+                                            .fontWeight(.semibold)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(8)
                                 }
-                                .buttonStyle(.borderedProminent)
                             }
                         }
                     }
@@ -294,11 +306,22 @@ struct VirtualCloningView: View {
                                 }
                                 .padding(.horizontal, 8)
                                 
-                                Button("Continue to Cloning") {
+                                Button(action: {
                                     step = 4
+                                }) {
+                                    VStack(spacing: 6) {
+                                        Image(systemName: "arrow.right.circle.fill")
+                                            .font(.title2)
+                                        Text("Continue to Cloning")
+                                            .font(.caption)
+                                            .fontWeight(.semibold)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(8)
                                 }
-                                .buttonStyle(.borderedProminent)
-                                .controlSize(.large)
                             }
                         }
                     }
@@ -328,9 +351,12 @@ struct VirtualCloningView: View {
                                 .cornerRadius(8)
                                 
                                 Button(action: performCloning) {
-                                    HStack {
+                                    VStack(spacing: 6) {
                                         Image(systemName: "arrow.triangle.2.circlepath")
+                                            .font(.title2)
                                         Text("Perform Cloning")
+                                            .font(.caption)
+                                            .fontWeight(.semibold)
                                     }
                                     .frame(maxWidth: .infinity)
                                     .padding()
@@ -359,12 +385,19 @@ struct VirtualCloningView: View {
                                         Button(action: {
                                             showExportDetails.toggle()
                                         }) {
-                                            HStack {
+                                            VStack(spacing: 6) {
                                                 Image(systemName: showExportDetails ? "chevron.up.circle.fill" : "doc.text.fill")
+                                                    .font(.title2)
                                                 Text(showExportDetails ? "Hide Details" : "Show Export Details")
+                                                    .font(.caption)
+                                                    .fontWeight(.semibold)
                                             }
+                                            .frame(maxWidth: .infinity)
+                                            .padding()
+                                            .background(Color.blue.opacity(0.1))
+                                            .foregroundColor(.blue)
+                                            .cornerRadius(8)
                                         }
-                                        .buttonStyle(.bordered)
                                     }
                                     .padding()
                                     .background(Color.green.opacity(0.1))
@@ -438,9 +471,12 @@ struct VirtualCloningView: View {
                                             // Action Buttons
                                             HStack(spacing: 12) {
                                                 Button(action: copyToClipboard) {
-                                                    HStack {
+                                                    VStack(spacing: 6) {
                                                         Image(systemName: "doc.on.clipboard")
+                                                            .font(.title2)
                                                         Text("Copy Sequence")
+                                                            .font(.caption)
+                                                            .fontWeight(.semibold)
                                                     }
                                                     .frame(maxWidth: .infinity)
                                                     .padding()
@@ -452,9 +488,12 @@ struct VirtualCloningView: View {
                                                 Button(action: {
                                                     showShareSheet = true
                                                 }) {
-                                                    HStack {
+                                                    VStack(spacing: 6) {
                                                         Image(systemName: "square.and.arrow.up")
+                                                            .font(.title2)
                                                         Text("Share")
+                                                            .font(.caption)
+                                                            .fontWeight(.semibold)
                                                     }
                                                     .frame(maxWidth: .infinity)
                                                     .padding()
