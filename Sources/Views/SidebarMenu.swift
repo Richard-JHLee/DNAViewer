@@ -111,20 +111,19 @@ struct SidebarMenu: View {
             
             Spacer()
             
-            // Footer
-            VStack(spacing: 8) {
+            // Footer - License Information
+            VStack(spacing: 12) {
                 Divider()
+                    .padding(.horizontal, 20)
                 
-                HStack {
-                    Image(systemName: "heart.fill")
-                        .foregroundColor(.red)
-                        .font(.caption)
-                    
-                    Text("Made with ❤️ for Science")
+                VStack(spacing: 8) {
+                    Text("© 2025 AVAS")
                         .font(.caption)
                         .foregroundColor(.secondary)
                     
-                    Spacer()
+                    Text("All rights reserved")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 20)
