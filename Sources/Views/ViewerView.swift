@@ -1435,10 +1435,6 @@ struct LicenseContentView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     // MIT 라이센스 헤더
                     VStack(alignment: .leading, spacing: 12) {
-                        Text(LanguageHelper.string("license_title"))
-                            .font(.title)
-                            .fontWeight(.bold)
-                        
                         Text(LanguageHelper.string("license_copyright"))
                             .font(.headline)
                             .foregroundColor(.secondary)
