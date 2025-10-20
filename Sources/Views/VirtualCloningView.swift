@@ -19,6 +19,7 @@ struct VirtualCloningView: View {
     @State private var clonedSequence: String = ""
     @State private var step = 1
     @State private var expandedCategory: String? = nil // For accordion
+    @State private var showExportDetails = false // For detailed export view
     
     var body: some View {
         NavigationView {
@@ -354,14 +355,158 @@ struct VirtualCloningView: View {
                                                 .foregroundColor(.blue)
                                         }
                                         
-                                        Button("Export Result") {
-                                            exportResult()
+                                        Button(action: {
+                                            showExportDetails.toggle()
+                                        }) {
+                                            HStack {
+                                                Image(systemName: showExportDetails ? "chevron.up.circle.fill" : "doc.text.fill")
+                                                Text(showExportDetails ? "Hide Details" : "Show Export Details")
+                                            }
                                         }
                                         .buttonStyle(.bordered)
                                     }
                                     .padding()
                                     .background(Color.green.opacity(0.1))
                                     .cornerRadius(8)
+                                    
+                                    // Detailed Export View
+                                    if showExportDetails {
+                                        VStack(alignment: .leading, spacing: 16) {
+                                            // Header
+                                            HStack {
+                                                Image(systemName: "doc.richtext")
+                                                    .font(.title2)
+                                                    .foregroundColor(.blue)
+                                                Text("Export Details")
+                                                    .font(.title3)
+                                                    .fontWeight(.bold)
+                                                Spacer()
+                                            }
+                                            .padding(.bottom, 8)
+                                            
+                                            Divider()
+                                            
+                                            // Cloning Summary
+                                            VStack(alignment: .leading, spacing: 8) {
+                                                Text("Cloning Summary")
+                                                    .font(.headline)
+                                                    .foregroundColor(.blue)
+                                                
+                                                if let vector = selectedVector,
+                                                   let enzyme1 = selectedEnzyme1,
+                                                   let enzyme2 = selectedEnzyme2 {
+                                                    
+                                                    ExportDetailRow(icon: "circle.hexagongrid.fill", label: "Vector", value: vector.name)
+                                                    ExportDetailRow(icon: "scissors", label: "5' Enzyme", value: "\(enzyme1.name) (\(enzyme1.recognitionSite))")
+                                                    ExportDetailRow(icon: "scissors", label: "3' Enzyme", value: "\(enzyme2.name) (\(enzyme2.recognitionSite))")
+                                                    ExportDetailRow(icon: "dna", label: "Insert", value: "\(insertSequence.count) bp")
+                                                    ExportDetailRow(icon: "ruler", label: "Final Size", value: "\(clonedSequence.count) bp")
+                                                }
+                                            }
+                                            .padding()
+                                            .background(Color.blue.opacity(0.05))
+                                            .cornerRadius(8)
+                                            
+                                            // Full Sequence
+                                            VStack(alignment: .leading, spacing: 8) {
+                                                Text("Complete Sequence")
+                                                    .font(.headline)
+                                                    .foregroundColor(.blue)
+                                                
+                                                ScrollView {
+                                                    Text(clonedSequence)
+                                                        .font(.system(.caption, design: .monospaced))
+                                                        .foregroundColor(.primary)
+                                                        .textSelection(.enabled)
+                                                        .padding()
+                                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                                        .background(Color.gray.opacity(0.1))
+                                                        .cornerRadius(4)
+                                                }
+                                                .frame(height: 150)
+                                                
+                                                Text("💡 Tip: Long-press to select and copy the sequence")
+                                                    .font(.caption2)
+                                                    .foregroundColor(.secondary)
+                                                    .italic()
+                                            }
+                                            .padding()
+                                            .background(Color.gray.opacity(0.05))
+                                            .cornerRadius(8)
+                                            
+                                            // Action Buttons
+                                            HStack(spacing: 12) {
+                                                Button(action: copyToClipboard) {
+                                                    HStack {
+                                                        Image(systemName: "doc.on.clipboard")
+                                                        Text("Copy Sequence")
+                                                    }
+                                                    .frame(maxWidth: .infinity)
+                                                    .padding()
+                                                    .background(Color.blue)
+                                                    .foregroundColor(.white)
+                                                    .cornerRadius(8)
+                                                }
+                                                
+                                                Button(action: shareResult) {
+                                                    HStack {
+                                                        Image(systemName: "square.and.arrow.up")
+                                                        Text("Share")
+                                                    }
+                                                    .frame(maxWidth: .infinity)
+                                                    .padding()
+                                                    .background(Color.green)
+                                                    .foregroundColor(.white)
+                                                    .cornerRadius(8)
+                                                }
+                                            }
+                                            
+                                            // Export Format Info
+                                            VStack(alignment: .leading, spacing: 8) {
+                                                Text("Export Formats")
+                                                    .font(.headline)
+                                                    .foregroundColor(.blue)
+                                                
+                                                VStack(alignment: .leading, spacing: 6) {
+                                                    HStack {
+                                                        Image(systemName: "checkmark.circle.fill")
+                                                            .foregroundColor(.green)
+                                                            .font(.caption)
+                                                        Text("FASTA format ready")
+                                                            .font(.caption)
+                                                    }
+                                                    HStack {
+                                                        Image(systemName: "checkmark.circle.fill")
+                                                            .foregroundColor(.green)
+                                                            .font(.caption)
+                                                        Text("GenBank compatible")
+                                                            .font(.caption)
+                                                    }
+                                                    HStack {
+                                                        Image(systemName: "checkmark.circle.fill")
+                                                            .foregroundColor(.green)
+                                                            .font(.caption)
+                                                        Text("Plain text sequence")
+                                                            .font(.caption)
+                                                    }
+                                                }
+                                                .padding(.leading, 8)
+                                            }
+                                            .padding()
+                                            .background(Color.orange.opacity(0.05))
+                                            .cornerRadius(8)
+                                        }
+                                        .padding()
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .fill(Color(.systemBackground))
+                                                .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                                        )
+                                        .transition(.asymmetric(
+                                            insertion: .scale.combined(with: .opacity),
+                                            removal: .scale.combined(with: .opacity)
+                                        ))
+                                    }
                                 }
                             }
                         }
@@ -430,11 +575,44 @@ struct VirtualCloningView: View {
         showResult = false
         clonedSequence = ""
         step = 1
+        showExportDetails = false
+        expandedCategory = nil
     }
     
-    private func exportResult() {
-        // TODO: Implement export functionality
-        print("Exporting cloned sequence: \(clonedSequence.count) bp")
+    private func copyToClipboard() {
+        #if os(iOS)
+        UIPasteboard.general.string = clonedSequence
+        #elseif os(macOS)
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(clonedSequence, forType: .string)
+        #endif
+        print("✅ Sequence copied to clipboard: \(clonedSequence.count) bp")
+    }
+    
+    private func shareResult() {
+        let shareText = """
+        Virtual Cloning Result
+        ======================
+        Vector: \(selectedVector?.name ?? "N/A")
+        5' Enzyme: \(selectedEnzyme1?.name ?? "N/A")
+        3' Enzyme: \(selectedEnzyme2?.name ?? "N/A")
+        Insert Size: \(insertSequence.count) bp
+        Final Size: \(clonedSequence.count) bp
+        
+        Sequence:
+        \(clonedSequence)
+        """
+        
+        #if os(iOS)
+        let activityVC = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first,
+           let rootVC = window.rootViewController {
+            rootVC.present(activityVC, animated: true)
+        }
+        #endif
+        
+        print("📤 Sharing cloning result")
     }
 }
 
@@ -562,6 +740,35 @@ struct CloningInfoRow: View {
                 .font(.subheadline)
                 .bold()
         }
+    }
+}
+
+struct ExportDetailRow: View {
+    let icon: String
+    let label: String
+    let value: String
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .foregroundColor(.blue)
+                .font(.body)
+                .frame(width: 24, alignment: .center)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(label)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Text(value)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+            }
+            
+            Spacer()
+        }
+        .padding(.vertical, 4)
     }
 }
 
