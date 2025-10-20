@@ -48,10 +48,112 @@
 "guide_title" = "User Guide";
 "guide_subtitle" = "Complete guide for DNA sequence analysis and 3D visualization";
 "guide_getting_started" = "🚀 Getting Started";
+"guide_getting_started_1_title" = "Basic DNA Sequence Viewing";
+"guide_getting_started_1_desc" = "A default DNA sequence (BRCA1) loads when the app starts. Drag to rotate, pinch to zoom in/out.";
+"guide_getting_started_2_title" = "Group-based Navigation";
+"guide_getting_started_2_desc" = "DNA is grouped in 100bp units. Use G1, G2, G3... buttons to move between sections.";
+"guide_getting_started_3_title" = "Sequence Reading";
+"guide_getting_started_3_desc" = "Use the 'Sequence' button to display nucleotide sequences (A, T, G, C) at the bottom.";
+"guide_getting_started_4_title" = "3D Style Changes";
+"guide_getting_started_4_desc" = "Use the eye icon (👁) to select various 3D modes like Double Helix, Ladder, Ball & Stick.";
+
 "guide_gene_library" = "📚 Gene Library";
+"guide_gene_library_1_title" = "Open Library";
+"guide_gene_library_1_desc" = "Menu (☰) → Gene Library to explore genes from the NCBI database.";
+"guide_gene_library_2_title" = "Category Search";
+"guide_gene_library_2_desc" = "Filter by Organism, Gene Type, Chromosome, Status, Gene Family.";
+"guide_gene_library_3_title" = "Apply Gene";
+"guide_gene_library_3_desc" = "Select a gene and use 'Apply' to load its DNA sequence in 3D.";
+"guide_gene_library_4_title" = "Real-time Data";
+"guide_gene_library_4_desc" = "All data is fetched from NCBI in real-time, ensuring it's always up-to-date.";
+
 "guide_analysis_tools" = "📊 Analysis Tools";
+"guide_analysis_tools_1_title" = "GC Content";
+"guide_analysis_tools_1_desc" = "Analyzes the ratio of guanine (G) and cytosine (C). High GC content indicates stable DNA.";
+"guide_analysis_tools_2_title" = "CpG Islands";
+"guide_analysis_tools_2_desc" = "Detects regions with high CG frequency. Important for gene regulation.";
+"guide_analysis_tools_3_title" = "Restriction Enzymes";
+"guide_analysis_tools_3_desc" = "Analyzes enzymes that can cut DNA and identifies cutting positions.";
+"guide_analysis_tools_4_title" = "Protein Translation";
+"guide_analysis_tools_4_desc" = "Translates DNA to amino acids, finds ORFs, and analyzes amino acid composition.";
+
 "guide_restriction_enzymes" = "✂️ Restriction Enzymes";
-"guide_tips" = "💡 Tips & Tricks";
+"guide_restriction_enzymes_1_title" = "Enzyme Selection";
+"guide_restriction_enzymes_1_desc" = "Use the Scissor button to see available restriction enzymes for the current sequence.";
+"guide_restriction_enzymes_2_title" = "3D Visualization";
+"guide_restriction_enzymes_2_desc" = "Use 'Show 3D' to display cutting positions as red markers in 3D.";
+"guide_restriction_enzymes_3_title" = "Virtual Digestion";
+"guide_restriction_enzymes_3_desc" = "Use the 'Digest' button to simulate DNA cutting and view fragments.";
+"guide_restriction_enzymes_4_title" = "Educational Use";
+"guide_restriction_enzymes_4_desc" = "Learn about each enzyme's recognition sequence and cutting patterns.";
+
+"guide_usage_tips" = "💡 Usage Tips";
+"guide_usage_tips_1_title" = "Rotation";
+"guide_usage_tips_1_desc" = "Drag the 3D view to freely rotate the DNA structure.";
+"guide_usage_tips_2_title" = "Zoom In/Out";
+"guide_usage_tips_2_desc" = "Use pinch gestures to zoom in or out on the 3D structure.";
+"guide_usage_tips_3_title" = "Auto Rotation";
+"guide_usage_tips_3_desc" = "Use the Rotation button to automatically rotate DNA 360 degrees.";
+"guide_usage_tips_4_title" = "Reset View";
+"guide_usage_tips_4_desc" = "Use the Reload button to reset the camera to its default position.";
+
+/* Features Content */
+"features_title" = "Features";
+"features_3d_viz_title" = "3D DNA Visualization";
+"features_3d_viz_1" = "High-quality 3D rendering based on SceneKit";
+"features_3d_viz_2" = "Real-time interactive manipulation (rotation, zoom)";
+"features_3d_viz_3" = "Support for Double Helix, Ladder, Ball & Stick styles";
+"features_3d_viz_4" = "Group-based sequence exploration (100bp units)";
+
+"features_gene_lib_title" = "Gene Library";
+"features_gene_lib_1" = "Real-time NCBI database integration";
+"features_gene_lib_2" = "Category-based gene search and filtering";
+"features_gene_lib_3" = "Classification by Organism, Gene Type, Chromosome, etc.";
+"features_gene_lib_4" = "Automatic FASTA format DNA sequence loading";
+
+"features_analysis_title" = "Analysis Tools";
+"features_analysis_1" = "GC content analysis and window plots";
+"features_analysis_2" = "Automatic CpG island detection";
+"features_analysis_3" = "Restriction enzyme cutting site analysis";
+"features_analysis_4" = "DNA → protein translation (codon table)";
+"features_analysis_5" = "Amino acid composition bar charts";
+"features_analysis_6" = "Open Reading Frame (ORF) detection";
+
+"features_enzyme_title" = "Restriction Enzymes";
+"features_enzyme_1" = "200+ restriction enzyme database";
+"features_enzyme_2" = "IUPAC code support (regex conversion)";
+"features_enzyme_3" = "3D visualization of cutting positions (red markers)";
+"features_enzyme_4" = "SequenceBar scissors icon display";
+"features_enzyme_5" = "Virtual DNA cutting simulation";
+"features_enzyme_6" = "Educational Gel Electrophoresis visualization";
+
+"features_color_title" = "Color Themes";
+"features_color_1" = "Classic, Vivid, Pastel, Neon themes";
+"features_color_2" = "Base-specific color customization (A, T, G, C)";
+"features_color_3" = "Hydrogen bond color settings";
+"features_color_4" = "Real-time color changes and preview";
+
+"features_interaction_title" = "Interaction Features";
+"features_interaction_1" = "Drag to rotate 3D models";
+"features_interaction_2" = "Pinch gestures for zoom in/out";
+"features_interaction_3" = "Automatic 360-degree rotation animation";
+"features_interaction_4" = "Individual base selection and highlighting";
+"features_interaction_5" = "Group-based navigation";
+"features_interaction_6" = "Reload to restore initial state";
+
+"features_performance_title" = "Performance Optimization";
+"features_performance_1" = "Memory efficiency through group-based loading";
+"features_performance_2" = "Large DNA sequence processing capability";
+"features_performance_3" = "Background thread 3D rendering";
+"features_performance_4" = "Smart caching system";
+"features_performance_5" = "Automatic memory cleanup (autoreleasepool)";
+
+"features_education_title" = "Educational Features";
+"features_education_1" = "Molecular biology experiment simulation";
+"features_education_2" = "DNA cloning process visualization";
+"features_education_3" = "Gene transformation animation";
+"features_education_4" = "Experimental verification process learning";
+"features_education_5" = "Detailed user guide provided";
 
 "guide_start_1_title" = "View Basic DNA Sequence";
 "guide_start_1_desc" = "Default DNA sequence (BRCA1) loads on start. Drag to rotate, pinch to zoom.";

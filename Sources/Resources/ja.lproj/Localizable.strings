@@ -116,3 +116,114 @@
 "show_all" = "すべて表示";
 "show_less" = "簡略表示";
 
+/* User Guide Keys */
+"guide_title" = "ユーザーガイド";
+"guide_subtitle" = "DNA配列解析と3D可視化の完全ガイド";
+"guide_getting_started" = "🚀 はじめに";
+"guide_getting_started_1_title" = "基本DNA配列表示";
+"guide_getting_started_1_desc" = "アプリ起動時にデフォルトDNA配列（BRCA1）が読み込まれます。ドラッグで回転、ピンチでズームイン/アウトしてください。";
+"guide_getting_started_2_title" = "グループ別ナビゲーション";
+"guide_getting_started_2_desc" = "DNAは100bp単位でグループ化されています。G1、G2、G3...ボタンでセクション間を移動してください。";
+"guide_getting_started_3_title" = "配列読み取り";
+"guide_getting_started_3_desc" = "'Sequence'ボタンで下部にヌクレオチド配列（A、T、G、C）を表示します。";
+"guide_getting_started_4_title" = "3Dスタイル変更";
+"guide_getting_started_4_desc" = "目のアイコン（👁）でDouble Helix、Ladder、Ball & Stickなど様々な3Dモードを選択してください。";
+
+"guide_gene_library" = "📚 遺伝子ライブラリ";
+"guide_gene_library_1_title" = "ライブラリを開く";
+"guide_gene_library_1_desc" = "メニュー（☰）→ Gene LibraryでNCBIデータベースの遺伝子を探索してください。";
+"guide_gene_library_2_title" = "カテゴリ別検索";
+"guide_gene_library_2_desc" = "Organism、Gene Type、Chromosome、Status、Gene Familyでフィルタリングしてください。";
+"guide_gene_library_3_title" = "遺伝子適用";
+"guide_gene_library_3_desc" = "遺伝子を選択し、'Apply'でそのDNA配列を3Dで読み込みます。";
+"guide_gene_library_4_title" = "リアルタイムデータ";
+"guide_gene_library_4_desc" = "すべてのデータはNCBIからリアルタイムで取得されるため、常に最新です。";
+
+"guide_analysis_tools" = "📊 解析ツール";
+"guide_analysis_tools_1_title" = "GC含量";
+"guide_analysis_tools_1_desc" = "グアニン（G）とシトシン（C）の比率を解析します。高いGC含量は安定したDNAを示します。";
+"guide_analysis_tools_2_title" = "CpGアイランド";
+"guide_analysis_tools_2_desc" = "CG頻度の高い領域を検出します。遺伝子調節に重要な役割を果たします。";
+"guide_analysis_tools_3_title" = "制限酵素";
+"guide_analysis_tools_3_desc" = "DNAを切断可能な酵素を解析し、切断位置を確認します。";
+"guide_analysis_tools_4_title" = "タンパク質翻訳";
+"guide_analysis_tools_4_desc" = "DNAをアミノ酸に翻訳し、ORFを見つけ、アミノ酸組成を解析します。";
+
+"guide_restriction_enzymes" = "✂️ 制限酵素";
+"guide_restriction_enzymes_1_title" = "酵素選択";
+"guide_restriction_enzymes_1_desc" = "Scissorボタンで現在の配列に使用可能な制限酵素リストを確認してください。";
+"guide_restriction_enzymes_2_title" = "3D可視化";
+"guide_restriction_enzymes_2_desc" = "'Show 3D'で切断位置を3Dで赤いマーカーとして表示します。";
+"guide_restriction_enzymes_3_title" = "仮想切断";
+"guide_restriction_enzymes_3_desc" = "'Digest'ボタンでDNA切断をシミュレートし、断片を確認してください。";
+"guide_restriction_enzymes_4_title" = "教育的活用";
+"guide_restriction_enzymes_4_desc" = "各酵素の認識配列と切断パターンを学習できます。";
+
+"guide_usage_tips" = "💡 使用のコツ";
+"guide_usage_tips_1_title" = "回転";
+"guide_usage_tips_1_desc" = "3DビューをドラッグしてDNA構造を自由に回転させてください。";
+"guide_usage_tips_2_title" = "ズームイン/アウト";
+"guide_usage_tips_2_desc" = "ピンチジェスチャーで3D構造を拡大または縮小してください。";
+"guide_usage_tips_3_title" = "自動回転";
+"guide_usage_tips_3_desc" = "RotationボタンでDNAを360度自動回転させます。";
+"guide_usage_tips_4_title" = "ビューリセット";
+"guide_usage_tips_4_desc" = "Reloadボタンでカメラをデフォルト位置にリセットします。";
+
+/* Features Content */
+"features_title" = "Features";
+"features_3d_viz_title" = "3D DNA可視化";
+"features_3d_viz_1" = "SceneKitベースの高品質3Dレンダリング";
+"features_3d_viz_2" = "リアルタイムインタラクティブ操作（回転、ズーム）";
+"features_3d_viz_3" = "Double Helix、Ladder、Ball & Stickスタイルサポート";
+"features_3d_viz_4" = "グループ別配列探索（100bp単位）";
+
+"features_gene_lib_title" = "遺伝子ライブラリ";
+"features_gene_lib_1" = "NCBIデータベースリアルタイム連携";
+"features_gene_lib_2" = "カテゴリ別遺伝子検索・フィルタリング";
+"features_gene_lib_3" = "Organism、Gene Type、Chromosome等分類";
+"features_gene_lib_4" = "FASTA形式DNA配列自動ロード";
+
+"features_analysis_title" = "解析ツール";
+"features_analysis_1" = "GC含量解析・ウィンドウプロット";
+"features_analysis_2" = "CpGアイランド自動検出";
+"features_analysis_3" = "制限酵素切断部位解析";
+"features_analysis_4" = "DNA → タンパク質翻訳（コドンテーブル）";
+"features_analysis_5" = "アミノ酸組成棒グラフ";
+"features_analysis_6" = "Open Reading Frame（ORF）検出";
+
+"features_enzyme_title" = "制限酵素";
+"features_enzyme_1" = "200+制限酵素データベース";
+"features_enzyme_2" = "IUPACコードサポート（正規表現変換）";
+"features_enzyme_3" = "切断位置3D可視化（赤マーカー）";
+"features_enzyme_4" = "SequenceBar scissorsアイコン表示";
+"features_enzyme_5" = "仮想DNA切断シミュレーション";
+"features_enzyme_6" = "教育用Gel Electrophoresis可視化";
+
+"features_color_title" = "カラーテーマ";
+"features_color_1" = "Classic、Vivid、Pastel、Neonテーマ";
+"features_color_2" = "塩基別カスタマイズ（A、T、G、C）";
+"features_color_3" = "水素結合カラー設定";
+"features_color_4" = "リアルタイムカラー変更・プレビュー";
+
+"features_interaction_title" = "インタラクション機能";
+"features_interaction_1" = "ドラッグで3Dモデル回転";
+"features_interaction_2" = "ピンチジェスチャーでズームイン/アウト";
+"features_interaction_3" = "自動360度回転アニメーション";
+"features_interaction_4" = "個別塩基選択・ハイライト";
+"features_interaction_5" = "グループ単位ナビゲーション";
+"features_interaction_6" = "Reloadで初期状態復元";
+
+"features_performance_title" = "パフォーマンス最適化";
+"features_performance_1" = "グループ単位ロードによるメモリ効率化";
+"features_performance_2" = "大容量DNA配列処理可能";
+"features_performance_3" = "バックグラウンドスレッド3Dレンダリング";
+"features_performance_4" = "スマートキャッシュシステム";
+"features_performance_5" = "自動メモリクリーンアップ（autoreleasepool）";
+
+"features_education_title" = "教育機能";
+"features_education_1" = "分子生物学実験シミュレーション";
+"features_education_2" = "DNAクローニングプロセス可視化";
+"features_education_3" = "遺伝子変換アニメーション";
+"features_education_4" = "実験検証過程学習";
+"features_education_5" = "詳細ユーザーガイド提供";
+

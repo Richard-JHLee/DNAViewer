@@ -116,3 +116,114 @@
 "show_all" = "Alle anzeigen";
 "show_less" = "Weniger anzeigen";
 
+/* User Guide Keys */
+"guide_title" = "Benutzerhandbuch";
+"guide_subtitle" = "Vollständige Anleitung für DNA-Sequenzanalyse und 3D-Visualisierung";
+"guide_getting_started" = "🚀 Erste Schritte";
+"guide_getting_started_1_title" = "Grundlegende DNA-Sequenzanzeige";
+"guide_getting_started_1_desc" = "Beim App-Start wird eine Standard-DNA-Sequenz (BRCA1) geladen. Ziehen zum Drehen, Pinch zum Zoomen.";
+"guide_getting_started_2_title" = "Gruppenbasierte Navigation";
+"guide_getting_started_2_desc" = "DNA ist in 100bp-Einheiten gruppiert. Verwenden Sie G1, G2, G3...-Tasten zum Wechseln zwischen Abschnitten.";
+"guide_getting_started_3_title" = "Sequenz lesen";
+"guide_getting_started_3_desc" = "Verwenden Sie die 'Sequence'-Taste, um Nukleotidsequenzen (A, T, G, C) unten anzuzeigen.";
+"guide_getting_started_4_title" = "3D-Stil ändern";
+"guide_getting_started_4_desc" = "Verwenden Sie das Augen-Symbol (👁), um verschiedene 3D-Modi wie Double Helix, Ladder, Ball & Stick auszuwählen.";
+
+"guide_gene_library" = "📚 Genbibliothek";
+"guide_gene_library_1_title" = "Bibliothek öffnen";
+"guide_gene_library_1_desc" = "Menü (☰) → Gene Library, um Gene aus der NCBI-Datenbank zu erkunden.";
+"guide_gene_library_2_title" = "Kategoriebasierte Suche";
+"guide_gene_library_2_desc" = "Filtern nach Organismus, Gen-Typ, Chromosom, Status, Genfamilie.";
+"guide_gene_library_3_title" = "Gen anwenden";
+"guide_gene_library_3_desc" = "Wählen Sie ein Gen und verwenden Sie 'Apply', um seine DNA-Sequenz in 3D zu laden.";
+"guide_gene_library_4_title" = "Echtzeitdaten";
+"guide_gene_library_4_desc" = "Alle Daten werden in Echtzeit von NCBI abgerufen und sind daher immer aktuell.";
+
+"guide_analysis_tools" = "📊 Analysetools";
+"guide_analysis_tools_1_title" = "GC-Gehalt";
+"guide_analysis_tools_1_desc" = "Analysiert das Verhältnis von Guanin (G) und Cytosin (C). Hoher GC-Gehalt bedeutet stabile DNA.";
+"guide_analysis_tools_2_title" = "CpG-Inseln";
+"guide_analysis_tools_2_desc" = "Erkennt Regionen mit hoher CG-Häufigkeit. Wichtig für die Genregulation.";
+"guide_analysis_tools_3_title" = "Restriktionsenzyme";
+"guide_analysis_tools_3_desc" = "Analysiert Enzyme, die DNA schneiden können, und identifiziert Schnittstellen.";
+"guide_analysis_tools_4_title" = "Proteinübersetzung";
+"guide_analysis_tools_4_desc" = "Übersetzt DNA zu Aminosäuren, findet ORFs und analysiert Aminosäurezusammensetzung.";
+
+"guide_restriction_enzymes" = "✂️ Restriktionsenzyme";
+"guide_restriction_enzymes_1_title" = "Enzymauswahl";
+"guide_restriction_enzymes_1_desc" = "Verwenden Sie die Scissor-Taste, um verfügbare Restriktionsenzyme für die aktuelle Sequenz zu sehen.";
+"guide_restriction_enzymes_2_title" = "3D-Visualisierung";
+"guide_restriction_enzymes_2_desc" = "Verwenden Sie 'Show 3D', um Schnittstellen als rote Marker in 3D anzuzeigen.";
+"guide_restriction_enzymes_3_title" = "Virtuelle Verdauung";
+"guide_restriction_enzymes_3_desc" = "Verwenden Sie die 'Digest'-Taste, um DNA-Schnitt zu simulieren und Fragmente zu betrachten.";
+"guide_restriction_enzymes_4_title" = "Bildungsnutzung";
+"guide_restriction_enzymes_4_desc" = "Lernen Sie die Erkennungssequenz und Schnittmuster jedes Enzyms.";
+
+"guide_usage_tips" = "💡 Nutzungstipps";
+"guide_usage_tips_1_title" = "Drehung";
+"guide_usage_tips_1_desc" = "Ziehen Sie die 3D-Ansicht, um die DNA-Struktur frei zu drehen.";
+"guide_usage_tips_2_title" = "Zoomen";
+"guide_usage_tips_2_desc" = "Verwenden Sie Pinch-Gesten, um die 3D-Struktur zu vergrößern oder zu verkleinern.";
+"guide_usage_tips_3_title" = "Automatische Drehung";
+"guide_usage_tips_3_desc" = "Verwenden Sie die Rotation-Taste, um DNA automatisch 360 Grad zu drehen.";
+"guide_usage_tips_4_title" = "Ansicht zurücksetzen";
+"guide_usage_tips_4_desc" = "Verwenden Sie die Reload-Taste, um die Kamera auf ihre Standardposition zurückzusetzen.";
+
+/* Features Content */
+"features_title" = "Features";
+"features_3d_viz_title" = "3D DNA-Visualisierung";
+"features_3d_viz_1" = "Hochwertiges 3D-Rendering basierend auf SceneKit";
+"features_3d_viz_2" = "Echtzeit-interaktive Manipulation (Rotation, Zoom)";
+"features_3d_viz_3" = "Unterstützung für Double Helix, Ladder, Ball & Stick Stile";
+"features_3d_viz_4" = "Gruppenbasierte Sequenzexploration (100bp-Einheiten)";
+
+"features_gene_lib_title" = "Genbibliothek";
+"features_gene_lib_1" = "Echtzeit-NCBI-Datenbankintegration";
+"features_gene_lib_2" = "Kategoriebasierte Gensuche und -filterung";
+"features_gene_lib_3" = "Klassifizierung nach Organismus, Gen-Typ, Chromosom, etc.";
+"features_gene_lib_4" = "Automatisches Laden von FASTA-format DNA-Sequenzen";
+
+"features_analysis_title" = "Analysetools";
+"features_analysis_1" = "GC-Gehalt-Analyse und Fenster-Plots";
+"features_analysis_2" = "Automatische CpG-Insel-Erkennung";
+"features_analysis_3" = "Restriktionsenzym-Schnittstellenanalyse";
+"features_analysis_4" = "DNA → Protein-Übersetzung (Codon-Tabelle)";
+"features_analysis_5" = "Aminosäure-Zusammensetzungs-Balkendiagramme";
+"features_analysis_6" = "Open Reading Frame (ORF) Erkennung";
+
+"features_enzyme_title" = "Restriktionsenzyme";
+"features_enzyme_1" = "200+ Restriktionsenzym-Datenbank";
+"features_enzyme_2" = "IUPAC-Code-Unterstützung (Regex-Konvertierung)";
+"features_enzyme_3" = "3D-Visualisierung von Schnittstellen (rote Marker)";
+"features_enzyme_4" = "SequenceBar-Scheren-Symbol-Anzeige";
+"features_enzyme_5" = "Virtuelle DNA-Schnitt-Simulation";
+"features_enzyme_6" = "Bildungs-Gel-Elektrophorese-Visualisierung";
+
+"features_color_title" = "Farbthemen";
+"features_color_1" = "Classic, Vivid, Pastel, Neon-Themen";
+"features_color_2" = "Basis-spezifische Farbanpassung (A, T, G, C)";
+"features_color_3" = "Wasserstoffbrücken-Farbeinstellungen";
+"features_color_4" = "Echtzeit-Farbänderungen und Vorschau";
+
+"features_interaction_title" = "Interaktionsfunktionen";
+"features_interaction_1" = "Ziehen zum Drehen von 3D-Modellen";
+"features_interaction_2" = "Pinch-Gesten zum Zoomen";
+"features_interaction_3" = "Automatische 360-Grad-Rotationsanimation";
+"features_interaction_4" = "Einzelne Basis-Auswahl und Hervorhebung";
+"features_interaction_5" = "Gruppenbasierte Navigation";
+"features_interaction_6" = "Reload zur Wiederherstellung des ursprünglichen Zustands";
+
+"features_performance_title" = "Leistungsoptimierung";
+"features_performance_1" = "Speichereffizienz durch gruppenbasiertes Laden";
+"features_performance_2" = "Große DNA-Sequenz-Verarbeitungsfähigkeit";
+"features_performance_3" = "Hintergrund-Thread-3D-Rendering";
+"features_performance_4" = "Intelligentes Caching-System";
+"features_performance_5" = "Automatische Speicherbereinigung (autoreleasepool)";
+
+"features_education_title" = "Bildungsfunktionen";
+"features_education_1" = "Molekularbiologie-Experiment-Simulation";
+"features_education_2" = "DNA-Klonierungsprozess-Visualisierung";
+"features_education_3" = "Gen-Transformations-Animation";
+"features_education_4" = "Experimentelle Verifikationsprozess-Lernen";
+"features_education_5" = "Detaillierte Benutzeranleitung bereitgestellt";
+

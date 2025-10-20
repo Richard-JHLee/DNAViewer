@@ -367,3 +367,107 @@
 "analysis_protein_codon_detail" = "코돈 번역 상세";
 "analysis_protein_codon_more" = "%d개 더 보기";
 "analysis_protein_tap_expand" = "펼치려면 탭하세요";
+
+/* New User Guide Keys */
+"guide_getting_started_1_title" = "기본 DNA 시퀀스 보기";
+"guide_getting_started_1_desc" = "앱 시작 시 기본 DNA 시퀀스(BRCA1)가 로드됩니다. 드래그로 회전, 핀치로 확대/축소하세요.";
+"guide_getting_started_2_title" = "그룹별 탐색";
+"guide_getting_started_2_desc" = "DNA는 100bp 단위로 그룹화됩니다. G1, G2, G3... 버튼으로 섹션을 이동하세요.";
+"guide_getting_started_3_title" = "시퀀스 읽기";
+"guide_getting_started_3_desc" = "'Sequence' 버튼으로 하단에 염기서열(A, T, G, C)을 표시합니다.";
+"guide_getting_started_4_title" = "3D 스타일 변경";
+"guide_getting_started_4_desc" = "눈 아이콘(👁)으로 Double Helix, Ladder, Ball & Stick 등 다양한 3D 모드를 선택하세요.";
+
+"guide_gene_library_1_title" = "라이브러리 열기";
+"guide_gene_library_1_desc" = "메뉴(☰) → Gene Library로 NCBI 데이터베이스의 유전자를 탐색하세요.";
+"guide_gene_library_2_title" = "카테고리별 검색";
+"guide_gene_library_2_desc" = "Organism, Gene Type, Chromosome, Status, Gene Family로 필터링하세요.";
+"guide_gene_library_3_title" = "유전자 적용";
+"guide_gene_library_3_desc" = "유전자 선택 후 'Apply'로 해당 DNA 시퀀스를 3D로 로드합니다.";
+"guide_gene_library_4_title" = "실시간 데이터";
+"guide_gene_library_4_desc" = "모든 데이터는 NCBI에서 실시간으로 가져오므로 항상 최신입니다.";
+
+"guide_analysis_tools_1_title" = "GC 함량";
+"guide_analysis_tools_1_desc" = "구아닌(G)과 시토신(C) 염기의 비율을 분석합니다. 높은 GC 함량은 안정적인 DNA를 의미합니다.";
+"guide_analysis_tools_2_title" = "CpG 아일랜드";
+"guide_analysis_tools_2_desc" = "CG 빈도가 높은 영역을 탐지합니다. 유전자 조절에 중요한 역할을 합니다.";
+"guide_analysis_tools_3_title" = "제한 효소";
+"guide_analysis_tools_3_desc" = "DNA 절단 가능한 효소들을 분석하고 절단 위치를 확인합니다.";
+"guide_analysis_tools_4_title" = "단백질 번역";
+"guide_analysis_tools_4_desc" = "DNA를 아미노산으로 번역하고, ORF를 찾고, 아미노산 조성을 분석합니다.";
+
+"guide_restriction_enzymes_1_title" = "효소 선택";
+"guide_restriction_enzymes_1_desc" = "Scissor 버튼으로 현재 시퀀스에 사용 가능한 제한 효소 목록을 확인하세요.";
+"guide_restriction_enzymes_2_title" = "3D 시각화";
+"guide_restriction_enzymes_2_desc" = "'Show 3D'로 절단 위치를 3D에서 빨간 마커로 표시합니다.";
+"guide_restriction_enzymes_3_title" = "가상 절단";
+"guide_restriction_enzymes_3_desc" = "'Digest' 버튼으로 DNA 절단을 시뮬레이션하고 단편을 확인하세요.";
+"guide_restriction_enzymes_4_title" = "교육적 활용";
+"guide_restriction_enzymes_4_desc" = "각 효소의 인식 서열과 절단 패턴을 학습할 수 있습니다.";
+
+"guide_usage_tips_1_title" = "회전";
+"guide_usage_tips_1_desc" = "3D 뷰를 드래그하여 DNA 구조를 자유롭게 회전시키세요.";
+"guide_usage_tips_2_title" = "확대/축소";
+"guide_usage_tips_2_desc" = "핀치 제스처로 3D 구조를 확대하거나 축소하세요.";
+"guide_usage_tips_3_title" = "자동 회전";
+"guide_usage_tips_3_desc" = "Rotation 버튼으로 DNA를 360도 자동 회전시킵니다.";
+"guide_usage_tips_4_title" = "뷰 초기화";
+"guide_usage_tips_4_desc" = "Reload 버튼으로 카메라를 기본 위치로 재설정합니다.";
+
+/* Features Content */
+"features_title" = "Features";
+"features_3d_viz_title" = "3D DNA 시각화";
+"features_3d_viz_1" = "SceneKit 기반 고품질 3D 렌더링";
+"features_3d_viz_2" = "실시간 인터랙티브 조작 (회전, 확대/축소)";
+"features_3d_viz_3" = "Double Helix, Ladder, Ball & Stick 스타일 지원";
+"features_3d_viz_4" = "그룹별 염기서열 탐색 (100bp 단위)";
+
+"features_gene_lib_title" = "유전자 라이브러리";
+"features_gene_lib_1" = "NCBI 데이터베이스 실시간 연동";
+"features_gene_lib_2" = "카테고리별 유전자 검색 및 필터링";
+"features_gene_lib_3" = "Organism, Gene Type, Chromosome 등 분류";
+"features_gene_lib_4" = "FASTA 형식 DNA 시퀀스 자동 로드";
+
+"features_analysis_title" = "분석 도구";
+"features_analysis_1" = "GC 함량 분석 및 윈도우 플롯";
+"features_analysis_2" = "CpG 아일랜드 자동 탐지";
+"features_analysis_3" = "제한 효소 절단 부위 분석";
+"features_analysis_4" = "DNA → 단백질 번역 (코돈 테이블)";
+"features_analysis_5" = "아미노산 조성 막대그래프";
+"features_analysis_6" = "Open Reading Frame (ORF) 탐지";
+
+"features_enzyme_title" = "제한 효소";
+"features_enzyme_1" = "200+ 제한 효소 데이터베이스";
+"features_enzyme_2" = "IUPAC 코드 지원 (정규표현식 변환)";
+"features_enzyme_3" = "절단 위치 3D 시각화 (빨간 마커)";
+"features_enzyme_4" = "SequenceBar scissors 아이콘 표시";
+"features_enzyme_5" = "가상 DNA 절단 시뮬레이션";
+"features_enzyme_6" = "교육용 Gel Electrophoresis 시각화";
+
+"features_color_title" = "색상 테마";
+"features_color_1" = "Classic, Vivid, Pastel, Neon 테마";
+"features_color_2" = "염기별 색상 커스터마이징 (A, T, G, C)";
+"features_color_3" = "수소 결합 색상 설정";
+"features_color_4" = "실시간 색상 변경 및 미리보기";
+
+"features_interaction_title" = "인터랙션 기능";
+"features_interaction_1" = "드래그로 3D 모델 회전";
+"features_interaction_2" = "핀치 제스처로 확대/축소";
+"features_interaction_3" = "자동 360도 회전 애니메이션";
+"features_interaction_4" = "개별 염기 선택 및 하이라이트";
+"features_interaction_5" = "그룹 단위 네비게이션";
+"features_interaction_6" = "Reload로 초기 상태 복원";
+
+"features_performance_title" = "성능 최적화";
+"features_performance_1" = "그룹 단위 로딩으로 메모리 효율화";
+"features_performance_2" = "대용량 DNA 시퀀스 처리 가능";
+"features_performance_3" = "백그라운드 스레드 3D 렌더링";
+"features_performance_4" = "스마트 캐싱 시스템";
+"features_performance_5" = "자동 메모리 정리 (autoreleasepool)";
+
+"features_education_title" = "교육적 기능";
+"features_education_1" = "분자생물학 실험 시뮬레이션";
+"features_education_2" = "DNA 클로닝 프로세스 시각화";
+"features_education_3" = "유전자 변환 애니메이션";
+"features_education_4" = "실험 검증 과정 학습";
+"features_education_5" = "상세한 사용 가이드 제공";

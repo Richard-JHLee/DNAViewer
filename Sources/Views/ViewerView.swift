@@ -743,43 +743,43 @@ struct UserGuideContentView: View {
                     .padding(.bottom, 8)
                     
                     // 시작하기
-                    GuideSection(title: "🚀 시작하기", color: .green) {
-                        GuideItem(title: "기본 DNA 시퀀스 보기", description: "앱 시작 시 기본 DNA 시퀀스(BRCA1)가 로드됩니다. 드래그로 회전, 핀치로 확대/축소하세요.")
-                        GuideItem(title: "그룹별 탐색", description: "DNA는 100bp 단위로 그룹화됩니다. G1, G2, G3... 버튼으로 섹션을 이동하세요.")
-                        GuideItem(title: "시퀀스 읽기", description: "'Sequence' 버튼으로 하단에 염기서열(A, T, G, C)을 표시합니다.")
-                        GuideItem(title: "3D 스타일 변경", description: "눈 아이콘(👁)으로 Double Helix, Ladder, Ball & Stick 등 다양한 3D 모드를 선택하세요.")
+                    GuideSection(title: LanguageHelper.string("guide_getting_started"), color: .green) {
+                        GuideItem(title: LanguageHelper.string("guide_getting_started_1_title"), description: LanguageHelper.string("guide_getting_started_1_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_getting_started_2_title"), description: LanguageHelper.string("guide_getting_started_2_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_getting_started_3_title"), description: LanguageHelper.string("guide_getting_started_3_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_getting_started_4_title"), description: LanguageHelper.string("guide_getting_started_4_desc"))
                     }
                     
                     // 유전자 라이브러리
-                    GuideSection(title: "📚 유전자 라이브러리", color: .purple) {
-                        GuideItem(title: "라이브러리 열기", description: "메뉴(☰) → Gene Library로 NCBI 데이터베이스의 유전자를 탐색하세요.")
-                        GuideItem(title: "카테고리별 검색", description: "Organism, Gene Type, Chromosome, Status, Gene Family로 필터링하세요.")
-                        GuideItem(title: "유전자 적용", description: "유전자 선택 후 'Apply'로 해당 DNA 시퀀스를 3D로 로드합니다.")
-                        GuideItem(title: "실시간 데이터", description: "모든 데이터는 NCBI에서 실시간으로 가져오므로 항상 최신입니다.")
+                    GuideSection(title: LanguageHelper.string("guide_gene_library"), color: .purple) {
+                        GuideItem(title: LanguageHelper.string("guide_gene_library_1_title"), description: LanguageHelper.string("guide_gene_library_1_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_gene_library_2_title"), description: LanguageHelper.string("guide_gene_library_2_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_gene_library_3_title"), description: LanguageHelper.string("guide_gene_library_3_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_gene_library_4_title"), description: LanguageHelper.string("guide_gene_library_4_desc"))
                     }
                     
                     // 분석 도구
-                    GuideSection(title: "📊 분석 도구", color: .blue) {
-                        GuideItem(title: "GC 함량", description: "구아닌(G)과 시토신(C)의 비율을 분석합니다. 높은 GC 함량은 안정적인 DNA를 의미합니다.")
-                        GuideItem(title: "CpG 아일랜드", description: "CG 빈도가 높은 영역을 탐지합니다. 유전자 조절에 중요한 역할을 합니다.")
-                        GuideItem(title: "제한 효소", description: "DNA 절단 가능한 효소들을 분석하고 절단 위치를 확인합니다.")
-                        GuideItem(title: "단백질 번역", description: "DNA를 아미노산으로 번역하고, ORF를 찾고, 아미노산 조성을 분석합니다.")
+                    GuideSection(title: LanguageHelper.string("guide_analysis_tools"), color: .blue) {
+                        GuideItem(title: LanguageHelper.string("guide_analysis_tools_1_title"), description: LanguageHelper.string("guide_analysis_tools_1_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_analysis_tools_2_title"), description: LanguageHelper.string("guide_analysis_tools_2_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_analysis_tools_3_title"), description: LanguageHelper.string("guide_analysis_tools_3_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_analysis_tools_4_title"), description: LanguageHelper.string("guide_analysis_tools_4_desc"))
                     }
                     
                     // 제한 효소
-                    GuideSection(title: "✂️ 제한 효소", color: .orange) {
-                        GuideItem(title: "효소 선택", description: "Scissor 버튼으로 현재 시퀀스에 사용 가능한 제한 효소 목록을 확인하세요.")
-                        GuideItem(title: "3D 시각화", description: "'Show 3D'로 절단 위치를 3D에서 빨간 마커로 표시합니다.")
-                        GuideItem(title: "가상 절단", description: "'Digest' 버튼으로 DNA 절단을 시뮬레이션하고 단편을 확인하세요.")
-                        GuideItem(title: "교육적 활용", description: "각 효소의 인식 서열과 절단 패턴을 학습할 수 있습니다.")
+                    GuideSection(title: LanguageHelper.string("guide_restriction_enzymes"), color: .orange) {
+                        GuideItem(title: LanguageHelper.string("guide_restriction_enzymes_1_title"), description: LanguageHelper.string("guide_restriction_enzymes_1_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_restriction_enzymes_2_title"), description: LanguageHelper.string("guide_restriction_enzymes_2_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_restriction_enzymes_3_title"), description: LanguageHelper.string("guide_restriction_enzymes_3_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_restriction_enzymes_4_title"), description: LanguageHelper.string("guide_restriction_enzymes_4_desc"))
                     }
                     
                     // 사용 팁
-                    GuideSection(title: "💡 사용 팁", color: .yellow) {
-                        GuideItem(title: "회전", description: "3D 뷰를 드래그하여 DNA 구조를 자유롭게 회전시키세요.")
-                        GuideItem(title: "확대/축소", description: "핀치 제스처로 3D 구조를 확대하거나 축소하세요.")
-                        GuideItem(title: "자동 회전", description: "Rotation 버튼으로 DNA를 360도 자동 회전시킵니다.")
-                        GuideItem(title: "뷰 초기화", description: "Reload 버튼으로 카메라를 기본 위치로 재설정합니다.")
+                    GuideSection(title: LanguageHelper.string("guide_usage_tips"), color: .yellow) {
+                        GuideItem(title: LanguageHelper.string("guide_usage_tips_1_title"), description: LanguageHelper.string("guide_usage_tips_1_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_usage_tips_2_title"), description: LanguageHelper.string("guide_usage_tips_2_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_usage_tips_3_title"), description: LanguageHelper.string("guide_usage_tips_3_desc"))
+                        GuideItem(title: LanguageHelper.string("guide_usage_tips_4_title"), description: LanguageHelper.string("guide_usage_tips_4_desc"))
                     }
                 }
                 .padding()
@@ -1076,123 +1076,115 @@ struct FeaturesContentView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    // Subtitle
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(LanguageHelper.string("features_subtitle"))
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.bottom, 8)
-                    
                     // 3D DNA 시각화
                     FeatureCard(
-                        title: "3D DNA 시각화",
+                        title: LanguageHelper.string("features_3d_viz_title"),
                         icon: "cube.fill",
                         color: .blue,
                         features: [
-                            "SceneKit 기반 고품질 3D 렌더링",
-                            "실시간 인터랙티브 조작 (회전, 확대/축소)",
-                            "Double Helix, Ladder, Ball & Stick 스타일 지원",
-                            "그룹별 염기서열 탐색 (100bp 단위)"
+                            LanguageHelper.string("features_3d_viz_1"),
+                            LanguageHelper.string("features_3d_viz_2"),
+                            LanguageHelper.string("features_3d_viz_3"),
+                            LanguageHelper.string("features_3d_viz_4")
                         ]
                     )
                     
                     // 유전자 라이브러리
                     FeatureCard(
-                        title: "유전자 라이브러리",
+                        title: LanguageHelper.string("features_gene_lib_title"),
                         icon: "books.vertical.fill",
                         color: .purple,
                         features: [
-                            "NCBI 데이터베이스 실시간 연동",
-                            "카테고리별 유전자 검색 및 필터링",
-                            "Organism, Gene Type, Chromosome 등 분류",
-                            "FASTA 형식 DNA 시퀀스 자동 로드"
+                            LanguageHelper.string("features_gene_lib_1"),
+                            LanguageHelper.string("features_gene_lib_2"),
+                            LanguageHelper.string("features_gene_lib_3"),
+                            LanguageHelper.string("features_gene_lib_4")
                         ]
                     )
                     
                     // 분석 도구
                     FeatureCard(
-                        title: "분석 도구",
+                        title: LanguageHelper.string("features_analysis_title"),
                         icon: "chart.bar.fill",
                         color: .green,
                         features: [
-                            "GC 함량 분석 및 윈도우 플롯",
-                            "CpG 아일랜드 자동 탐지",
-                            "제한 효소 절단 부위 분석",
-                            "DNA → 단백질 번역 (코돈 테이블)",
-                            "아미노산 조성 막대그래프",
-                            "Open Reading Frame (ORF) 탐지"
+                            LanguageHelper.string("features_analysis_1"),
+                            LanguageHelper.string("features_analysis_2"),
+                            LanguageHelper.string("features_analysis_3"),
+                            LanguageHelper.string("features_analysis_4"),
+                            LanguageHelper.string("features_analysis_5"),
+                            LanguageHelper.string("features_analysis_6")
                         ]
                     )
                     
                     // 제한 효소 기능
                     FeatureCard(
-                        title: "제한 효소",
+                        title: LanguageHelper.string("features_enzyme_title"),
                         icon: "scissors",
                         color: .orange,
                         features: [
-                            "200+ 제한 효소 데이터베이스",
-                            "IUPAC 코드 지원 (정규표현식 변환)",
-                            "절단 위치 3D 시각화 (빨간 마커)",
-                            "SequenceBar scissors 아이콘 표시",
-                            "가상 DNA 절단 시뮬레이션",
-                            "교육용 Gel Electrophoresis 시각화"
+                            LanguageHelper.string("features_enzyme_1"),
+                            LanguageHelper.string("features_enzyme_2"),
+                            LanguageHelper.string("features_enzyme_3"),
+                            LanguageHelper.string("features_enzyme_4"),
+                            LanguageHelper.string("features_enzyme_5"),
+                            LanguageHelper.string("features_enzyme_6")
                         ]
                     )
                     
                     // 색상 테마
                     FeatureCard(
-                        title: "색상 테마",
+                        title: LanguageHelper.string("features_color_title"),
                         icon: "paintpalette.fill",
                         color: .pink,
                         features: [
-                            "Classic, Vivid, Pastel, Neon 테마",
-                            "염기별 색상 커스터마이징 (A, T, G, C)",
-                            "수소 결합 색상 설정",
-                            "실시간 색상 변경 및 미리보기"
+                            LanguageHelper.string("features_color_1"),
+                            LanguageHelper.string("features_color_2"),
+                            LanguageHelper.string("features_color_3"),
+                            LanguageHelper.string("features_color_4")
                         ]
                     )
                     
                     // 인터랙션 기능
                     FeatureCard(
-                        title: "인터랙션 기능",
+                        title: LanguageHelper.string("features_interaction_title"),
                         icon: "hand.tap.fill",
                         color: .teal,
                         features: [
-                            "드래그로 3D 모델 회전",
-                            "핀치 제스처로 확대/축소",
-                            "자동 360도 회전 애니메이션",
-                            "개별 염기 선택 및 하이라이트",
-                            "그룹 단위 네비게이션",
-                            "Reload로 초기 상태 복원"
+                            LanguageHelper.string("features_interaction_1"),
+                            LanguageHelper.string("features_interaction_2"),
+                            LanguageHelper.string("features_interaction_3"),
+                            LanguageHelper.string("features_interaction_4"),
+                            LanguageHelper.string("features_interaction_5"),
+                            LanguageHelper.string("features_interaction_6")
                         ]
                     )
                     
                     // 성능 최적화
                     FeatureCard(
-                        title: "성능 최적화",
+                        title: LanguageHelper.string("features_performance_title"),
                         icon: "speedometer",
                         color: .indigo,
                         features: [
-                            "그룹 단위 로딩으로 메모리 효율화",
-                            "대용량 DNA 시퀀스 처리 가능",
-                            "백그라운드 스레드 3D 렌더링",
-                            "스마트 캐싱 시스템",
-                            "자동 메모리 정리 (autoreleasepool)"
+                            LanguageHelper.string("features_performance_1"),
+                            LanguageHelper.string("features_performance_2"),
+                            LanguageHelper.string("features_performance_3"),
+                            LanguageHelper.string("features_performance_4"),
+                            LanguageHelper.string("features_performance_5")
                         ]
                     )
                     
                     // 교육적 기능
                     FeatureCard(
-                        title: "교육적 기능",
+                        title: LanguageHelper.string("features_education_title"),
                         icon: "graduationcap.fill",
                         color: .red,
                         features: [
-                            "분자생물학 실험 시뮬레이션",
-                            "DNA 클로닝 프로세스 시각화",
-                            "유전자 변환 애니메이션",
-                            "실험 검증 과정 학습",
-                            "상세한 사용 가이드 제공"
+                            LanguageHelper.string("features_education_1"),
+                            LanguageHelper.string("features_education_2"),
+                            LanguageHelper.string("features_education_3"),
+                            LanguageHelper.string("features_education_4"),
+                            LanguageHelper.string("features_education_5")
                         ]
                     )
                 }
