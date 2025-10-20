@@ -20,6 +20,7 @@ struct VirtualCloningView: View {
     @State private var step = 1
     @State private var expandedCategory: String? = nil // For accordion
     @State private var showExportDetails = false // For detailed export view
+    @State private var showShareSheet = false // For share sheet
     
     var body: some View {
         NavigationView {
@@ -448,7 +449,9 @@ struct VirtualCloningView: View {
                                                     .cornerRadius(8)
                                                 }
                                                 
-                                                Button(action: shareResult) {
+                                                Button(action: {
+                                                    showShareSheet = true
+                                                }) {
                                                     HStack {
                                                         Image(systemName: "square.and.arrow.up")
                                                         Text("Share")
@@ -545,6 +548,9 @@ struct VirtualCloningView: View {
                 }
                 #endif
             }
+            .sheet(isPresented: $showShareSheet) {
+                ShareSheet(items: [createShareText()])
+            }
         }
     }
     
@@ -577,6 +583,7 @@ struct VirtualCloningView: View {
         step = 1
         showExportDetails = false
         expandedCategory = nil
+        showShareSheet = false
     }
     
     private func copyToClipboard() {
@@ -589,30 +596,24 @@ struct VirtualCloningView: View {
         print("✅ Sequence copied to clipboard: \(clonedSequence.count) bp")
     }
     
-    private func shareResult() {
-        let shareText = """
+    private func createShareText() -> String {
+        return """
         Virtual Cloning Result
         ======================
         Vector: \(selectedVector?.name ?? "N/A")
-        5' Enzyme: \(selectedEnzyme1?.name ?? "N/A")
-        3' Enzyme: \(selectedEnzyme2?.name ?? "N/A")
+        5' Enzyme: \(selectedEnzyme1?.name ?? "N/A") (\(selectedEnzyme1?.recognitionSite ?? ""))
+        3' Enzyme: \(selectedEnzyme2?.name ?? "N/A") (\(selectedEnzyme2?.recognitionSite ?? ""))
         Insert Size: \(insertSequence.count) bp
         Final Size: \(clonedSequence.count) bp
         
         Sequence:
         \(clonedSequence)
         """
-        
-        #if os(iOS)
-        let activityVC = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let window = windowScene.windows.first,
-           let rootVC = window.rootViewController {
-            rootVC.present(activityVC, animated: true)
-        }
-        #endif
-        
-        print("📤 Sharing cloning result")
+    }
+    
+    private func shareResult() {
+        showShareSheet = true
+        print("📤 Opening share sheet")
     }
 }
 
@@ -769,6 +770,21 @@ struct ExportDetailRow: View {
             Spacer()
         }
         .padding(.vertical, 4)
+    }
+}
+
+// MARK: - Share Sheet
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+    
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
+        // No update needed
     }
 }
 
