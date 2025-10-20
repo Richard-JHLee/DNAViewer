@@ -18,6 +18,7 @@ struct VirtualCloningView: View {
     @State private var showResult = false
     @State private var clonedSequence: String = ""
     @State private var step = 1
+    @State private var expandedCategory: String? = nil // For accordion
     
     var body: some View {
         NavigationView {
@@ -34,7 +35,7 @@ struct VirtualCloningView: View {
                         isActive: step >= 1,
                         isCompleted: selectedVector != nil
                     ) {
-                        VStack(spacing: 16) {
+                        VStack(spacing: 12) {
                             Text("Choose from 22 commonly used vectors across different applications")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
@@ -44,34 +45,85 @@ struct VirtualCloningView: View {
                             let sortedTypes = vectorsByType.keys.sorted()
                             
                             ForEach(sortedTypes, id: \.self) { type in
-                                VStack(alignment: .leading, spacing: 8) {
-                                    // Category header
-                                    HStack {
-                                        Image(systemName: "folder.fill")
-                                            .foregroundColor(.blue)
-                                            .font(.caption)
-                                        Text(type)
-                                            .font(.subheadline)
-                                            .fontWeight(.semibold)
-                                            .foregroundColor(.blue)
-                                        Spacer()
-                                        Text("\(vectorsByType[type]?.count ?? 0)")
-                                            .font(.caption2)
-                                            .foregroundColor(.secondary)
-                                    }
-                                    .padding(.horizontal, 8)
-                                    .padding(.top, 8)
-                                    
-                                    // Vectors in this category
-                                    ForEach(vectorsByType[type] ?? []) { vector in
-                                        VectorRow(vector: vector, isSelected: selectedVector == vector)
-                                            .contentShape(Rectangle())
-                                            .onTapGesture {
-                                                selectedVector = vector
-                                                if step == 1 { step = 2 }
+                                VStack(alignment: .leading, spacing: 0) {
+                                    // Accordion header
+                                    Button(action: {
+                                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                            if expandedCategory == type {
+                                                expandedCategory = nil
+                                            } else {
+                                                expandedCategory = type
                                             }
+                                        }
+                                    }) {
+                                        HStack(spacing: 12) {
+                                            // Chevron icon
+                                            Image(systemName: expandedCategory == type ? "chevron.down.circle.fill" : "chevron.right.circle.fill")
+                                                .foregroundColor(.blue)
+                                                .font(.title3)
+                                                .animation(.spring(response: 0.3), value: expandedCategory)
+                                            
+                                            // Folder icon
+                                            Image(systemName: "folder.fill")
+                                                .foregroundColor(.blue)
+                                                .font(.body)
+                                            
+                                            VStack(alignment: .leading, spacing: 2) {
+                                                Text(type)
+                                                    .font(.subheadline)
+                                                    .fontWeight(.semibold)
+                                                    .foregroundColor(.primary)
+                                                
+                                                Text("\(vectorsByType[type]?.count ?? 0) vectors available")
+                                                    .font(.caption2)
+                                                    .foregroundColor(.secondary)
+                                            }
+                                            
+                                            Spacer()
+                                            
+                                            // Badge
+                                            Text("\(vectorsByType[type]?.count ?? 0)")
+                                                .font(.caption)
+                                                .fontWeight(.bold)
+                                                .foregroundColor(.white)
+                                                .padding(.horizontal, 8)
+                                                .padding(.vertical, 4)
+                                                .background(Color.blue)
+                                                .cornerRadius(12)
+                                        }
+                                        .padding()
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .fill(expandedCategory == type ? Color.blue.opacity(0.1) : Color.gray.opacity(0.05))
+                                        )
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .stroke(expandedCategory == type ? Color.blue : Color.gray.opacity(0.3), lineWidth: 1)
+                                        )
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    
+                                    // Accordion content (vectors list)
+                                    if expandedCategory == type {
+                                        VStack(spacing: 8) {
+                                            ForEach(vectorsByType[type] ?? []) { vector in
+                                                VectorRow(vector: vector, isSelected: selectedVector == vector)
+                                                    .contentShape(Rectangle())
+                                                    .onTapGesture {
+                                                        selectedVector = vector
+                                                        if step == 1 { step = 2 }
+                                                    }
+                                            }
+                                        }
+                                        .padding(.horizontal, 8)
+                                        .padding(.top, 8)
+                                        .transition(.asymmetric(
+                                            insertion: .scale.combined(with: .opacity),
+                                            removal: .scale.combined(with: .opacity)
+                                        ))
                                     }
                                 }
+                                .padding(.vertical, 4)
                             }
                         }
                     }
