@@ -505,12 +505,15 @@ struct RestrictionEnzymeView: View {
             
             HStack(spacing: 12) {
                 Button(action: analyzeSequence) {
-                    HStack {
+                    VStack(spacing: 6) {
                         Image(systemName: "chart.bar.doc.horizontal")
+                            .font(.title2)
                         Text("Analyze")
+                            .font(.caption)
+                            .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity)
-                    .padding()
+                    .padding(.vertical, 12)
                     .background(selectedEnzymes.isEmpty ? Color.gray : Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(10)
@@ -518,12 +521,15 @@ struct RestrictionEnzymeView: View {
                 .disabled(selectedEnzymes.isEmpty)
                 
                 Button(action: simulateDigestion) {
-                    HStack {
+                    VStack(spacing: 6) {
                         Image(systemName: "scissors.badge.ellipsis")
+                            .font(.title2)
                         Text("Digest")
+                            .font(.caption)
+                            .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity)
-                    .padding()
+                    .padding(.vertical, 12)
                     .background(selectedEnzymes.isEmpty ? Color.gray : Color.green)
                     .foregroundColor(.white)
                     .cornerRadius(10)
@@ -531,12 +537,15 @@ struct RestrictionEnzymeView: View {
                 .disabled(selectedEnzymes.isEmpty)
                 
                 Button(action: highlightCutSites) {
-                    HStack {
+                    VStack(spacing: 6) {
                         Image(systemName: "eye.fill")
+                            .font(.title2)
                         Text("Show 3D")
+                            .font(.caption)
+                            .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity)
-                    .padding()
+                    .padding(.vertical, 12)
                     .background(selectedEnzymes.isEmpty ? Color.gray : Color.orange)
                     .foregroundColor(.white)
                     .cornerRadius(10)
