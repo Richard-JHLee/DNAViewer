@@ -228,12 +228,13 @@ struct ViewerView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
-        .sheet(isPresented: $showUserGuide) {
-            UserGuideView()
-        }
-        .sheet(isPresented: $showHelp) {
-            HelpView()
-        }
+        // TODO: Add UserGuideView and HelpView to project
+        // .sheet(isPresented: $showUserGuide) {
+        //     UserGuideView()
+        // }
+        // .sheet(isPresented: $showHelp) {
+        //     HelpView()
+        // }
         .sheet(isPresented: $showVirtualCloning) {
             VirtualCloningView(sequence: sequence)
         }

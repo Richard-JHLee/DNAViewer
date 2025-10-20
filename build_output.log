@@ -1,0 +1,14 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project DNAViewer.xcodeproj -scheme DNAViewer_iOS -configuration Debug -destination "platform=iOS Simulator,name=iPhone 15 Pro" clean build
+
+2025-10-20 12:38:48.908 xcodebuild[60850:261272] Writing error result bundle to /var/folders/kz/ff_0b5tx49s8v65rzv3z4lbr0000gn/T/ResultBundle_2025-20-10_12-38-0048.xcresult
+xcodebuild: error: Unable to find a device matching the provided destination specifier:
+		{ platform:iOS Simulator, OS:latest, name:iPhone 15 Pro }
+
+	The requested device could not be found because no available devices matched the request.
+
+	Available destinations for the "DNAViewer_iOS" scheme:
+		{ platform:macOS, arch:arm64, variant:Designed for [iPad,iPhone], id:00008103-001144E102E2001E, name:My Mac }
+		{ platform:iOS, arch:arm64, id:00008101-001E25012E46001E, name:jhlee }
+		{ platform:iOS, id:dvtdevice-DVTiPhonePlaceholder-iphoneos:placeholder, name:Any iOS Device }
+		{ platform:iOS Simulator, id:dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder, name:Any iOS Simulator Device }
