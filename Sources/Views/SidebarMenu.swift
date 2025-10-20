@@ -20,9 +20,16 @@ struct SidebarMenu: View {
             // Header
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Image(systemName: "doc.text.magnifyingglass")
-                        .font(.title)
-                        .foregroundColor(.blue)
+                    // DNAViewer 로고 이미지
+                    Image("DNAViewerLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 50, height: 50)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.blue.opacity(0.3), lineWidth: 1)
+                        )
                     
                     VStack(alignment: .leading, spacing: 2) {
                         Text("DNA Viewer")

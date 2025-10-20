@@ -128,12 +128,14 @@ struct DNASplashScreenView: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(width: 140, height: 140)
+                        .frame(width: 160, height: 160)
                     
-                    // DNA 이중나선 아이콘
-                                        Image(systemName: "doc.text.magnifyingglass")
-                        .font(.system(size: 60))
-                        .foregroundColor(.blue)
+                    // DNAViewer 로고 이미지
+                    Image("DNAViewerLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 120, height: 120)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
                 .scaleEffect(logoScale)
                 .opacity(logoOpacity)
