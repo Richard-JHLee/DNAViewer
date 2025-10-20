@@ -34,14 +34,44 @@ struct VirtualCloningView: View {
                         isActive: step >= 1,
                         isCompleted: selectedVector != nil
                     ) {
-                        VStack(spacing: 12) {
-                            ForEach(CloningVector.commonVectors) { vector in
-                                VectorRow(vector: vector, isSelected: selectedVector == vector)
-                                    .contentShape(Rectangle())
-                                    .onTapGesture {
-                                        selectedVector = vector
-                                        if step == 1 { step = 2 }
+                        VStack(spacing: 16) {
+                            Text("Choose from 22 commonly used vectors across different applications")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            
+                            // Group vectors by type
+                            let vectorsByType = Dictionary(grouping: CloningVector.commonVectors, by: { $0.type })
+                            let sortedTypes = vectorsByType.keys.sorted()
+                            
+                            ForEach(sortedTypes, id: \.self) { type in
+                                VStack(alignment: .leading, spacing: 8) {
+                                    // Category header
+                                    HStack {
+                                        Image(systemName: "folder.fill")
+                                            .foregroundColor(.blue)
+                                            .font(.caption)
+                                        Text(type)
+                                            .font(.subheadline)
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(.blue)
+                                        Spacer()
+                                        Text("\(vectorsByType[type]?.count ?? 0)")
+                                            .font(.caption2)
+                                            .foregroundColor(.secondary)
                                     }
+                                    .padding(.horizontal, 8)
+                                    .padding(.top, 8)
+                                    
+                                    // Vectors in this category
+                                    ForEach(vectorsByType[type] ?? []) { vector in
+                                        VectorRow(vector: vector, isSelected: selectedVector == vector)
+                                            .contentShape(Rectangle())
+                                            .onTapGesture {
+                                                selectedVector = vector
+                                                if step == 1 { step = 2 }
+                                            }
+                                    }
+                                }
                             }
                         }
                     }
@@ -107,36 +137,114 @@ struct VirtualCloningView: View {
                         isCompleted: !insertSequence.isEmpty
                     ) {
                         VStack(spacing: 16) {
-                            Text("Enter the DNA sequence to insert (or select from gene)")
+                            Text("Enter the DNA sequence to insert or use real gene data from NCBI")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                             
-                            HStack {
-                                Button("Use Current Gene") {
+                            // Prominent "Use Current Gene" button
+                            VStack(spacing: 12) {
+                                Button(action: {
                                     insertSequence = sequence.sequence
+                                }) {
+                                    VStack(spacing: 8) {
+                                        HStack(spacing: 12) {
+                                            Image(systemName: "dna")
+                                                .font(.system(size: 24))
+                                                .foregroundColor(.white)
+                                            
+                                            VStack(alignment: .leading, spacing: 4) {
+                                                Text("Use Real Gene from NCBI")
+                                                    .font(.headline)
+                                                    .foregroundColor(.white)
+                                                
+                                                Text("Current: \(sequence.name)")
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.white.opacity(0.9))
+                                            }
+                                            
+                                            Spacer()
+                                            
+                                            Image(systemName: "arrow.right.circle.fill")
+                                                .font(.title2)
+                                                .foregroundColor(.white)
+                                        }
+                                        
+                                        HStack {
+                                            Image(systemName: "info.circle.fill")
+                                                .font(.caption)
+                                            Text("\(sequence.length) bp • Real sequence data")
+                                                .font(.caption)
+                                            Spacer()
+                                            Text(sequence.organism)
+                                                .font(.caption2)
+                                                .padding(.horizontal, 8)
+                                                .padding(.vertical, 2)
+                                                .background(Color.white.opacity(0.2))
+                                                .cornerRadius(4)
+                                        }
+                                        .foregroundColor(.white.opacity(0.9))
+                                    }
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [Color.blue, Color.purple]),
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                    )
+                                    .cornerRadius(12)
+                                    .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
                                 }
-                                .buttonStyle(.bordered)
+                                .buttonStyle(PlainButtonStyle())
                                 
-                                Button("Clear") {
-                                    insertSequence = ""
-                                }
-                                .buttonStyle(.bordered)
+                                Text("OR")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .fontWeight(.semibold)
                             }
                             
-                            TextEditor(text: $insertSequence)
-                                .font(.system(.body, design: .monospaced))
-                                .frame(height: 100)
-                                .border(Color.gray.opacity(0.3))
+                            // Manual sequence input
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Text("Enter Custom Sequence")
+                                        .font(.subheadline)
+                                        .fontWeight(.semibold)
+                                    
+                                    Spacer()
+                                    
+                                    if !insertSequence.isEmpty {
+                                        Button("Clear") {
+                                            insertSequence = ""
+                                        }
+                                        .font(.caption)
+                                        .buttonStyle(.bordered)
+                                    }
+                                }
+                                
+                                TextEditor(text: $insertSequence)
+                                    .font(.system(.body, design: .monospaced))
+                                    .frame(height: 100)
+                                    .border(Color.gray.opacity(0.3))
+                                    .cornerRadius(4)
+                            }
                             
                             if !insertSequence.isEmpty {
-                                Text("\(insertSequence.count) bp")
-                                    .font(.caption)
-                                    .foregroundColor(.blue)
+                                HStack {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundColor(.green)
+                                    Text("\(insertSequence.count) bp ready for cloning")
+                                        .font(.caption)
+                                        .foregroundColor(.green)
+                                    Spacer()
+                                }
+                                .padding(.horizontal, 8)
                                 
-                                Button("Continue") {
+                                Button("Continue to Cloning") {
                                     step = 4
                                 }
                                 .buttonStyle(.borderedProminent)
+                                .controlSize(.large)
                             }
                         }
                     }
@@ -344,28 +452,47 @@ struct VectorRow: View {
     let isSelected: Bool
     
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
             Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                 .foregroundColor(isSelected ? .blue : .gray)
+                .font(.title3)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(vector.name)
                     .font(.headline)
+                    .foregroundColor(.primary)
                 
-                Text("\(vector.size) bp • \(vector.type)")
+                Text(vector.description)
                     .font(.caption)
                     .foregroundColor(.secondary)
+                    .lineLimit(2)
+                
+                HStack(spacing: 8) {
+                    Label("\(vector.size) bp", systemImage: "ruler")
+                        .font(.caption2)
+                        .foregroundColor(.blue)
+                }
             }
             
             Spacer()
+            
+            if isSelected {
+                Image(systemName: "checkmark.seal.fill")
+                    .foregroundColor(.green)
+                    .font(.title3)
+            }
         }
-        .padding()
+        .padding(12)
         #if os(macOS)
-        .background(isSelected ? Color.blue.opacity(0.1) : Color(NSColor.controlBackgroundColor))
+        .background(isSelected ? Color.blue.opacity(0.15) : Color(NSColor.controlBackgroundColor))
         #else
-        .background(isSelected ? Color.blue.opacity(0.1) : Color(.systemGray6))
+        .background(isSelected ? Color.blue.opacity(0.15) : Color(.systemGray6))
         #endif
-        .cornerRadius(8)
+        .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(isSelected ? Color.blue : Color.clear, lineWidth: 2)
+        )
     }
 }
 
@@ -396,11 +523,41 @@ struct CloningVector: Identifiable, Equatable {
     let description: String
     
     static let commonVectors: [CloningVector] = [
-        CloningVector(id: "puc19", name: "pUC19", size: 2686, type: "Plasmid", description: "High copy number cloning vector"),
-        CloningVector(id: "pbr322", name: "pBR322", size: 4361, type: "Plasmid", description: "Classic cloning vector"),
-        CloningVector(id: "pcdna3", name: "pcDNA3.1", size: 5428, type: "Expression", description: "Mammalian expression vector"),
-        CloningVector(id: "pet28a", name: "pET-28a", size: 5369, type: "Expression", description: "Bacterial expression vector with His-tag"),
-        CloningVector(id: "pgex", name: "pGEX-4T-1", size: 4969, type: "Expression", description: "GST fusion protein expression")
+        // Basic Cloning Vectors
+        CloningVector(id: "puc19", name: "pUC19", size: 2686, type: "Cloning", description: "High copy number cloning vector with lacZ"),
+        CloningVector(id: "puc18", name: "pUC18", size: 2686, type: "Cloning", description: "High copy cloning vector (reverse MCS)"),
+        CloningVector(id: "pbr322", name: "pBR322", size: 4361, type: "Cloning", description: "Classic cloning vector with amp/tet resistance"),
+        CloningVector(id: "pbluescript", name: "pBluescript SK+", size: 2961, type: "Cloning", description: "High copy cloning with T3/T7 promoters"),
+        
+        // Bacterial Expression Vectors
+        CloningVector(id: "pet28a", name: "pET-28a(+)", size: 5369, type: "Bacterial Expression", description: "IPTG-inducible with N/C-His-tag"),
+        CloningVector(id: "pet15b", name: "pET-15b", size: 5708, type: "Bacterial Expression", description: "N-terminal His-tag expression"),
+        CloningVector(id: "pet21a", name: "pET-21a(+)", size: 5443, type: "Bacterial Expression", description: "C-terminal His-tag expression"),
+        CloningVector(id: "pgex4t1", name: "pGEX-4T-1", size: 4969, type: "Bacterial Expression", description: "GST fusion protein expression"),
+        CloningVector(id: "pgex6p1", name: "pGEX-6P-1", size: 4984, type: "Bacterial Expression", description: "GST fusion with PreScission site"),
+        CloningVector(id: "pmal", name: "pMAL-c5X", size: 5677, type: "Bacterial Expression", description: "MBP fusion protein expression"),
+        
+        // Mammalian Expression Vectors
+        CloningVector(id: "pcdna3", name: "pcDNA3.1(+)", size: 5428, type: "Mammalian Expression", description: "CMV promoter, neomycin resistance"),
+        CloningVector(id: "pcdna4", name: "pcDNA4/TO", size: 5107, type: "Mammalian Expression", description: "Tet-inducible mammalian expression"),
+        CloningVector(id: "pcmv", name: "pCMV-Tag2", size: 4729, type: "Mammalian Expression", description: "FLAG-tag mammalian expression"),
+        CloningVector(id: "pcineo", name: "pCI-neo", size: 5515, type: "Mammalian Expression", description: "CMV enhancer/promoter vector"),
+        
+        // Lentiviral Vectors
+        CloningVector(id: "plko", name: "pLKO.1-puro", size: 6472, type: "Lentiviral", description: "shRNA expression, puromycin selection"),
+        CloningVector(id: "plenti", name: "pLenti-CMV-GFP-Puro", size: 11036, type: "Lentiviral", description: "CMV-driven GFP expression"),
+        
+        // Gateway Vectors
+        CloningVector(id: "pdonr221", name: "pDONR221", size: 4470, type: "Gateway Entry", description: "Gateway entry clone vector"),
+        CloningVector(id: "pdest17", name: "pDEST17", size: 6152, type: "Gateway Destination", description: "Gateway E. coli expression"),
+        
+        // Yeast Vectors
+        CloningVector(id: "yep24", name: "YEp24", size: 11546, type: "Yeast Episomal", description: "2μ-based yeast episomal plasmid"),
+        CloningVector(id: "ycp50", name: "YCp50", size: 9285, type: "Yeast Centromeric", description: "Low copy yeast centromeric plasmid"),
+        
+        // Plant Vectors
+        CloningVector(id: "pbi121", name: "pBI121", size: 14000, type: "Plant Binary", description: "Agrobacterium-mediated plant transformation"),
+        CloningVector(id: "pcambia", name: "pCAMBIA1300", size: 8878, type: "Plant Binary", description: "Plant transformation with hygromycin")
     ]
 }
 
