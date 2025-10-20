@@ -66,8 +66,8 @@ struct SidebarMenu: View {
                 VStack(alignment: .leading, spacing: 0) {
                     MenuItem(
                         icon: "info.circle.fill",
-                        title: "About",
-                        subtitle: "App information and version",
+                        title: LanguageHelper.string("menu_about"),
+                        subtitle: LanguageHelper.string("menu_about_subtitle"),
                         color: .indigo
                     ) {
                         isPresented = false
@@ -76,8 +76,8 @@ struct SidebarMenu: View {
                     
                     MenuItem(
                         icon: "book.fill",
-                        title: "User Guide",
-                        subtitle: "Learn how to use DNA Viewer",
+                        title: LanguageHelper.string("menu_user_guide"),
+                        subtitle: LanguageHelper.string("menu_user_guide_subtitle"),
                         color: .green
                     ) {
                         isPresented = false
@@ -86,8 +86,8 @@ struct SidebarMenu: View {
                     
                     MenuItem(
                         icon: "star.fill",
-                        title: "Features",
-                        subtitle: "Key features and capabilities",
+                        title: LanguageHelper.string("menu_features"),
+                        subtitle: LanguageHelper.string("menu_features_subtitle"),
                         color: .yellow
                     ) {
                         isPresented = false
@@ -96,8 +96,8 @@ struct SidebarMenu: View {
                     
                     MenuItem(
                         icon: "questionmark.circle.fill",
-                        title: "Help & FAQ",
-                        subtitle: "Common questions and troubleshooting",
+                        title: LanguageHelper.string("menu_help"),
+                        subtitle: LanguageHelper.string("menu_help_subtitle"),
                         color: .teal
                     ) {
                         isPresented = false
@@ -106,8 +106,8 @@ struct SidebarMenu: View {
                     
                     MenuItem(
                         icon: "gear",
-                        title: "Settings",
-                        subtitle: "App preferences and configuration",
+                        title: LanguageHelper.string("menu_settings"),
+                        subtitle: LanguageHelper.string("menu_settings_subtitle"),
                         color: .gray
                     ) {
                         isPresented = false
@@ -116,8 +116,8 @@ struct SidebarMenu: View {
                     
                     MenuItem(
                         icon: "hand.raised.fill",
-                        title: "Privacy Policy",
-                        subtitle: "Data protection and privacy",
+                        title: LanguageHelper.string("menu_privacy"),
+                        subtitle: LanguageHelper.string("menu_privacy_subtitle"),
                         color: .brown
                     ) {
                         isPresented = false
@@ -126,8 +126,8 @@ struct SidebarMenu: View {
                     
                     MenuItem(
                         icon: "doc.text.fill",
-                        title: "Terms of Service",
-                        subtitle: "Usage terms and conditions",
+                        title: LanguageHelper.string("menu_terms"),
+                        subtitle: LanguageHelper.string("menu_terms_subtitle"),
                         color: .cyan
                     ) {
                         isPresented = false
@@ -136,8 +136,8 @@ struct SidebarMenu: View {
                     
                     MenuItem(
                         icon: "doc.plaintext.fill",
-                        title: "License",
-                        subtitle: "MIT License and open source",
+                        title: LanguageHelper.string("menu_license"),
+                        subtitle: LanguageHelper.string("menu_license_subtitle"),
                         color: .mint
                     ) {
                         isPresented = false

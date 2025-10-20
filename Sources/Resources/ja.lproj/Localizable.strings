@@ -6,13 +6,21 @@
 
 /* Main Menu */
 "menu_about" = "アプリについて";
+"menu_about_subtitle" = "アプリ情報とバージョン";
 "menu_user_guide" = "ユーザーガイド";
+"menu_user_guide_subtitle" = "DNA Viewerの使い方を学ぶ";
 "menu_features" = "主な機能";
+"menu_features_subtitle" = "主な機能と特徴";
 "menu_help" = "ヘルプ & FAQ";
+"menu_help_subtitle" = "よくある質問とトラブルシューティング";
 "menu_settings" = "設定";
+"menu_settings_subtitle" = "アプリの設定";
 "menu_privacy" = "プライバシーポリシー";
+"menu_privacy_subtitle" = "データ保護とプライバシー";
 "menu_terms" = "利用規約";
+"menu_terms_subtitle" = "利用規約と条件";
 "menu_license" = "ライセンス";
+"menu_license_subtitle" = "MITライセンスとオープンソース";
 
 /* Bottom Menu */
 "bottom_sequence" = "塩基配列";

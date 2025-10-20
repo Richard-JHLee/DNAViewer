@@ -6,13 +6,21 @@
 
 /* Main Menu */
 "menu_about" = "앱 정보";
+"menu_about_subtitle" = "앱 정보 및 버전";
 "menu_user_guide" = "사용 가이드";
+"menu_user_guide_subtitle" = "DNA Viewer 사용법 학습";
 "menu_features" = "주요 기능";
+"menu_features_subtitle" = "핵심 기능과 특징";
 "menu_help" = "도움말 & FAQ";
+"menu_help_subtitle" = "자주 묻는 질문과 문제 해결";
 "menu_settings" = "설정";
+"menu_settings_subtitle" = "앱 환경설정";
 "menu_privacy" = "개인정보 처리방침";
+"menu_privacy_subtitle" = "데이터 보호 및 개인정보";
 "menu_terms" = "이용약관";
+"menu_terms_subtitle" = "사용 약관 및 조건";
 "menu_license" = "라이센스";
+"menu_license_subtitle" = "MIT 라이센스 및 오픈소스";
 
 /* About */
 "about_title" = "DNA Viewer 소개";

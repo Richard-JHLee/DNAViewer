@@ -6,13 +6,21 @@
 
 /* Main Menu */
 "menu_about" = "About";
+"menu_about_subtitle" = "App information and version";
 "menu_user_guide" = "User Guide";
+"menu_user_guide_subtitle" = "Learn how to use DNA Viewer";
 "menu_features" = "Features";
+"menu_features_subtitle" = "Key features and capabilities";
 "menu_help" = "Help & FAQ";
+"menu_help_subtitle" = "Common questions and troubleshooting";
 "menu_settings" = "Settings";
+"menu_settings_subtitle" = "App preferences and configuration";
 "menu_privacy" = "Privacy Policy";
+"menu_privacy_subtitle" = "Data protection and privacy";
 "menu_terms" = "Terms of Service";
+"menu_terms_subtitle" = "Usage terms and conditions";
 "menu_license" = "License";
+"menu_license_subtitle" = "MIT License and open source";
 
 /* About */
 "about_title" = "About DNA Viewer";
