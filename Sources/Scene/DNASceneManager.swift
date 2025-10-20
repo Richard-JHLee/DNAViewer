@@ -61,8 +61,8 @@ class DNASceneManager: ObservableObject {
     // 실제 표시되는 염기서열 수 (안전장치 적용 후)
     var actualDisplayLength: Int {
         guard let sequence = currentSequence else { return displayLength }
-        let isAPOE = sequence.name.lowercased().contains("apoe")
-        let maxDisplayLength = isAPOE ? 200 : 20
+        // 모든 시퀀스에 대해 100개 표시 (제한 제거)
+        let maxDisplayLength = 100
         let safeLength = min(displayLength, maxDisplayLength)
         print("🔍 actualDisplayLength: displayLength=\(displayLength), maxDisplayLength=\(maxDisplayLength), safeLength=\(safeLength)")
         return safeLength
@@ -308,9 +308,8 @@ class DNASceneManager: ObservableObject {
                 return 
             }
             
-            // Limit display length for large sequences to prevent crash (except for APOE gene)
-            let isAPOE = sequence.name.lowercased().contains("apoe")
-            let maxDisplayLength = isAPOE ? 200 : 20  // APOE는 200개, 다른 큰 시퀀스는 20개로 제한
+            // Limit display length for large sequences to prevent crash
+            let maxDisplayLength = 100  // 모든 시퀀스에 대해 100개로 통일
             let safeDisplayLength = min(self.displayLength, maxDisplayLength)
             if safeDisplayLength < self.displayLength {
                 print("⚠️ Limiting display from \(self.displayLength) to \(safeDisplayLength) for stability")

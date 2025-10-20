@@ -206,9 +206,16 @@ struct RestrictionEnzymeView: View {
     }
     
     private func analyzeSequence() {
+        print("🔬 analyzeSequence() called")
+        print("📊 Selected enzymes count: \(selectedEnzymes.count)")
+        print("📊 Selected enzymes: \(selectedEnzymes.map { $0.name }.joined(separator: ", "))")
+        
         let analyzer = RestrictionSiteAnalyzer()
         let enzymes = Array(selectedEnzymes)
+        
+        print("🧪 Analyzing sequence with \(enzymes.count) enzymes...")
         let hitsDict = analyzer.analyze(sequence: sequence.sequence, enzymes: enzymes)
+        print("📊 Analysis complete - found hits for \(hitsDict.count) enzymes")
         
         // Convert [String: [RestrictionHit]] to [RestrictionEnzyme: [RestrictionSite]]
         var enzymeHits: [RestrictionEnzyme: [RestrictionSite]] = [:]
@@ -218,11 +225,17 @@ struct RestrictionEnzymeView: View {
                     RestrictionSite(enzyme: enzyme, position: hit.position, matchedSequence: enzyme.sequence)
                 }
                 enzymeHits[enzyme] = sites
+                print("✅ \(enzyme.name): \(sites.count) cut sites")
+            } else {
+                print("❌ \(enzyme.name): No hits found")
             }
         }
         
         let totalSites = enzymeHits.values.flatMap { $0 }.count
         restrictionMap = RestrictionMap(hits: enzymeHits, totalSites: totalSites)
+        
+        print("✅ Restriction map created with \(totalSites) total sites")
+        print("📊 restrictionMap is now: \(restrictionMap != nil ? "NOT NIL" : "NIL")")
     }
     
     private func simulateDigestion() {
@@ -233,6 +246,7 @@ struct RestrictionEnzymeView: View {
     private func highlightCutSites() {
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         print("🎯 Show 3D button clicked")
+        print("📊 Selected enzymes: \(selectedEnzymes.map { $0.name }.joined(separator: ", "))")
         
         // 분석이 안 되어 있으면 먼저 분석
         if restrictionMap == nil {
@@ -241,9 +255,14 @@ struct RestrictionEnzymeView: View {
         }
         
         guard let map = restrictionMap else {
-            print("❌ Failed to create restriction map")
+            print("❌ Failed to create restriction map after analysis")
+            print("❌ Selected enzymes count: \(selectedEnzymes.count)")
             return
         }
+        
+        print("✅ Restriction map created successfully")
+        print("📊 Total hits in map: \(map.hits.count)")
+        print("📊 Total sites: \(map.totalSites)")
         
         // Collect all cut positions
         var cutPositions: [Int] = []
@@ -518,11 +537,11 @@ struct RestrictionEnzymeView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(selectedEnzymes.isEmpty || restrictionMap == nil ? Color.gray : Color.orange)
+                    .background(selectedEnzymes.isEmpty ? Color.gray : Color.orange)
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
-                .disabled(selectedEnzymes.isEmpty || restrictionMap == nil)
+                .disabled(selectedEnzymes.isEmpty)
             }
             .padding(.horizontal)
         }

@@ -583,19 +583,157 @@ struct HelpContentView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    Text("도움말 & FAQ")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
+                    // Title
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("도움말 & FAQ")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        
+                        Text("자주 묻는 질문과 문제 해결")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.bottom, 8)
                     
-                    FAQSection(question: "DNA 시퀀스를 어떻게 로드하나요?", answer: "메뉴에서 Gene Library를 선택하고 원하는 유전자를 검색한 후 'Apply'를 누르세요.")
+                    // 일반 사용
+                    HelpCategory(title: "일반 사용", icon: "questionmark.circle.fill", color: .blue) {
+                        FAQSection(
+                            question: "DNA 시퀀스를 어떻게 로드하나요?",
+                            answer: "메뉴(☰)에서 Gene Library를 선택하고 원하는 유전자를 검색한 후 'Apply' 버튼을 누르세요. NCBI 데이터베이스에서 실시간으로 데이터를 가져옵니다."
+                        )
+                        
+                        FAQSection(
+                            question: "앱이 느리게 실행됩니다",
+                            answer: "대용량 DNA 시퀀스의 경우 로딩 시간이 오래 걸릴 수 있습니다. 그룹 단위(100bp)로 나누어 표시하므로 각 그룹 전환 시 잠시 기다려주세요."
+                        )
+                        
+                        FAQSection(
+                            question: "시퀀스 정보는 어디서 확인하나요?",
+                            answer: "상단의 Info 버튼(ℹ️)을 누르면 현재 DNA 시퀀스의 상세 정보(이름, 길이, 염색체, 생물체 등)를 확인할 수 있습니다."
+                        )
+                    }
                     
-                    FAQSection(question: "3D 뷰가 움직이지 않아요", answer: "드래그로 회전, 핀치로 확대/축소하세요. Reload 버튼으로 초기화할 수 있습니다.")
+                    // 3D 시각화
+                    HelpCategory(title: "3D 시각화", icon: "cube.fill", color: .purple) {
+                        FAQSection(
+                            question: "3D 뷰가 움직이지 않아요",
+                            answer: "드래그 제스처로 회전, 핀치 제스처로 확대/축소하세요. Reload 버튼(↻)으로 초기 상태로 되돌릴 수 있습니다."
+                        )
+                        
+                        FAQSection(
+                            question: "3D 스타일을 변경하려면?",
+                            answer: "눈 아이콘(👁) 버튼을 누르면 Style 섹션이 나타납니다. Double Helix, Ladder, Ball & Stick 중 원하는 스타일을 선택하세요."
+                        )
+                        
+                        FAQSection(
+                            question: "색상이 변경되지 않습니다",
+                            answer: "눈 아이콘(👁) 버튼을 누르고 Color 섹션에서 원하는 색상 테마를 선택하세요. Classic, Vivid, Pastel, Neon 등 다양한 테마가 있습니다."
+                        )
+                        
+                        FAQSection(
+                            question: "자동 회전은 어떻게 하나요?",
+                            answer: "Bottom menu에서 Rotation 버튼을 누르면 DNA가 360도 자동으로 회전합니다. 다시 누르면 정지합니다."
+                        )
+                    }
                     
-                    FAQSection(question: "제한 효소 절단 위치가 안 보여요", answer: "Scissor 메뉴에서 효소를 선택하고 'Show 3D'를 눌러주세요.")
+                    // 분석 도구
+                    HelpCategory(title: "분석 도구", icon: "chart.bar.fill", color: .green) {
+                        FAQSection(
+                            question: "GC 함량이란 무엇인가요?",
+                            answer: "구아닌(G)과 시토신(C) 염기의 비율입니다. 높은 GC 함량은 더 안정적인 DNA 구조를 의미하며, 유전자 발현과 진화 연구에 중요합니다."
+                        )
+                        
+                        FAQSection(
+                            question: "CpG 아일랜드는 왜 중요한가요?",
+                            answer: "CpG 아일랜드는 CG 디뉴클레오티드가 풍부한 영역으로, 유전자의 프로모터 부위에 많이 위치합니다. DNA 메틸화를 통한 유전자 조절에 핵심적인 역할을 합니다."
+                        )
+                        
+                        FAQSection(
+                            question: "단백질 번역 결과는 어떻게 보나요?",
+                            answer: "Analysis 메뉴에서 'Protein' 탭을 선택하세요. DNA가 자동으로 아미노산으로 번역되며, 코돈별 상세 정보와 ORF(Open Reading Frame)를 확인할 수 있습니다."
+                        )
+                        
+                        FAQSection(
+                            question: "아미노산 조성 그래프는 무엇인가요?",
+                            answer: "번역된 단백질에 포함된 각 아미노산의 개수와 비율을 막대그래프로 보여줍니다. 색상은 아미노산의 화학적 특성(소수성, 극성, 전하)을 나타냅니다."
+                        )
+                    }
                     
-                    FAQSection(question: "분석 결과를 저장할 수 있나요?", answer: "현재 버전에서는 스크린샷으로 저장하실 수 있습니다.")
+                    // 제한 효소
+                    HelpCategory(title: "제한 효소", icon: "scissors", color: .orange) {
+                        FAQSection(
+                            question: "제한 효소 절단 위치가 안 보여요",
+                            answer: "Bottom menu의 Scissor 버튼을 누르고, 원하는 제한 효소를 선택한 후 'Show 3D' 버튼을 눌러주세요. 3D 뷰에 빨간색 마커가 표시됩니다."
+                        )
+                        
+                        FAQSection(
+                            question: "여러 효소를 동시에 선택할 수 있나요?",
+                            answer: "네! 여러 제한 효소를 선택하면 모든 절단 위치가 함께 표시됩니다. 'Digest' 버튼으로 가상 절단 시뮬레이션도 가능합니다."
+                        )
+                        
+                        FAQSection(
+                            question: "절단 마커를 제거하려면?",
+                            answer: "Bottom menu의 Reload 버튼(↻)을 누르면 모든 하이라이트와 마커가 제거되고 초기 상태로 돌아갑니다."
+                        )
+                        
+                        FAQSection(
+                            question: "SequenceBar에 scissors 아이콘이 나타납니다",
+                            answer: "이것은 해당 위치가 제한 효소 절단 위치임을 나타냅니다. 빨간색 테두리와 함께 표시되어 정확한 절단 위치를 쉽게 확인할 수 있습니다."
+                        )
+                    }
                     
-                    FAQSection(question: "문의하기", answer: "추가 문의사항은 support@avas.com으로 연락주세요.")
+                    // 성능 및 문제 해결
+                    HelpCategory(title: "문제 해결", icon: "wrench.and.screwdriver.fill", color: .red) {
+                        FAQSection(
+                            question: "앱이 멈추거나 응답하지 않습니다",
+                            answer: "매우 큰 DNA 시퀀스의 경우 3D 렌더링에 시간이 걸릴 수 있습니다. Reload 버튼을 눌러 초기화하거나, 앱을 재시작해보세요."
+                        )
+                        
+                        FAQSection(
+                            question: "Gene Library에서 유전자를 찾을 수 없어요",
+                            answer: "인터넷 연결을 확인하고, 정확한 유전자 이름이나 심볼을 입력했는지 확인하세요. NCBI 데이터베이스에 등록된 유전자만 검색 가능합니다."
+                        )
+                        
+                        FAQSection(
+                            question: "분석 결과를 저장할 수 있나요?",
+                            answer: "현재 버전에서는 화면 캡처(스크린샷)로 분석 결과를 저장할 수 있습니다. 향후 업데이트에서 데이터 내보내기 기능이 추가될 예정입니다."
+                        )
+                    }
+                    
+                    // 추가 도움
+                    VStack(alignment: .leading, spacing: 16) {
+                        Divider()
+                            .padding(.vertical, 8)
+                        
+                        Text("추가 도움이 필요합니다")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("문제가 지속되거나 다른 질문이 있으시면 앱 정보 페이지의 문의 정보를 통해 연락해주세요.")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        .padding()
+                        .background(Color.blue.opacity(0.1))
+                        .cornerRadius(12)
+                        
+                        // App Version Info
+                        HStack {
+                            Spacer()
+                            VStack(spacing: 4) {
+                                Text("DNA Viewer v1.0")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                Text("© 2025 AVAS. All rights reserved")
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+                        }
+                        .padding(.top, 8)
+                    }
                 }
                 .padding()
             }
@@ -609,6 +747,34 @@ struct HelpContentView: View {
                 }
             }
         }
+    }
+}
+
+struct HelpCategory<Content: View>: View {
+    let title: String
+    let icon: String
+    let color: Color
+    @ViewBuilder let content: () -> Content
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: icon)
+                    .foregroundColor(color)
+                    .font(.title3)
+                
+                Text(title)
+                    .font(.title2)
+                    .fontWeight(.bold)
+            }
+            
+            VStack(alignment: .leading, spacing: 12) {
+                content()
+            }
+        }
+        .padding()
+        .background(color.opacity(0.05))
+        .cornerRadius(12)
     }
 }
 
