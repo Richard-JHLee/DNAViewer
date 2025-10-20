@@ -336,3 +336,34 @@
 "show_3d" = "3D 보기";
 "show_all" = "전체 보기";
 "show_less" = "간단히 보기";
+
+/* Analysis Sheet */
+"analysis_title" = "분석";
+"analysis_gc_title" = "GC 함량 분석";
+"analysis_gc_overall" = "전체 GC 함량:";
+"analysis_gc_window_plot" = "GC 함량 윈도우 플롯";
+
+"analysis_cpg_title" = "CpG 아일랜드";
+"analysis_cpg_none" = "CpG 아일랜드를 찾을 수 없습니다";
+"analysis_cpg_island" = "CpG 아일랜드";
+"analysis_cpg_position" = "위치:";
+"analysis_cpg_length" = "길이:";
+"analysis_cpg_gc" = "GC:";
+"analysis_cpg_ratio" = "CpG 비율:";
+
+"analysis_restriction_title" = "제한 효소 분석";
+"analysis_dna_sequence" = "DNA 시퀀스";
+"analysis_restriction_sites" = "제한 효소 절단 부위";
+"analysis_restriction_paste" = "DNA 시퀀스를 붙여넣고 분석 버튼을 누르세요.";
+"analysis_analyzing" = "제한 효소 분석 중...";
+
+"analysis_protein_title" = "단백질 번역";
+"analysis_protein_reading_frame" = "리딩 프레임";
+"analysis_protein_amino_seq" = "아미노산 서열";
+"analysis_protein_amino_acids" = "개 아미노산";
+"analysis_protein_composition" = "아미노산 조성";
+"analysis_protein_orf" = "Open Reading Frames";
+"analysis_protein_orf_none" = "ORF를 찾을 수 없습니다 (최소 75 bp)";
+"analysis_protein_codon_detail" = "코돈 번역 상세";
+"analysis_protein_codon_more" = "%d개 더 보기";
+"analysis_protein_tap_expand" = "펼치려면 탭하세요";

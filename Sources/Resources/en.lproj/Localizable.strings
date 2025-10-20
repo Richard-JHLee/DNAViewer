@@ -265,3 +265,34 @@
 "show_3d" = "Show 3D";
 "show_all" = "Show All";
 "show_less" = "Show Less";
+
+/* Analysis Sheet */
+"analysis_title" = "Analysis";
+"analysis_gc_title" = "GC Content Analysis";
+"analysis_gc_overall" = "Overall GC Content:";
+"analysis_gc_window_plot" = "GC Content Window Plot";
+
+"analysis_cpg_title" = "CpG Islands";
+"analysis_cpg_none" = "No CpG islands found";
+"analysis_cpg_island" = "CpG Island";
+"analysis_cpg_position" = "Position:";
+"analysis_cpg_length" = "Length:";
+"analysis_cpg_gc" = "GC:";
+"analysis_cpg_ratio" = "CpG Ratio:";
+
+"analysis_restriction_title" = "Restriction Sites Analysis";
+"analysis_dna_sequence" = "DNA Sequence";
+"analysis_restriction_sites" = "Restriction Sites";
+"analysis_restriction_paste" = "Paste a DNA sequence and tap Analyze.";
+"analysis_analyzing" = "Analyzing restriction sites...";
+
+"analysis_protein_title" = "Protein Translation";
+"analysis_protein_reading_frame" = "Reading Frame";
+"analysis_protein_amino_seq" = "Amino Acid Sequence";
+"analysis_protein_amino_acids" = "amino acids";
+"analysis_protein_composition" = "Amino Acid Composition";
+"analysis_protein_orf" = "Open Reading Frames";
+"analysis_protein_orf_none" = "No ORFs found (minimum 75 bp)";
+"analysis_protein_codon_detail" = "Codon Translation Details";
+"analysis_protein_codon_more" = "Show %d more codons";
+"analysis_protein_tap_expand" = "Tap to expand";

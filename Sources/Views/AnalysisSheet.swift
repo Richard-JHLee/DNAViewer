@@ -64,14 +64,14 @@ struct AnalysisSheet: View {
                     // GC Content
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("GC Content Analysis")
+                            Text(LanguageHelper.string("analysis_gc_title"))
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .padding(.horizontal)
                             
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {
-                                    Text("Overall GC Content:")
+                                    Text(LanguageHelper.string("analysis_gc_overall"))
                                         .foregroundColor(.secondary)
                                     Spacer()
                                     Text(String(format: "%.2f%%", sequence.gcContent))
@@ -80,7 +80,7 @@ struct AnalysisSheet: View {
                                 .padding(.horizontal)
                                 
                                 if !gcWindowData.isEmpty {
-                                    Text("GC Content Window Plot")
+                                    Text(LanguageHelper.string("analysis_gc_window_plot"))
                                         .font(.headline)
                                         .padding(.horizontal)
                                     
@@ -127,13 +127,13 @@ struct AnalysisSheet: View {
                     // CpG Islands
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("CpG Islands")
+                            Text(LanguageHelper.string("analysis_cpg_title"))
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .padding(.horizontal)
                             
                             if cpgIslands.isEmpty {
-                                Text("No CpG islands found")
+                                Text(LanguageHelper.string("analysis_cpg_none"))
                                     .foregroundColor(.secondary)
                                     .padding()
                             } else {
@@ -150,14 +150,14 @@ struct AnalysisSheet: View {
                     // Advanced Restriction Sites
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("Restriction Sites Analysis")
+                            Text(LanguageHelper.string("analysis_restriction_title"))
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .padding(.horizontal)
                             
                             // Sequence Input
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("DNA Sequence")
+                                Text(LanguageHelper.string("analysis_dna_sequence"))
                                     .font(.headline)
                                     .padding(.horizontal)
                                 
@@ -179,7 +179,7 @@ struct AnalysisSheet: View {
                                             } else {
                                                 Image(systemName: "scissors")
                                             }
-                                            Text("Analyze")
+                                            Text(LanguageHelper.string("analyze"))
                                         }
                                     }
                                     .buttonStyle(.borderedProminent)
@@ -201,11 +201,11 @@ struct AnalysisSheet: View {
                                         .font(.system(size: 60))
                                         .foregroundColor(.secondary)
                                     
-                                    Text("Restriction Sites")
+                                    Text(LanguageHelper.string("analysis_restriction_sites"))
                                         .font(.title2)
                                         .fontWeight(.bold)
                                     
-                                    Text("Paste a DNA sequence and tap Analyze.")
+                                    Text(LanguageHelper.string("analysis_restriction_paste"))
                                         .foregroundColor(.secondary)
                                         .multilineTextAlignment(.center)
                                 }
@@ -215,7 +215,7 @@ struct AnalysisSheet: View {
                                 VStack(spacing: 16) {
                                     ProgressView()
                                         .scaleEffect(1.2)
-                                    Text("Analyzing restriction sites...")
+                                    Text(LanguageHelper.string("analysis_analyzing"))
                                         .foregroundColor(.secondary)
                                 }
                                 .frame(maxWidth: .infinity)
@@ -239,14 +239,14 @@ struct AnalysisSheet: View {
                     // Protein Translation (embedded from TranslationSheet)
                     ScrollView {
                         VStack(alignment: .leading, spacing: 20) {
-                            Text("단백질 번역 (Protein Translation)")
+                            Text(LanguageHelper.string("analysis_protein_title"))
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .padding(.horizontal)
                             
                             // Frame Selector
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Reading Frame")
+                                Text(LanguageHelper.string("analysis_protein_reading_frame"))
                                     .font(.headline)
                                 
                                 Picker("Frame", selection: $selectedTab) {
@@ -260,7 +260,7 @@ struct AnalysisSheet: View {
                             
                             // DNA Sequence
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("DNA Sequence")
+                                Text(LanguageHelper.string("analysis_dna_sequence"))
                                     .font(.headline)
                                 
                                 ScrollView(.horizontal, showsIndicators: true) {
@@ -279,7 +279,7 @@ struct AnalysisSheet: View {
                             
                             // Translated Protein
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Amino Acid Sequence")
+                                Text(LanguageHelper.string("analysis_protein_amino_seq"))
                                     .font(.headline)
                                 
                                 let codons = CodonTable.shared.translateSequence(sequence.sequence)
@@ -297,7 +297,7 @@ struct AnalysisSheet: View {
                                         .cornerRadius(8)
                                 }
                                 
-                                Text("\(codons.count) amino acids")
+                                Text("\(codons.count) \(LanguageHelper.string("analysis_protein_amino_acids"))")
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                             }
@@ -305,7 +305,7 @@ struct AnalysisSheet: View {
                             
                             // Amino Acid Composition
                             VStack(alignment: .leading, spacing: 12) {
-                                Text("아미노산 조성 (Amino Acid Composition)")
+                                Text(LanguageHelper.string("analysis_protein_composition"))
                                     .font(.headline)
                                     .padding(.horizontal)
                                 
@@ -368,13 +368,13 @@ struct AnalysisSheet: View {
                             
                             // ORF Finder Results
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Open Reading Frames")
+                                Text(LanguageHelper.string("analysis_protein_orf"))
                                     .font(.headline)
                                 
                                 let orfs = SequenceAnalyzer.findORFs(sequence.sequence)
                                 
                                 if orfs.isEmpty {
-                                    Text("No ORFs found (minimum 75 bp)")
+                                    Text(LanguageHelper.string("analysis_protein_orf_none"))
                                         .foregroundColor(.secondary)
                                         .padding()
                                 } else {
@@ -388,7 +388,7 @@ struct AnalysisSheet: View {
                             // Codon Table Details
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {
-                                    Text("코돈 번역 상세")
+                                    Text(LanguageHelper.string("analysis_protein_codon_detail"))
                                         .font(.headline)
                                     
                                     Spacer()
@@ -400,7 +400,7 @@ struct AnalysisSheet: View {
                                             }
                                         }) {
                                             HStack(spacing: 4) {
-                                                Text("Show All")
+                                                Text(LanguageHelper.string("show_all"))
                                                 Image(systemName: "chevron.down.circle")
                                             }
                                             .font(.caption)
@@ -413,7 +413,7 @@ struct AnalysisSheet: View {
                                             }
                                         }) {
                                             HStack(spacing: 4) {
-                                                Text("Show Less")
+                                                Text(LanguageHelper.string("show_less"))
                                                 Image(systemName: "chevron.up.circle")
                                             }
                                             .font(.caption)
@@ -495,12 +495,12 @@ struct AnalysisSheet: View {
                                             HStack {
                                                 Spacer()
                                                 VStack(spacing: 8) {
-                                                    Text("Show \(codons.count - 20) more codons")
+                                                    Text(String(format: LanguageHelper.string("analysis_protein_codon_more"), codons.count - 20))
                                                         .font(.subheadline)
                                                         .fontWeight(.semibold)
                                                     
                                                     HStack(spacing: 4) {
-                                                        Text("Tap to expand")
+                                                        Text(LanguageHelper.string("analysis_protein_tap_expand"))
                                                             .font(.caption)
                                                         Image(systemName: "arrow.down.circle.fill")
                                                             .font(.caption)
@@ -532,7 +532,7 @@ struct AnalysisSheet: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 #endif
             }
-            .navigationTitle("Analysis")
+            .navigationTitle(LanguageHelper.string("analysis_title"))
         }
         .modifier(PlatformToolbarModifier(dismiss: dismiss))
         .onAppear {
