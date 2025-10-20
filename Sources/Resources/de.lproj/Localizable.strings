@@ -37,6 +37,20 @@
 "about_copyright" = "© 2025 AVAS. Alle Rechte vorbehalten.";
 "about_tech_stack" = "Technologie-Stack";
 "about_key_features" = "Hauptfunktionen";
+"about_feature_3d_title" = "3D-DNA-Visualisierung";
+"about_feature_3d_desc" = "Hochwertige 3D-Darstellung mit SceneKit, unterstützt Double Helix, Ladder, Ball & Stick Stile";
+"about_feature_ncbi_title" = "NCBI-Gen-Bibliothek";
+"about_feature_ncbi_desc" = "Echtzeit-NCBI-Datenbankintegration mit Tausenden von Geninformationen";
+"about_feature_analysis_title" = "Erweiterte Analysetools";
+"about_feature_analysis_desc" = "Umfassende Analyse einschließlich GC-Gehalt, CpG-Inseln, Restriktionsenzyme, Proteinübersetzung";
+"about_feature_enzyme_title" = "Restriktionsenzym-Simulation";
+"about_feature_enzyme_desc" = "Visualisierung von DNA-Schnittstellenpositionen und virtuelle Experimente mit 200+ Restriktionsenzymen";
+"about_feature_color_title" = "Farbthemen";
+"about_feature_color_desc" = "Verschiedene Farbthemen wie Classic, Vivid, Pastel, Neon mit Anpassung";
+"about_feature_interact_title" = "Interaktive Steuerung";
+"about_feature_interact_desc" = "Intuitive 3D-Manipulation mit Ziehen, Pinchen, automatischer Drehung";
+"about_feature_edu_title" = "Bildungsfunktionen";
+"about_feature_edu_desc" = "Molekularbiologie-Experiment-Simulation und Klonierungsprozess-Visualisierung";
 
 /* User Guide */
 "guide_title" = "Benutzerhandbuch";

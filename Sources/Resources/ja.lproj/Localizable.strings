@@ -37,6 +37,20 @@
 "about_copyright" = "© 2025 AVAS. All rights reserved.";
 "about_tech_stack" = "技術スタック";
 "about_key_features" = "主な機能";
+"about_feature_3d_title" = "3D DNA可視化";
+"about_feature_3d_desc" = "SceneKitによる高品質3Dレンダリング、Double Helix、Ladder、Ball & Stickスタイルをサポート";
+"about_feature_ncbi_title" = "NCBI遺伝子ライブラリ";
+"about_feature_ncbi_desc" = "リアルタイムNCBIデータベース連携で数千の遺伝子情報を提供";
+"about_feature_analysis_title" = "高度な分析ツール";
+"about_feature_analysis_desc" = "GC含量、CpGアイランド、制限酵素、タンパク質翻訳を含む包括的な分析";
+"about_feature_enzyme_title" = "制限酵素シミュレーション";
+"about_feature_enzyme_desc" = "200+制限酵素でDNA切断位置の可視化と仮想実験";
+"about_feature_color_title" = "カラーテーマ";
+"about_feature_color_desc" = "Classic、Vivid、Pastel、Neonなど様々なカラーテーマとカスタマイズ";
+"about_feature_interact_title" = "インタラクティブ操作";
+"about_feature_interact_desc" = "ドラッグ、ピンチ、自動回転による直感的な3D操作";
+"about_feature_edu_title" = "教育機能";
+"about_feature_edu_desc" = "分子生物学実験シミュレーションとクローニングプロセス可視化";
 
 /* User Guide */
 "guide_title" = "ユーザーガイド";
