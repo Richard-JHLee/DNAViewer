@@ -233,6 +233,14 @@ struct ViewerView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
+        .onChange(of: showSettings) { newValue in
+            if !newValue {
+                // Settings 화면이 닫히면 사이드바 다시 열기
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showSidebar = true
+                }
+            }
+        }
         .sheet(isPresented: $showAbout) {
             AboutContentView()
         }
