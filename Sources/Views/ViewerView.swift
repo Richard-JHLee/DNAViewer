@@ -67,7 +67,7 @@ struct ViewerView: View {
                 ZStack {
                     switch sceneManager.currentRepresentation {
                     case .ladder2D:
-                        DNALadderView(pairs: viewModel.ladderPairs)
+                        DNALadderView(sequence: sequence, sceneManager: sceneManager)
                     case .genomeMap:
                         GenomeMapView(length: viewModel.sequenceLength, genes: viewModel.genomeMarks, title: "Chr17")
                     default:

@@ -1,11 +1,36 @@
 import SwiftUI
 
 struct DNALadderView: View {
-    let pairs: [BasePair]
+    let sequence: DNASequence
+    @ObservedObject var sceneManager: DNASceneManager
     
     @State private var scale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
     @GestureState private var drag: CGSize = .zero
+    
+    // 현재 그룹의 염기서열 쌍 계산
+    private var currentGroupPairs: [BasePair] {
+        let groupSize = sceneManager.groupSize
+        let currentGroup = sceneManager.currentGroup
+        let startIndex = (currentGroup - 1) * groupSize
+        let endIndex = min(startIndex + groupSize, sequence.sequence.count)
+        
+        guard startIndex < sequence.sequence.count else { return [] }
+        
+        let subsequence = String(sequence.sequence.dropFirst(startIndex).prefix(endIndex - startIndex))
+        return Array(subsequence.enumerated()).map { index, base in
+            let complement: Character = {
+                switch base {
+                case "A": return "T"
+                case "T": return "A"
+                case "G": return "C"
+                case "C": return "G"
+                default: return "N"
+                }
+            }()
+            return BasePair(id: startIndex + index, left: base, right: complement)
+        }
+    }
     
     var body: some View {
         GeometryReader { geo in
@@ -13,7 +38,7 @@ struct DNALadderView: View {
             let H = geo.size.height
             
             // 데이터가 없으면 안내 메시지 표시
-            if pairs.isEmpty {
+            if currentGroupPairs.isEmpty {
                 VStack {
                     Spacer()
                     Text("No DNA sequence data available")
@@ -31,19 +56,22 @@ struct DNALadderView: View {
             }
         }
         .overlay(alignment: .bottomTrailing) { 
-            if !pairs.isEmpty {
+            if !currentGroupPairs.isEmpty {
                 LegendView().padding(8)
             }
         }
         .onAppear {
-            print("🪜 DNALadderView appeared with \(pairs.count) base pairs")
+            print("🪜 DNALadderView appeared with \(currentGroupPairs.count) base pairs (Group \(sceneManager.currentGroup))")
+        }
+        .onChange(of: sceneManager.currentGroup) { newGroup in
+            print("🪜 DNALadderView group changed to \(newGroup), now showing \(currentGroupPairs.count) base pairs")
         }
     }
     
     @ViewBuilder
     private func ladderContent(width W: CGFloat, height H: CGFloat) -> some View {
         let usableH = H * 0.9
-        let spacing = max(usableH / CGFloat(max(pairs.count, 1)), 10)
+        let spacing = max(usableH / CGFloat(max(currentGroupPairs.count, 1)), 10)
         let radius = min(W, H) * 0.18
         let backboneWidth: CGFloat = max(6, radius * 0.10)
         let centerX = W * 0.50  // 화면 중앙으로 이동
@@ -61,7 +89,7 @@ struct DNALadderView: View {
             // Backbone 경로 생성
             left.move(to: CGPoint(x: centerX - radius, y: topY))
             right.move(to: CGPoint(x: centerX + radius, y: topY))
-            let steps = max(pairs.count, 2)
+            let steps = max(currentGroupPairs.count, 2)
             for i in 1...steps {
                 let t = CGFloat(i) / CGFloat(steps)
                 let y = topY + t * usable
@@ -75,7 +103,7 @@ struct DNALadderView: View {
             ctx.stroke(right, with: .color(purple), lineWidth: backboneWidth)
             
             // Base pairs 그리기
-            for (i, p) in pairs.enumerated() {
+            for (i, p) in currentGroupPairs.enumerated() {
                 let ty = topY + CGFloat(i) * spacing + spacing * 0.5
                 let angle = CGFloat(i) * 0.20
                 let lx = centerX - radius * cos(angle)
@@ -91,8 +119,14 @@ struct DNALadderView: View {
                                        y: ty - barH/2,
                                        width: (rx - backboneWidth * 0.5) - (centerX + gap/2),
                                        height: barH)
-                ctx.fill(Path(roundedRect: leftRect, cornerRadius: barH/2), with: .color(ColorPalette.base(p.left)))
-                ctx.fill(Path(roundedRect: rightRect, cornerRadius: barH/2), with: .color(ColorPalette.base(p.right)))
+                
+                // sceneManager의 colorScheme에 따라 색상 결정
+                let globalIndex = p.id
+                let leftColor = Color(DNASceneManager.colorForBase(p.left, scheme: sceneManager.colorScheme, position: globalIndex, totalLength: sequence.length))
+                let rightColor = Color(DNASceneManager.colorForBase(p.right, scheme: sceneManager.colorScheme, position: globalIndex, totalLength: sequence.length))
+                
+                ctx.fill(Path(roundedRect: leftRect, cornerRadius: barH/2), with: .color(leftColor))
+                ctx.fill(Path(roundedRect: rightRect, cornerRadius: barH/2), with: .color(rightColor))
                 
                 let bondRect = CGRect(x: centerX - gap/2, y: ty - barH*0.15, width: gap, height: barH*0.3)
                 ctx.fill(Path(roundedRect: bondRect, cornerRadius: barH*0.15), with: .color(.white))
