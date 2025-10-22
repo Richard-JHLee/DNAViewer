@@ -288,9 +288,12 @@ struct DNALadderView: View {
         let yBottom = H - margin
         let height = yBottom - yTop
         
-        return Canvas {
- ctx,
- size in
+        return Canvas { ctx, size in
+            self.drawLadder(ctx: ctx, size: size, xCenter: xCenter, xAmp: xAmp, yTop: yTop, height: height)
+        }
+    }
+    
+    private func drawLadder(ctx: GraphicsContext, size: CGSize, xCenter: CGFloat, xAmp: CGFloat, yTop: CGFloat, height: CGFloat) {
             let N = currentGroupPairs.count  // 현재 그룹의 총 염기쌍 수
             print("🎯 Canvas Debug - N (base pairs): \(N)")
             let K = 4  // 교차(만남) 지점 수
@@ -427,10 +430,10 @@ struct DNALadderView: View {
             }
             
             // 프레임 가이드
+            let margin: CGFloat = 16
             let frameRect = CGRect(x: margin, y: yTop, width: size.width - margin*2, height: height)
             ctx.stroke(Path(roundedRect: frameRect, cornerRadius: 10),
                       with: .color(.secondary.opacity(0.2)))
-        }
     }
     
     // 현재 그룹의 염기쌍들
