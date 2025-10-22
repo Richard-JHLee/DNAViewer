@@ -404,19 +404,19 @@ struct DNALadderView: View {
                     let isCutSite = sceneManager.highlightedCutSites.contains(absolutePosition)
                     
                     if isCutSite {
-                        // 가위표 배경 원형
+                        // 배경 원형
                         let circleRadius: CGFloat = 20
-                        let circleRect = CGRect(x: xCenter - circleRadius, 
-                                               y: y - circleRadius, 
-                                               width: circleRadius * 2, 
-                                               height: circleRadius * 2)
+                        let circleRect = CGRect(
+                            x: xCenter - circleRadius,
+                            y: y - circleRadius,
+                            width: circleRadius * 2,
+                            height: circleRadius * 2
+                        )
                         ctx.fill(Path(ellipseIn: circleRect), with: .color(.red.opacity(0.3)))
-                        
-                        // 가위 아이콘 (심볼)
-                        let scissorIcon = Image(systemName: "scissors")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(.red)
-                        ctx.draw(scissorIcon, at: CGPoint(x: xCenter, y: y - 25))
+
+                        // 가위 텍스트 심볼 (GraphicsContext가 지원하는 Text 사용)
+                        let scissorText = Text("✂︎").font(.system(size: 16, weight: .bold)).foregroundColor(.red)
+                        ctx.draw(scissorText, at: CGPoint(x: xCenter, y: y - 25))
                     }
                     
                     // 염기 라벨 (막대 위쪽에 배치)
