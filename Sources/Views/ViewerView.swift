@@ -329,8 +329,7 @@ struct ViewerView: View {
     private var renderingView: some View {
         switch sceneManager.currentRepresentation {
         case .ladder2D:
-            DNALadderView(sequence: sequence)
-                .environmentObject(sceneManager)
+            DNALadder2DInteractiveView()
         case .genomeMap:
             GenomeMapView(length: viewModel.sequenceLength, genes: viewModel.genomeMarks, title: "Chr17")
         default:

@@ -21,19 +21,261 @@ fileprivate func baseColor(_ b: Character) -> Color {
     }
 }
 
+// MARK: - Interactive View
+struct DNALadder2DInteractiveView: View {
+    @State private var N: Int = 20 // 염기쌍 수
+    @State private var K: Int = 4 // 교차(만남) 지점 수
+    @State private var height: CGFloat = 600
+    @State private var showLabels = true
+    @State private var showBackbone = true
+    @State private var showNodes = true
+    @State private var mutations = Set<Int>() // 0...N-1 인덱스
+    @State private var sequence: [Character] = Array("ATGCGTACGTATGCAGTCAG".prefix(20))
+    
+    var body: some View {
+        VStack(spacing: 12) {
+            // MARK: Canvas
+            DNALadderCanvas(
+                N: N, K: K, H: height, sequence: sequence, mutations: mutations,
+                showLabels: showLabels, showBackbone: showBackbone, showNodes: showNodes
+            )
+            .frame(height: height + 32)
+            .padding(.horizontal)
+            
+            // MARK: Controls
+            VStack(spacing: 10) {
+                HStack {
+                    Label("Base Pairs", systemImage: "number")
+                    Slider(value: Binding(get: { Double(N) }, set: { N = Int($0) }), in: 4...200, step: 1)
+                    Text("\(N)")
+                        .monospacedDigit()
+                        .frame(width: 44, alignment: .trailing)
+                }
+                
+                HStack {
+                    Label("Crossings (K)", systemImage: "xmark.circle")
+                    Slider(value: Binding(get: { Double(K) }, set: { K = max(1, Int($0)) }), in: 1...12, step: 1)
+                    Text("\(K)")
+                        .monospacedDigit()
+                        .frame(width: 44, alignment: .trailing)
+                }
+                
+                HStack {
+                    Label("Height", systemImage: "arrow.up.arrow.down")
+                    Slider(value: $height, in: 300...900, step: 10)
+                    Text("\(Int(height)) px")
+                        .monospacedDigit()
+                        .frame(width: 80, alignment: .trailing)
+                }
+                
+                HStack {
+                    Toggle("Labels (A/T/G/C)", isOn: $showLabels)
+                    Toggle("Backbone", isOn: $showBackbone)
+                    Toggle("Nodes", isOn: $showNodes)
+                }
+                
+                HStack {
+                    Button {
+                        // 랜덤 서열 생성
+                        let alphabet: [Character] = ["A","T","G","C"]
+                        sequence = (0..<max(N, 1)).map { _ in alphabet.randomElement()! }
+                        // 기존 돌연변이는 유효 인덱스만 유지
+                        mutations = Set(mutations.filter { $0 < N })
+                    } label: {
+                        Label("랜덤 서열", systemImage: "dice")
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Button {
+                        // 돌연변이 토글: N/5개 정도 무작위 마킹
+                        var s = Set<Int>()
+                        let m = max(1, N/5)
+                        while s.count < m {
+                            s.insert(Int.random(in: 0..<N))
+                        }
+                        mutations = s
+                    } label: {
+                        Label("돌연변이(임의)", systemImage: "wand.and.stars")
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Button {
+                        mutations.removeAll()
+                    } label: {
+                        Label("돌연변이 지움", systemImage: "eraser")
+                    }
+                    .buttonStyle(.bordered)
+                }
+            }
+            .padding(.horizontal)
+        }
+        .onChange(of: N) { _ in
+            // N 변경 시 시퀀스 길이 보정
+            let alphabet: [Character] = ["A","T","G","C"]
+            if sequence.count < N {
+                sequence.append(contentsOf: (sequence.count..<N).map { _ in alphabet.randomElement()! })
+            } else if sequence.count > N {
+                sequence = Array(sequence.prefix(N))
+            }
+            mutations = Set(mutations.filter { $0 < N })
+        }
+        .navigationTitle("DNA Ladder 2D (K-세그먼트 균등)")
+    }
+}
+
+// MARK: - Canvas Renderer
+struct DNALadderCanvas: View {
+    var N: Int
+    var K: Int
+    var H: CGFloat
+    var sequence: [Character]
+    var mutations: Set<Int>
+    var showLabels: Bool
+    var showBackbone: Bool
+    var showNodes: Bool
+    
+    var body: some View {
+        Canvas { ctx, size in
+            let margin: CGFloat = 16
+            let height = H
+            let xCenter = size.width / 2
+            let xAmp = (size.width - margin*2) * 0.33
+            let yTop = margin
+            let omega = CGFloat(K + 1) * .pi / height
+            
+            // 위상 π 차의 사인 곡선 함수들
+            func xLeft(_ y: CGFloat) -> CGFloat {
+                xCenter - xAmp * sin(omega * (y - yTop))
+            }
+            func xRight(_ y: CGFloat) -> CGFloat {
+                xCenter + xAmp * sin(omega * (y - yTop))
+            }
+            
+            // 노드(만남 지점) - K개 교차점
+            let yNodes: [CGFloat] = (0...(K+1)).map { j in
+                yTop + (CGFloat(j) / CGFloat(K + 1)) * height
+            }
+            
+            // 가중치 분배 (끝 0.5, 가운데 1.0)
+            let weights = [0.5] + Array(repeating: 1.0, count: max(0, K-1)) + [0.5]
+            let sumW = weights.reduce(0, +)
+            let ideals = weights.map { $0 / sumW * Double(N) }
+            var counts = ideals.map { Int(floor($0)) }
+            var R = N - counts.reduce(0, +)
+            
+            // 소수부 큰 순서로 +1
+            let order = ideals.enumerated().sorted { 
+                ($0.element - floor($0.element)) > ($1.element - floor($1.element)) 
+            }.map { $0.offset }
+            var t = 0
+            while R > 0 { 
+                counts[order[t % counts.count]] += 1
+                R -= 1
+                t += 1 
+            }
+            
+            // 백본 곡선
+            if showBackbone {
+                func strandPath(isLeft: Bool) -> Path {
+                    var p = Path()
+                    let steps = 800
+                    for s in 0...steps {
+                        let y = yTop + CGFloat(s) / CGFloat(steps) * height
+                        let x = isLeft ? xLeft(y) : xRight(y)
+                        if s == 0 { 
+                            p.move(to: CGPoint(x: x, y: y)) 
+                        } else { 
+                            p.addLine(to: CGPoint(x: x, y: y)) 
+                        }
+                    }
+                    return p
+                }
+                ctx.stroke(strandPath(isLeft: true), with: .color(.orange), 
+                          style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+                ctx.stroke(strandPath(isLeft: false), with: .color(.blue), 
+                          style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+            }
+            
+            // 노드 점
+            if showNodes {
+                for y in yNodes {
+                    let nodeX = xLeft(y)
+                    let r: CGFloat = 3.2
+                    let rect = CGRect(x: nodeX - r, y: y - r, width: r*2, height: r*2)
+                    ctx.fill(Path(ellipseIn: rect), with: .color(.black))
+                }
+            }
+            
+            // 구간 내부 염기쌍 균일 배치 (half-step)
+            var globalIndex = 0
+            for seg in 0..<(K+1) {
+                let yStart = yNodes[seg]
+                let yEnd = yNodes[seg + 1]
+                let n = counts[seg]
+                guard n > 0 else { continue }
+                let dy = (yEnd - yStart) / CGFloat(n)
+                
+                for k in 0..<n {
+                    let y = yStart + (CGFloat(k) + 0.5) * dy
+                    let xl = xLeft(y)
+                    let xr = xRight(y)
+                    
+                    // 염기/상보
+                    let base = (globalIndex < sequence.count) ? sequence[globalIndex] : "N"
+                    let comp = complement(base)
+                    
+                    // 돌연변이 하이라이트(배경 오라)
+                    if mutations.contains(globalIndex) {
+                        let mid = (xl + xr) / 2
+                        let aura = Path(roundedRect: CGRect(x: mid - 30, y: y - 10, width: 60, height: 20), cornerRadius: 8)
+                        ctx.fill(aura, with: .color(.pink.opacity(0.25)))
+                    }
+                    
+                    // 염기쌍 막대
+                    var rung = Path()
+                    rung.move(to: CGPoint(x: xl, y: y))
+                    rung.addLine(to: CGPoint(x: xr, y: y))
+                    ctx.stroke(rung, with: .color(.primary), style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                    
+                    // 염기 라벨
+                    if showLabels {
+                        let leftLabel = Text(String(base)).font(.caption).bold().foregroundColor(baseColor(base))
+                        let rightLabel = Text(String(comp)).font(.caption).bold().foregroundColor(baseColor(comp))
+                        ctx.draw(leftLabel, at: CGPoint(x: xl - 10, y: y - 10))
+                        ctx.draw(rightLabel, at: CGPoint(x: xr + 10, y: y - 10))
+                    }
+                    
+                    globalIndex += 1
+                }
+            }
+            
+            // 프레임 가이드
+            let frameRect = CGRect(x: margin, y: yTop, width: size.width - margin*2, height: height)
+            ctx.stroke(Path(roundedRect: frameRect, cornerRadius: 10), 
+                      with: .color(.secondary.opacity(0.2)))
+        }
+    }
+}
+
+// MARK: - Legacy View (기존 호환성 유지)
 struct DNALadderView: View {
     @EnvironmentObject var sceneManager: DNASceneManager
     @State private var scale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
     @GestureState private var drag: CGSize = .zero
     
-    var sequence: DNASequence
+    let sequence: DNASequence
     
     var body: some View {
         GeometryReader { geometry in
             ladderContent(geometry: geometry)
         }
         .background(Color.white)
+        .scaleEffect(scale)
+        .offset(offset)
+        .offset(drag)
+        .gesture(DragGesture().updating($drag) { v, st, _ in st = v.translation }
+                    .onEnded { v in offset.width += v.translation.width; offset.height += v.translation.height })
     }
     
     private func ladderContent(geometry: GeometryProxy) -> some View {
@@ -137,28 +379,25 @@ struct DNALadderView: View {
             // 프레임 가이드
             let frameRect = CGRect(x: margin, y: yTop, width: size.width - margin*2, height: height)
             ctx.stroke(Path(roundedRect: frameRect, cornerRadius: 10),
-                       with: .color(.secondary.opacity(0.2)))
+                      with: .color(.secondary.opacity(0.2)))
         }
-        .scaleEffect(scale)
-        .offset(x: offset.width + drag.width, y: offset.height + drag.height)
-        .gesture(DragGesture().updating($drag) { v, st, _ in st = v.translation }
-                    .onEnded { v in offset.width += v.translation.width; offset.height += v.translation.height })
     }
     
     // 현재 그룹의 염기쌍들
     private var currentGroupPairs: [BasePair] {
-        let start = sceneManager.displayStart
-        let length = sceneManager.displayLength
-        
         var pairs: [BasePair] = []
-        for i in 0..<length {
-            let leftIndex = start + i
-            let rightIndex = sequence.length - 1 - leftIndex
-            
-            if leftIndex < sequence.length && rightIndex >= 0 {
-                let leftBase = sequence.sequence[sequence.sequence.index(sequence.sequence.startIndex, offsetBy: leftIndex)]
-                let rightBase = sequence.sequence[sequence.sequence.index(sequence.sequence.startIndex, offsetBy: rightIndex)]
-                pairs.append(BasePair(id: leftIndex, left: leftBase, right: rightBase))
+        let sequenceString = sequence.sequence
+        
+        // 이미지처럼 정확히 20개 염기쌍 생성
+        for i in 0..<20 {
+            if i < sequenceString.count {
+                let index = sequenceString.index(sequenceString.startIndex, offsetBy: i)
+                let base = sequenceString[index]
+                let complementBase = complement(base)
+                pairs.append(BasePair(id: i, left: base, right: complementBase))
+            } else {
+                // 시퀀스가 부족하면 기본 염기 사용
+                pairs.append(BasePair(id: i, left: "A", right: "T"))
             }
         }
         return pairs
@@ -173,20 +412,24 @@ struct LegendView: View {
         HStack(spacing: 16) {
             ForEach(["A", "T", "G", "C"], id: \.self) { base in
                 HStack(spacing: 4) {
-                    Rectangle()
+                    Circle()
                         .fill(baseColor(Character(base)))
                         .frame(width: 12, height: 12)
                     Text(base)
                         .font(.caption)
-                        .foregroundColor(.primary)
+                        .fontWeight(.medium)
                 }
             }
         }
-        .padding(.horizontal)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .background(.ultraThinMaterial)
+        .cornerRadius(8)
     }
 }
 
 #Preview {
-    DNALadderView(sequence: DNASequence(name: "Test", sequence: "ATGCGTACGTATGCAGTCAG"))
-        .environmentObject(DNASceneManager())
+    DNALadder2DInteractiveView()
+        .padding(.vertical)
+        .background(Color(.systemBackground))
 }
