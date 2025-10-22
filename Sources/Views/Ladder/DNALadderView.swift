@@ -13,10 +13,10 @@ fileprivate func complement(_ b: Character) -> Character {
 
 fileprivate func baseColor(_ b: Character) -> Color {
     switch b {
-    case "A": return .red
-    case "T": return .blue
-    case "G": return .green
-    case "C": return .yellow
+    case "A": return Color(red: 0.8, green: 0.2, blue: 0.2) // 진한 빨강
+    case "T": return Color(red: 0.2, green: 0.4, blue: 0.8) // 진한 파랑
+    case "G": return Color(red: 0.2, green: 0.7, blue: 0.2) // 진한 초록
+    case "C": return Color(red: 0.9, green: 0.8, blue: 0.1) // 진한 노랑
     default:  return .gray
     }
 }
@@ -270,7 +270,7 @@ struct DNALadderView: View {
         GeometryReader { geometry in
             ladderContent(geometry: geometry)
         }
-        .background(Color.white)
+        .background(Color(red: 0.98, green: 0.98, blue: 1.0))
         .scaleEffect(scale)
         .offset(offset)
         .offset(drag)
