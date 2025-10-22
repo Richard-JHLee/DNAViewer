@@ -418,13 +418,19 @@ struct ViewerView: View {
         .onAppear {
             print("🎬 ViewerView.onAppear: \(sequence.name)")
             sceneManager.loadSequence(sequence)
-            viewModel.loadDefaultSequence() // ViewModel도 데이터 보유
+            // ViewModel에 현재 시퀀스 데이터 로드
+            viewModel.ladderPairs = sequence.basePairs
+            viewModel.genomeMarks = sequence.geneMarks
+            viewModel.sequenceLength = sequence.length
         }
         .onChange(of: sequence.id) { newId in
             // 시퀀스가 변경되면 새로운 시퀀스 로드
             print("🔄 ViewerView.onChange(sequence.id): \(sequence.name) (id: \(newId))")
             sceneManager.loadSequence(sequence)
-            viewModel.loadSelectedGene(extractGeneId(from: sequence.name))
+            // ViewModel 데이터도 업데이트
+            viewModel.ladderPairs = sequence.basePairs
+            viewModel.genomeMarks = sequence.geneMarks
+            viewModel.sequenceLength = sequence.length
         }
     }
     
