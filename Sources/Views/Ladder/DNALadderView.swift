@@ -396,11 +396,11 @@ struct DNALadderView: View {
                     ctx.stroke(hydrogenBond, with: .color(.white), 
                               style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [2, 2]))
                     
-                    // 염기 라벨
-                    let leftLabel  = Text(String(base)).font(.caption).bold().foregroundColor(baseColor(base))
-                    let rightLabel = Text(String(comp)).font(.caption).bold().foregroundColor(baseColor(comp))
-                    ctx.draw(leftLabel,  at: CGPoint(x: xl - 10, y: y))
-                    ctx.draw(rightLabel, at: CGPoint(x: xr + 10, y: y))
+                    // 염기 라벨 (막대 위쪽에 배치)
+                    let leftLabel  = Text(String(base)).font(.system(size: 10, weight: .bold)).foregroundColor(baseColor(base))
+                    let rightLabel = Text(String(comp)).font(.system(size: 10, weight: .bold)).foregroundColor(baseColor(comp))
+                    ctx.draw(leftLabel,  at: CGPoint(x: xl - 12, y: y - 12))
+                    ctx.draw(rightLabel, at: CGPoint(x: xr + 12, y: y - 12))
                     
                     globalIndex += 1
                 }
