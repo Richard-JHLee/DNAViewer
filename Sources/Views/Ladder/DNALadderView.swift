@@ -397,8 +397,13 @@ struct DNALadderView: View {
         var pairs: [BasePair] = []
         let sequenceString = sequence.sequence
         
-        // 이미지처럼 정확히 20개 염기쌍 생성
-        for i in 0..<20 {
+        print("🔍 Debug - sequenceString.count: \(sequenceString.count)")
+        print("🔍 Debug - sceneManager.currentGroup: \(sceneManager.currentGroup)")
+        
+        // 20개로 제한 (이미지처럼)
+        let maxPairs = min(20, sequenceString.count)
+        
+        for i in 0..<maxPairs {
             if i < sequenceString.count {
                 let index = sequenceString.index(sequenceString.startIndex, offsetBy: i)
                 let base = sequenceString[index]
@@ -409,6 +414,8 @@ struct DNALadderView: View {
                 pairs.append(BasePair(id: i, left: "A", right: "T"))
             }
         }
+        
+        print("🔍 Debug - final pairs.count: \(pairs.count)")
         return pairs
     }
 }
