@@ -396,6 +396,26 @@ struct DNALadderView: View {
                     ctx.stroke(hydrogenBond, with: .color(.white), 
                               style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [2, 2]))
                     
+                    // Restriction enzyme cut site 하이라이트
+                    let absolutePosition = p.id  // BasePair의 id가 절대 위치
+                    let isCutSite = sceneManager.highlightedCutSites.contains(absolutePosition)
+                    
+                    if isCutSite {
+                        // 가위표 배경 원형
+                        let circleRadius: CGFloat = 20
+                        let circleRect = CGRect(x: xCenter - circleRadius, 
+                                               y: y - circleRadius, 
+                                               width: circleRadius * 2, 
+                                               height: circleRadius * 2)
+                        ctx.fill(Path(ellipseIn: circleRect), with: .color(.red.opacity(0.3)))
+                        
+                        // 가위 아이콘 (심볼)
+                        let scissorIcon = Image(systemName: "scissors")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(.red)
+                        ctx.draw(scissorIcon, at: CGPoint(x: xCenter, y: y - 25))
+                    }
+                    
                     // 염기 라벨 (막대 위쪽에 배치)
                     let leftLabel  = Text(String(base)).font(.system(size: 10, weight: .bold)).foregroundColor(baseColor(base))
                     let rightLabel = Text(String(comp)).font(.system(size: 10, weight: .bold)).foregroundColor(baseColor(comp))
