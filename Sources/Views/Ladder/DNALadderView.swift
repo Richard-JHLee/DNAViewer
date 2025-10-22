@@ -435,16 +435,16 @@ struct DNALadderView: View {
                     let leftLabel = Text(String(base)).font(labelFont).foregroundColor(baseColor(base))
                     let rightLabel = Text(String(comp)).font(labelFont).foregroundColor(baseColor(comp))
                     
-                    // 고정된 라벨 위치 (완벽한 열 정렬)
-                    let labelMargin: CGFloat = 18  // 약간 더 넓은 마진
-                    let labelY = y - 15  // 막대에서 더 위쪽에 배치
+                    // 막대에서 일정한 거리로 라벨 배치
+                    let labelMargin: CGFloat = 8  // 막대에서 더 가까운 거리
+                    let labelY = round((y - 12) * 2) / 2  // 픽셀 스냅으로 수직 정렬
                     
-                    // 왼쪽 라벨: 고정된 x 위치에 오른쪽 정렬
-                    let leftLabelX = xCenter - xAmp - labelMargin
+                    // 왼쪽 라벨: 오른쪽 가장자리를 xl - labelMargin에 맞춤
+                    let leftLabelX = xl - labelMargin
                     ctx.draw(leftLabel, at: CGPoint(x: leftLabelX, y: labelY), anchor: .trailing)
                     
-                    // 오른쪽 라벨: 고정된 x 위치에 왼쪽 정렬
-                    let rightLabelX = xCenter + xAmp + labelMargin
+                    // 오른쪽 라벨: 왼쪽 가장자리를 xr + labelMargin에 맞춤  
+                    let rightLabelX = xr + labelMargin
                     ctx.draw(rightLabel, at: CGPoint(x: rightLabelX, y: labelY), anchor: .leading)
                     
                     globalIndex += 1
