@@ -293,10 +293,19 @@ struct DNALadderView: View {
  size in
             let N = currentGroupPairs.count  // 현재 그룹의 총 염기쌍 수
             let K = 4  // 교차(만남) 지점 수
-            let omega = CGFloat(K + 1) * .pi / height
+            // 위아래 끝부분에서 만나지 않도록 범위 조정
+            let extendedHeight = height * 1.2 // 20% 확장된 높이
+            let yOffset = (extendedHeight - height) / 2 // 중앙 정렬을 위한 오프셋
+            let omega = CGFloat(K + 1) * .pi / extendedHeight
             
-            func xLeft(_ y: CGFloat)  -> CGFloat { xCenter - xAmp * sin(omega * (y - yTop)) }
-            func xRight(_ y: CGFloat) -> CGFloat { xCenter + xAmp * sin(omega * (y - yTop)) }
+            func xLeft(_ y: CGFloat)  -> CGFloat { 
+                let normalizedY = y - yTop + yOffset
+                return xCenter - xAmp * sin(omega * normalizedY) 
+            }
+            func xRight(_ y: CGFloat) -> CGFloat { 
+                let normalizedY = y - yTop + yOffset
+                return xCenter + xAmp * sin(omega * normalizedY) 
+            }
             
             // 노드(만남 지점)
             let yNodes: [CGFloat] = (0...(K+1)).map { j in yTop + (CGFloat(j) / CGFloat(K + 1)) * height }
