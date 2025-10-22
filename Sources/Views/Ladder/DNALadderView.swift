@@ -57,7 +57,7 @@ struct DNALadderView: View {
         }
         .overlay(alignment: .bottomTrailing) { 
             if !currentGroupPairs.isEmpty {
-                LegendView().padding(8)
+                LegendView(colorScheme: sceneManager.colorScheme, sequenceLength: sequence.length).padding(8)
             }
         }
         .onAppear {
@@ -145,12 +145,18 @@ struct DNALadderView: View {
 }
 
 struct LegendView: View {
+    let colorScheme: DNAColorScheme
+    let sequenceLength: Int
+    
     var body: some View {
         HStack(spacing: 8) {
-            ForEach(["A","T","G","C"], id: \.self) { b in
+            ForEach(Array(["A","T","G","C"].enumerated()), id: \.offset) { index, b in
                 HStack(spacing: 6) {
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(ColorPalette.base(Character(b)))
+                        .fill(Color(DNASceneManager.colorForBase(Character(b), 
+                                                                  scheme: colorScheme, 
+                                                                  position: index, 
+                                                                  totalLength: sequenceLength)))
                         .frame(width: 16, height: 16)
                     Text(b).font(.caption).bold()
                 }
