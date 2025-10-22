@@ -15,6 +15,10 @@ class DNAViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var loadingProgress: String = ""
     @Published var error: String?
+    // 2D 뷰 데이터
+    @Published var ladderPairs: [BasePair] = []
+    @Published var genomeMarks: [GeneMark] = []
+    @Published var sequenceLength: Int = 0
     
     init() {
         print("🧬 DNAViewModel initialized")
@@ -84,6 +88,10 @@ class DNAViewModel: ObservableObject {
                     self.currentSequenceName = dnaSequence.name
                     self.isLoading = false
                     self.loadingProgress = ""
+                    // 2D 데이터 채우기
+                    self.ladderPairs = dnaSequence.basePairs
+                    self.genomeMarks = dnaSequence.geneMarks
+                    self.sequenceLength = dnaSequence.length
                     print("✅ Default DNA sequence loaded: \(dnaSequence.name)")
                 }
             } catch {
@@ -120,6 +128,9 @@ class DNAViewModel: ObservableObject {
                     self.currentSequenceName = geneData.name
                     self.isLoading = false
                     self.loadingProgress = ""
+                    self.ladderPairs = geneData.basePairs
+                    self.genomeMarks = geneData.geneMarks
+                    self.sequenceLength = geneData.length
                     print("✅ Gene loaded: \(geneData.name)")
                 }
             } catch {

@@ -19,14 +19,16 @@ typealias PlatformColor = UIColor
 
 enum DNARepresentation: String, CaseIterable {
     case doubleHelix = "Double Helix"
-    case ladder = "Ladder"
+    case ladder2D    = "Ladder 2D"
+    case genomeMap   = "Genome Map"
     case ballAndStick = "Ball & Stick"
     case sequenceOnly = "Sequence"
     
     var iconName: String {
         switch self {
         case .doubleHelix: return "tornado"
-        case .ladder: return "ladder"
+        case .ladder2D: return "ladder"
+        case .genomeMap: return "map"
         case .ballAndStick: return "circle.hexagongrid.fill"
         case .sequenceOnly: return "text.alignleft"
         }
@@ -35,7 +37,8 @@ enum DNARepresentation: String, CaseIterable {
     var description: String {
         switch self {
         case .doubleHelix: return "Classic twisted structure"
-        case .ladder: return "Flat ladder view"
+        case .ladder2D:    return "Flat ladder view"
+        case .genomeMap:   return "Chromosome map"
         case .ballAndStick: return "Atomic representation"
         case .sequenceOnly: return "Text only"
         }
@@ -46,7 +49,7 @@ enum DNARepresentation: String, CaseIterable {
         switch self {
         case .doubleHelix: 
             return SCNVector3(x: 0, y: 0, z: 25)  // Closer for full screen
-        case .ladder: 
+        case .ladder2D, .genomeMap: 
             return calculateLadderCameraPosition()  // Dynamic calculation for ladder
         case .ballAndStick: 
             return SCNVector3(x: 0, y: 0, z: 30)  // Closer for ball & stick
@@ -64,13 +67,7 @@ enum DNARepresentation: String, CaseIterable {
     // Optimal camera look-at point for each style
     var cameraLookAt: SCNVector3 {
         switch self {
-        case .doubleHelix: 
-            return SCNVector3(x: 0, y: 0, z: 0)
-        case .ladder: 
-            return SCNVector3(x: 0, y: 0, z: 0)
-        case .ballAndStick: 
-            return SCNVector3(x: 0, y: 0, z: 0)
-        case .sequenceOnly: 
+        case .doubleHelix, .ladder2D, .genomeMap, .ballAndStick, .sequenceOnly: 
             return SCNVector3(x: 0, y: 0, z: 0)
         }
     }
@@ -446,7 +443,7 @@ class DNASceneManager: ObservableObject {
                 switch self.currentRepresentation {
                 case .doubleHelix:
                     newNodes = self.buildDoubleHelixNodes(sequence: sequence)
-                case .ladder:
+                case .ladder2D, .genomeMap:
                     newNodes = self.buildLadderNodes(sequence: sequence)
                 case .ballAndStick:
                     newNodes = self.buildBallAndStickNodes(sequence: sequence)
@@ -494,7 +491,7 @@ class DNASceneManager: ObservableObject {
         let lookAtPoint = currentRepresentation.cameraLookAt
         
         // Ladder 스타일일 때는 직교 투영 + 동적 Z 계산
-        if currentRepresentation == .ladder {
+        if currentRepresentation == .ladder2D {
             cameraNode.camera?.usesOrthographicProjection = true
             cameraNode.camera?.zNear = 0.1
             cameraNode.camera?.zFar = 2000
@@ -698,7 +695,7 @@ class DNASceneManager: ObservableObject {
     }
     
     func handleZoom(scale: CGFloat) {
-        if currentRepresentation == .ladder {
+        if currentRepresentation == .ladder2D {
             // 이미지 스케일 방식: 컨테이너 스케일 조정 (카메라 고정)
             if initialOrthoScale == nil { initialOrthoScale = 1.0 }
             let base = initialOrthoScale ?? 1.0

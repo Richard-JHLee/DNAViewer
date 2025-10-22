@@ -63,26 +63,33 @@ struct ViewerView: View {
             
             // Main content area with 3D Scene and bottom controls
             VStack(spacing: 0) {
-                // 3D Scene View (fills available space above sequence info)
+                // Main rendering switch: 3D vs 2D Ladder/Map
                 ZStack {
-                    SceneView(
-                        scene: sceneManager.scene,
-                        pointOfView: nil,
-                        options: [.autoenablesDefaultLighting]
-                    )
-                    .background(Color(red: 0.03, green: 0.08, blue: 0.15)) // Dark navy background
-                    .gesture(
-                        DragGesture()
-                            .onChanged { value in
-                                sceneManager.handleDrag(translation: value.translation)
-                            }
-                    )
-                    .simultaneousGesture(
-                        MagnificationGesture()
-                            .onChanged { value in
-                                sceneManager.handleZoom(scale: value)
-                            }
-                    )
+                    switch sceneManager.currentRepresentation {
+                    case .ladder2D:
+                        DNALadderView(pairs: viewModel.ladderPairs)
+                    case .genomeMap:
+                        GenomeMapView(length: viewModel.sequenceLength, genes: viewModel.genomeMarks, title: "Chr17")
+                    default:
+                        SceneView(
+                            scene: sceneManager.scene,
+                            pointOfView: nil,
+                            options: [.autoenablesDefaultLighting]
+                        )
+                        .background(Color(red: 0.03, green: 0.08, blue: 0.15))
+                        .gesture(
+                            DragGesture()
+                                .onChanged { value in
+                                    sceneManager.handleDrag(translation: value.translation)
+                                }
+                        )
+                        .simultaneousGesture(
+                            MagnificationGesture()
+                                .onChanged { value in
+                                    sceneManager.handleZoom(scale: value)
+                                }
+                        )
+                    }
                     
                     // Floating Digest button - only show when cut sites are highlighted
                     if !sceneManager.highlightedCutSites.isEmpty {
@@ -409,14 +416,15 @@ struct ViewerView: View {
             }
         )
         .onAppear {
-            // 화면이 나타날 때 시퀀스 로드
             print("🎬 ViewerView.onAppear: \(sequence.name)")
             sceneManager.loadSequence(sequence)
+            viewModel.loadDefaultSequence() // ViewModel도 데이터 보유
         }
         .onChange(of: sequence.id) { newId in
             // 시퀀스가 변경되면 새로운 시퀀스 로드
             print("🔄 ViewerView.onChange(sequence.id): \(sequence.name) (id: \(newId))")
             sceneManager.loadSequence(sequence)
+            viewModel.loadSelectedGene(extractGeneId(from: sequence.name))
         }
     }
     

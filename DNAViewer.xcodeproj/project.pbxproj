@@ -21,6 +21,11 @@
 		31C16AF1001F9A0C3C5F9A72 /* RestrictionEnzymes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF284579B996092849B64A0F /* RestrictionEnzymes.swift */; };
 		3B9DE06A7A1F9F9D4626C269 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC54D377B007B7D3ABA58CD6 /* Assets.xcassets */; };
 		4053DC98783D8EA19A1090BD /* DNASequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */; };
+		4053DC98783D8EA19A1090BE /* BasePair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD376 /* BasePair.swift */; };
+		4053DC98783D8EA19A1090BF /* DNASequence+Pairs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD377 /* DNASequence+Pairs.swift */; };
+		4053DC98783D8EA19A1090C0 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD378 /* ColorPalette.swift */; };
+		4053DC98783D8EA19A1090C1 /* DNALadderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD379 /* DNALadderView.swift */; };
+		4053DC98783D8EA19A1090C2 /* GenomeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD380 /* GenomeMapView.swift */; };
 		40995E6E9A488D5E21DF2149 /* SidebarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47599488D8EC557F3E4EA21 /* SidebarMenu.swift */; };
 		4581269345B9FF02BD34A3E8 /* TranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1759BF0FCE2F4F158AC5547 /* TranslationSheet.swift */; };
 		49ED7795548935F2D3838D5B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B709C6609D5488C389FF46 /* ContentView.swift */; };
@@ -93,6 +98,11 @@
 		BE405BA2F9206E8F7E968942 /* SearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2498359334561349104C5F4F /* SearchSheet.swift */; };
 		C152F07622843AFFD759A79A /* FASTAParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FAF54CAB9CE1B8865DAD21 /* FASTAParser.swift */; };
 		C2594DDD602EAA4DD109A0F6 /* DNASequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */; };
+		C2594DDD602EAA4DD109A0F7 /* BasePair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD376 /* BasePair.swift */; };
+		C2594DDD602EAA4DD109A0F8 /* DNASequence+Pairs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD377 /* DNASequence+Pairs.swift */; };
+		C2594DDD602EAA4DD109A0F9 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD378 /* ColorPalette.swift */; };
+		C2594DDD602EAA4DD109A0FA /* DNALadderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD379 /* DNALadderView.swift */; };
+		C2594DDD602EAA4DD109A0FB /* GenomeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4ED28DD02D3F41CF3DD380 /* GenomeMapView.swift */; };
 		C86DFF47B88C25258F2AB1D4 /* BallStickBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E683D38687B4203066DBC28 /* BallStickBuilder.swift */; };
 		CE4B20AD19E9D4B04218EE43 /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080DBD403D2C8D0D1851E208 /* ColorSettings.swift */; };
 		CE58C160B184BA5060881972 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0B9E25D6D068B4BD6DD3E8 /* HomeView.swift */; };
@@ -128,6 +138,13 @@
 		2CB614CFAF489AC2677E0CD4 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		2CE727243006F5E24F6AB76F /* PDBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDBService.swift; sourceTree = "<group>"; };
 		2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNASequence.swift; sourceTree = "<group>"; };
+		2D4ED28DD02D3F41CF3DD376 /* BasePair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePair.swift; sourceTree = "<group>"; };
+		2D4ED28DD02D3F41CF3DD377 /* DNASequence+Pairs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DNASequence+Pairs.swift"; sourceTree = "<group>"; };
+		2D4ED28DD02D3F41CF3DD378 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
+		2D4ED28DD02D3F41CF3DD379 /* DNALadderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNALadderView.swift; sourceTree = "<group>"; };
+		2D4ED28DD02D3F41CF3DD380 /* GenomeMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenomeMapView.swift; sourceTree = "<group>"; };
+		2D4ED28DD02D3F41CF3DD381 /* Ladder */ = {isa = PBXGroup; children = (2D4ED28DD02D3F41CF3DD379); path = Ladder; sourceTree = "<group>"; };
+		2D4ED28DD02D3F41CF3DD382 /* GenomeMap */ = {isa = PBXGroup; children = (2D4ED28DD02D3F41CF3DD380); path = GenomeMap; sourceTree = "<group>"; };
 		43FAF54CAB9CE1B8865DAD21 /* FASTAParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FASTAParser.swift; sourceTree = "<group>"; };
 		460E4B1CEA21B342A9BB52A2 /* RestrictionEnzymes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = RestrictionEnzymes.json; sourceTree = "<group>"; };
 		50B709C6609D5488C389FF46 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -209,6 +226,7 @@
 			children = (
 				8A075A54DE5086635EAB4625 /* MutationSimulator.swift */,
 				7936119F2EA60434002217E5 /* LanguageHelper.swift */,
+				2D4ED28DD02D3F41CF3DD378 /* ColorPalette.swift */,
 				CF284579B996092849B64A0F /* RestrictionEnzymes.swift */,
 				2C435A58633CA370AC6D6E2E /* SequenceAnalyzer.swift */,
 			);
@@ -331,6 +349,8 @@
 			children = (
 				828A016B73E89ACACABA0737 /* AnalysisSheet.swift */,
 				7981B4F62EA3D1E700D02BA7 /* RestrictionEnzymeView.swift */,
+				2D4ED28DD02D3F41CF3DD381 /* Ladder */,
+				2D4ED28DD02D3F41CF3DD382 /* GenomeMap */,
 				7981B4F72EA3D1E700D02BA7 /* VirtualCloningView.swift */,
 				7981B4FC2EA48BE700D02BA7 /* CloningVisualizationView.swift */,
 				7981B4FD2EA48BE700D02BA7 /* GelElectrophoresisView.swift */,
@@ -370,6 +390,8 @@
 				7981B5082EA48C2D00D02BA7 /* DNAFragment.swift */,
 				7981B5092EA48C2D00D02BA7 /* RestrictionMap.swift */,
 				2D4ED28DD02D3F41CF3DD375 /* DNASequence.swift */,
+				2D4ED28DD02D3F41CF3DD376 /* BasePair.swift */,
+				2D4ED28DD02D3F41CF3DD377 /* DNASequence+Pairs.swift */,
 				89A29CACC152D5D9773D8012 /* GeneFeature.swift */,
 				95688B2EC28FBD20191B2531 /* Mutation.swift */,
 			);
@@ -509,6 +531,11 @@
 				A2B6D3D8FB914BBC30D75F29 /* DNAApp.swift in Sources */,
 				6A523A250495A7881D47ACF2 /* DNASceneManager.swift in Sources */,
 				C2594DDD602EAA4DD109A0F6 /* DNASequence.swift in Sources */,
+				C2594DDD602EAA4DD109A0F7 /* BasePair.swift in Sources */,
+				C2594DDD602EAA4DD109A0F8 /* DNASequence+Pairs.swift in Sources */,
+				C2594DDD602EAA4DD109A0F9 /* ColorPalette.swift in Sources */,
+				C2594DDD602EAA4DD109A0FA /* DNALadderView.swift in Sources */,
+				C2594DDD602EAA4DD109A0FB /* GenomeMapView.swift in Sources */,
 				990122917E397A9C86163DC1 /* DNAViewModel.swift in Sources */,
 				B22C39EEBB78673157AD5C09 /* FASTAParser.swift in Sources */,
 				E79C3643A7864EB2E88221D4 /* GeneFeature.swift in Sources */,
@@ -557,6 +584,11 @@
 				EF328673E2D1D19151031BBF /* DNAApp.swift in Sources */,
 				DE1C6C7AB4A9DABDB2EDEC00 /* DNASceneManager.swift in Sources */,
 				4053DC98783D8EA19A1090BD /* DNASequence.swift in Sources */,
+				4053DC98783D8EA19A1090BE /* BasePair.swift in Sources */,
+				4053DC98783D8EA19A1090BF /* DNASequence+Pairs.swift in Sources */,
+				4053DC98783D8EA19A1090C0 /* ColorPalette.swift in Sources */,
+				4053DC98783D8EA19A1090C1 /* DNALadderView.swift in Sources */,
+				4053DC98783D8EA19A1090C2 /* GenomeMapView.swift in Sources */,
 				9708AD4136DC33B6B0D7C522 /* DNAViewModel.swift in Sources */,
 				C152F07622843AFFD759A79A /* FASTAParser.swift in Sources */,
 				CE81C73E0E2C9A907B1E1002 /* GeneFeature.swift in Sources */,

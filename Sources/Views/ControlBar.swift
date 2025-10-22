@@ -30,9 +30,10 @@ struct ControlBar: View {
                         }
                         
                         LazyVGrid(columns: [
+                            GridItem(.flexible(), spacing: 8),
                             GridItem(.flexible(), spacing: 8)
                         ], spacing: 8) {
-                            ForEach([DNARepresentation.doubleHelix], id: \.self) { rep in
+                            ForEach([DNARepresentation.doubleHelix, .ladder2D, .genomeMap], id: \.self) { rep in
                                 Button(action: {
                                     withAnimation(.easeInOut(duration: 0.3)) {
                                         sceneManager.currentRepresentation = rep
