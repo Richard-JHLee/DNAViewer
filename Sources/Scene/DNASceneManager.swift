@@ -22,13 +22,87 @@ enum DNARepresentation: String, CaseIterable {
     case ladder = "Ladder"
     case ballAndStick = "Ball & Stick"
     case sequenceOnly = "Sequence"
+    
+    var iconName: String {
+        switch self {
+        case .doubleHelix: return "tornado"
+        case .ladder: return "ladder"
+        case .ballAndStick: return "circle.hexagongrid.fill"
+        case .sequenceOnly: return "text.alignleft"
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .doubleHelix: return "Classic twisted structure"
+        case .ladder: return "Flat ladder view"
+        case .ballAndStick: return "Atomic representation"
+        case .sequenceOnly: return "Text only"
+        }
+    }
+    
+    // Optimal camera position for each style - dynamically calculated based on model size
+    var cameraPosition: SCNVector3 {
+        switch self {
+        case .doubleHelix: 
+            return SCNVector3(x: 0, y: 0, z: 25)  // Closer for full screen
+        case .ladder: 
+            return calculateLadderCameraPosition()  // Dynamic calculation for ladder
+        case .ballAndStick: 
+            return SCNVector3(x: 0, y: 0, z: 30)  // Closer for ball & stick
+        case .sequenceOnly: 
+            return SCNVector3(x: 0, y: 0, z: 15)  // Very close for text
+        }
+    }
+    
+    // Ladder 스타일용 동적 카메라 위치 계산
+    private func calculateLadderCameraPosition() -> SCNVector3 {
+        // 기본값 반환 (실제 계산은 DNASceneManager에서 수행)
+        return SCNVector3(x: 0, y: 0, z: 50)
+    }
+    
+    // Optimal camera look-at point for each style
+    var cameraLookAt: SCNVector3 {
+        switch self {
+        case .doubleHelix: 
+            return SCNVector3(x: 0, y: 0, z: 0)
+        case .ladder: 
+            return SCNVector3(x: 0, y: 0, z: 0)
+        case .ballAndStick: 
+            return SCNVector3(x: 0, y: 0, z: 0)
+        case .sequenceOnly: 
+            return SCNVector3(x: 0, y: 0, z: 0)
+        }
+    }
 }
 
 enum DNAColorScheme: String, CaseIterable {
     case byBase = "By Base"
-    case byStrand = "By Strand"
-    case uniform = "Uniform"
-    case gcContent = "GC Content"
+    case rainbow = "Rainbow"
+    case hydrophobic = "Hydrophobic"
+    case structure = "Structure"
+    
+    var previewColors: [Color] {
+        switch self {
+        case .byBase:
+            return [.orange, .green, .red, .yellow] // A, T, G, C
+        case .rainbow:
+            return [.blue, .green, .yellow, .red] // Gradient
+        case .hydrophobic:
+            return [Color.blue, Color.blue, Color.red, Color.red] // A/T vs G/C
+        case .structure:
+            return [Color.purple, Color.purple, Color.green, Color.green] // Purine vs Pyrimidine
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .byBase: return "A, T, G, C colors"
+        case .rainbow: return "Position gradient"
+        case .hydrophobic: return "Hydrophobic vs Hydrophilic"
+        case .structure: return "Purine vs Pyrimidine"
+        }
+    }
 }
 
 class DNASceneManager: ObservableObject {
@@ -50,6 +124,7 @@ class DNASceneManager: ObservableObject {
     private var cameraNode: SCNNode
     private var helixNodes: [SCNNode] = []
     private var currentSequence: DNASequence?
+    private var ladderContainer: SCNNode?  // Ladder 전체 컨테이너 참조
     
     // Display settings
     var displayStart: Int = 0
@@ -58,15 +133,61 @@ class DNASceneManager: ObservableObject {
     var totalGroups: Int = 1
     var groupSize: Int = 100  // Increased for better visualization
     
-    // 실제 표시되는 염기서열 수 (안전장치 적용 후)
+    // 실제 표시되는 염기서열 수 (화면 높이 기반 동적 계산)
     var actualDisplayLength: Int {
         guard currentSequence != nil else { return displayLength }
-        // 모든 시퀀스에 대해 100개 표시 (제한 제거)
-        let maxDisplayLength = 100
-        let safeLength = min(displayLength, maxDisplayLength)
-        print("🔍 actualDisplayLength: displayLength=\(displayLength), maxDisplayLength=\(maxDisplayLength), safeLength=\(safeLength)")
+        
+        // 화면 높이 기반으로 최적 염기서열 수 계산
+        let screenHeight = getAvailableScreenHeight()
+        let optimalLength = calculateOptimalSequenceLength(for: screenHeight)
+        let safeLength = min(displayLength, optimalLength)
+        
+        print("🔍 actualDisplayLength: screenHeight=\(screenHeight), optimalLength=\(optimalLength), safeLength=\(safeLength)")
         return safeLength
     }
+    
+    // 화면에서 사용 가능한 높이 계산 (상하 UI 제외)
+    func getAvailableScreenHeight() -> Double {
+        #if os(macOS)
+        // macOS에서는 기본값 사용
+        return 800.0
+        #else
+        // iOS에서는 실제 화면 높이에서 UI 영역 제외
+        let screenBounds = UIScreen.main.bounds
+        let navigationHeight: Double = 100.0  // 상단 네비게이션 바
+        let bottomMenuHeight: Double = 80.0   // 하단 메뉴 바
+        let availableHeight = screenBounds.height - navigationHeight - bottomMenuHeight
+        return Double(availableHeight)
+        #endif
+    }
+    
+    // 화면 크기별 최적 염기서열 수 계산
+    private func calculateOptimalSequenceLength(for screenHeight: Double) -> Int {
+        let availableHeight = screenHeight * 0.85  // 85% 사용 (여백 고려)
+        let minSpacing = 1.2  // 최소 간격 (시각적 명확성)
+        
+        // 최소 간격 기준으로 계산
+        let maxLength = Int(availableHeight / minSpacing)
+        
+        // 적절한 범위 내에서 선택 (최소 20개, 최대 150개)
+        let optimalLength = min(max(maxLength, 20), 150)
+        
+        print("🔍 calculateOptimalSequenceLength: screenHeight=\(screenHeight), availableHeight=\(availableHeight), optimalLength=\(optimalLength)")
+        return optimalLength
+    }
+    
+    // 화면 크기 변경에 따른 동적 조정
+    func adjustForScreenSize() {
+        print("🔍 adjustForScreenSize: Recalculating layout for current screen size")
+        
+        // 현재 시퀀스가 있으면 다시 빌드
+        if currentSequence != nil {
+            rebuildScene()
+        }
+    }
+
+    // Zoom gesture handling (orthographic vs perspective)
+    private var initialOrthoScale: Double?
     
     init() {
         scene = SCNScene()
@@ -83,7 +204,7 @@ class DNASceneManager: ObservableObject {
         cameraNode.camera = SCNCamera()
         cameraNode.camera?.wantsHDR = true
         cameraNode.camera?.bloomIntensity = 0.3
-        cameraNode.camera?.fieldOfView = 60  // Wider field of view to see more
+        cameraNode.camera?.fieldOfView = 90  // Very wide field of view to see full model
         cameraNode.camera?.zNear = 0.1
         cameraNode.camera?.zFar = 1000
         cameraNode.position = SCNVector3(x: 0, y: 3, z: 25)  // Further back to see entire DNA
@@ -343,6 +464,14 @@ class DNASceneManager: ObservableObject {
                     }
                     print("✅ Scene rebuild complete. Total nodes: \(self.helixNodes.count)")
                     
+                    // Adjust camera for the current representation style
+                    self.adjustCameraForCurrentStyle()
+                    
+            // Ladder 컨테이너 참조/초기화 및 기본 자동 회전 제거
+            self.ladderContainer = self.scene.rootNode.childNode(withName: "ladderContainer", recursively: true)
+            self.ladderContainer?.removeAction(forKey: "spin")
+            self.ladderContainer?.scale = SCNVector3(1, 1, 1)
+            
                     // Reset the rebuilding flag
                     self.isRebuilding = false
                     
@@ -357,6 +486,54 @@ class DNASceneManager: ObservableObject {
                 }
             }
         }
+    }
+    
+    // Adjust camera position based on current representation style
+    private func adjustCameraForCurrentStyle() {
+        let newPosition: SCNVector3
+        let lookAtPoint = currentRepresentation.cameraLookAt
+        
+        // Ladder 스타일일 때는 직교 투영 + 동적 Z 계산
+        if currentRepresentation == .ladder {
+            cameraNode.camera?.usesOrthographicProjection = true
+            cameraNode.camera?.zNear = 0.1
+            cameraNode.camera?.zFar = 2000
+            // 화면에 꽉 차게 보이도록 스케일 조정 (실제 표시 염기 수 기반)
+            let orthoScale = Double(actualDisplayLength) * 0.9
+            cameraNode.camera?.orthographicScale = max(orthoScale, 20.0)
+            newPosition = calculateDynamicLadderCameraPosition()
+        } else {
+            cameraNode.camera?.usesOrthographicProjection = false
+            newPosition = currentRepresentation.cameraPosition
+        }
+        
+        print("📷 Adjusting camera for \(currentRepresentation.rawValue)")
+        print("   Position: (\(newPosition.x), \(newPosition.y), \(newPosition.z))")
+        
+        SCNTransaction.begin()
+        SCNTransaction.animationDuration = 0.5
+        
+        cameraNode.position = newPosition
+        cameraNode.look(at: lookAtPoint)
+        
+        SCNTransaction.commit()
+    }
+    
+    // Ladder 스타일용 동적 카메라 위치 계산 (최적화)
+    private func calculateDynamicLadderCameraPosition() -> SCNVector3 {
+        guard currentSequence != nil else {
+            return SCNVector3(x: 0, y: 0, z: 60)  // 기본값 (더 멀리)
+        }
+        
+        let sequenceLength = actualDisplayLength
+        
+        // 모델 크기에 따른 Z축 거리 계산 (개선된 공식)
+        let modelHeight = Double(sequenceLength) * 2.0  // 더 큰 모델 높이 계산
+        let zDistance = max(modelHeight * 1.5, 40.0)  // 모델 높이의 1.5배, 최소 40
+        
+        print("🔍 calculateDynamicLadderCameraPosition: sequenceLength=\(sequenceLength), modelHeight=\(modelHeight), zDistance=\(zDistance)")
+        
+        return SCNVector3(x: 0, y: 0, z: Float(zDistance))
     }
     
     // Background-safe node builders (return nodes without adding to scene)
@@ -521,12 +698,19 @@ class DNASceneManager: ObservableObject {
     }
     
     func handleZoom(scale: CGFloat) {
-        // Adjust camera Z position for zoom
-        let minZ: Float = 10
-        let maxZ: Float = 50
-        let newZ = Float(25.0 / scale) // Base position 25
-        
-        cameraNode.position.z = min(max(newZ, minZ), maxZ)
+        if currentRepresentation == .ladder {
+            // 이미지 스케일 방식: 컨테이너 스케일 조정 (카메라 고정)
+            if initialOrthoScale == nil { initialOrthoScale = 1.0 }
+            let base = initialOrthoScale ?? 1.0
+            let newScale = max(0.4, min(3.0, base * Double(scale)))
+            ladderContainer?.scale = SCNVector3(Float(newScale), Float(newScale), 1)
+        } else {
+            // 기존 스타일은 카메라 Z 이동 (3D 깊이 유지)
+            let minZ: Float = 10
+            let maxZ: Float = 50
+            let newZ = Float(25.0 / scale)
+            cameraNode.position.z = min(max(newZ, minZ), maxZ)
+        }
     }
     
     func selectBase(at index: Int) {
@@ -877,24 +1061,44 @@ extension DNASceneManager {
     private static let defaultHydrogen = UIColor.white
     #endif
 
-    static func colorForBase(_ base: Character, scheme: DNAColorScheme, gcContent: Double = 0) -> PlatformColor {
+    static func colorForBase(_ base: Character, scheme: DNAColorScheme, position: Int = 0, totalLength: Int = 100) -> PlatformColor {
         switch scheme {
         case .byBase:
+            // Standard coloring by base type
             switch base {
-            case "A": return defaultAdenine
-            case "T": return defaultThymine
-            case "G": return defaultGuanine
-            case "C": return defaultCytosine
+            case "A": return defaultAdenine   // Orange
+            case "T": return defaultThymine   // Green
+            case "G": return defaultGuanine   // Red
+            case "C": return defaultCytosine  // Yellow
             default: return .gray
             }
-        case .byStrand:
-            return .systemOrange
-        case .uniform:
-            return .systemGray
-        case .gcContent:
-            // Color based on GC content: low (blue) to high (red)
-            let hue = 0.6 - (gcContent / 100.0) * 0.6 // 0.6 (blue) to 0.0 (red)
+            
+        case .rainbow:
+            // Rainbow gradient based on position
+            let hue = Double(position % totalLength) / Double(totalLength)
             return PlatformColor(hue: hue, saturation: 0.8, brightness: 0.9, alpha: 1.0)
+            
+        case .hydrophobic:
+            // Hydrophobic (A/T) vs Hydrophilic (G/C)
+            switch base {
+            case "A", "T": 
+                return PlatformColor(red: 0.2, green: 0.6, blue: 1.0, alpha: 1.0)  // Blue - Hydrophobic
+            case "G", "C": 
+                return PlatformColor(red: 1.0, green: 0.3, blue: 0.3, alpha: 1.0)  // Red - Hydrophilic
+            default: 
+                return .gray
+            }
+            
+        case .structure:
+            // Purine (A/G) vs Pyrimidine (T/C)
+            switch base {
+            case "A", "G": 
+                return PlatformColor(red: 0.6, green: 0.3, blue: 0.9, alpha: 1.0)  // Purple - Purine (2 rings)
+            case "T", "C": 
+                return PlatformColor(red: 0.3, green: 0.8, blue: 0.4, alpha: 1.0)  // Green - Pyrimidine (1 ring)
+            default: 
+                return .gray
+            }
         }
     }
 }

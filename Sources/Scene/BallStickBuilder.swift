@@ -16,153 +16,165 @@ import UIKit
 
 class BallStickBuilder {
     
-    private let spacing: Double = 1.5  // Reduced by half
-    private let helixRadius: Double = 1.5
-    private let scale: Double = 10.0
+    private let width: Double = 20.0   // Width of the model (2배 증가: 10.0 -> 20.0)
+    private let backboneHeight: Double = 0.4  // Height of backbone elements
+    private let baseWidth: Double = 0.6  // Width of base elements
+    
+    // 화면 높이 기반 동적 간격 계산
+    private func calculateOptimalSpacing(sequenceLength: Int, screenHeight: Double) -> Double {
+        let availableHeight = screenHeight * 0.85  // 85% 사용 (여백 고려)
+        let spacing = availableHeight / Double(sequenceLength)
+        
+        // 최소/최대 간격 제한
+        let minSpacing = 0.8
+        let maxSpacing = 3.0
+        
+        let optimalSpacing = max(min(spacing, maxSpacing), minSpacing)
+        
+        print("🔍 BallStickBuilder spacing: sequenceLength=\(sequenceLength), screenHeight=\(screenHeight), optimalSpacing=\(optimalSpacing)")
+        return optimalSpacing
+    }
+    
+    // 화면 높이 가져오기
+    private func getScreenHeight() -> Double {
+        #if os(macOS)
+        return 800.0  // macOS 기본값
+        #else
+        let screenBounds = UIScreen.main.bounds
+        return Double(screenBounds.height)
+        #endif
+    }
     
     func buildBallStick(sequence: String, colorScheme: DNAColorScheme, startPosition: Int) -> [SCNNode] {
         var nodes: [SCNNode] = []
         
-        let basesPerTurn: Double = 10.5
-        let angleStep = (2.0 * .pi) / basesPerTurn
-        let gcContent = SequenceAnalyzer.calculateGCContent(sequence)
+        // 화면 높이 기반 동적 간격 계산
+        let screenHeight = getScreenHeight()
+        let spacing = calculateOptimalSpacing(sequenceLength: sequence.count, screenHeight: screenHeight)
         
+        // 총 모델 높이와 중앙 정렬을 위한 오프셋 계산
+        let totalModelHeight = Double(sequence.count - 1) * spacing
+        
+        // Create backbone chains (two vertical chains)
+        let leftBackbone = createBackboneChain(x: -width/2, spacing: spacing, totalHeight: totalModelHeight)
+        let rightBackbone = createBackboneChain(x: width/2, spacing: spacing, totalHeight: totalModelHeight)
+        nodes.append(leftBackbone)
+        nodes.append(rightBackbone)
+        
+        // Create base pairs (balls with connecting sticks and labels)
         for (index, base) in sequence.enumerated() {
-            let position = startPosition + index
-            let angle = Double(index) * angleStep
-            let height = Double(index) * 0.17 * scale  // Reduced by half
+            let yPosition = Double(index) * spacing - totalModelHeight / 2
             
-            // Create detailed molecular structure
-            let x = helixRadius * cos(angle) * scale
-            let z = helixRadius * sin(angle) * scale
-            
-            // Phosphate group (PO4) - orange sphere
-            let phosphate = SCNSphere(radius: 0.4)
-            #if os(macOS)
-            phosphate.firstMaterial?.diffuse.contents = NSColor.orange
-            #else
-            phosphate.firstMaterial?.diffuse.contents = UIColor.orange
-            #endif
-            let phosphateNode = SCNNode(geometry: phosphate)
-            phosphateNode.position = SCNVector3(x * 1.2, height, z * 1.2)
-            nodes.append(phosphateNode)
-            
-            // Sugar (deoxyribose) - gray sphere
-            let sugar = SCNSphere(radius: 0.35)
-            #if os(macOS)
-            sugar.firstMaterial?.diffuse.contents = NSColor.gray
-            #else
-            sugar.firstMaterial?.diffuse.contents = UIColor.gray
-            #endif
-            let sugarNode = SCNNode(geometry: sugar)
-            sugarNode.position = SCNVector3(x, height, z)
-            nodes.append(sugarNode)
-            
-            // Base - colored sphere
-            let color = DNASceneManager.colorForBase(base, scheme: colorScheme, gcContent: gcContent)
-            let baseSphere = SCNSphere(radius: 0.5)
-            baseSphere.firstMaterial?.diffuse.contents = color
-            let baseNode = SCNNode(geometry: baseSphere)
-            baseNode.position = SCNVector3(x * 0.7, height, z * 0.7)
-            baseNode.name = "base_\(position)"
-            nodes.append(baseNode)
-            
-            // Bonds between atoms (sticks)
-            // Phosphate to Sugar
-            let bond1 = createBond(
-                from: phosphateNode.position,
-                to: sugarNode.position,
-                color: .white
-            )
-            nodes.append(bond1)
-            
-            // Sugar to Base
-            let bond2 = createBond(
-                from: sugarNode.position,
-                to: baseNode.position,
-                color: .white
-            )
-            nodes.append(bond2)
-            
-            // Backbone connection (phosphate to next sugar)
-            if index > 0 {
-                let prevAngle = Double(index - 1) * angleStep
-                let prevHeight = Double(index - 1) * 0.34 * scale
-                let prevX = helixRadius * cos(prevAngle) * scale * 1.2
-                let prevZ = helixRadius * sin(prevAngle) * scale * 1.2
-                
-                let backboneBond = createBond(
-                    from: SCNVector3(prevX, prevHeight, prevZ),
-                    to: phosphateNode.position,
-                    color: .lightGray
-                )
-                nodes.append(backboneBond)
-            }
+            // Create base pair
+            let basePairNode = createBasePair(base: base, yPosition: yPosition, colorScheme: colorScheme, index: index, totalLength: sequence.count)
+            nodes.append(basePairNode)
         }
         
         return nodes
     }
     
-    #if os(macOS)
-    private func createBond(from: SCNVector3, to: SCNVector3, color: NSColor) -> SCNNode {
-        let vector = SCNVector3(
-            to.x - from.x,
-            to.y - from.y,
-            to.z - from.z
-        )
+    private func createBackboneChain(x: Double, spacing: Double, totalHeight: Double) -> SCNNode {
+        let containerNode = SCNNode()
+        containerNode.position = SCNVector3(x, 0, 0)
         
-        let distance = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
-        
-        let cylinder = SCNCylinder(radius: 0.08, height: CGFloat(distance))
-        cylinder.firstMaterial?.diffuse.contents = color
-        
-        let node = SCNNode(geometry: cylinder)
-        node.position = SCNVector3(
-            (from.x + to.x) / 2,
-            (from.y + to.y) / 2,
-            (from.z + to.z) / 2
-        )
-        
-        if distance > 0 {
-            node.eulerAngles = SCNVector3(
-                .pi / 2,
-                acos(vector.y / distance),
-                atan2(vector.x, vector.z)
-            )
+        // Create vertical chain of backbone elements
+        let sequenceLength = Int(totalHeight / spacing) + 1
+        for i in 0..<sequenceLength {
+            let yPosition = Double(i) * spacing - totalHeight / 2
+            
+            // Create backbone sphere
+            let sphere = SCNSphere(radius: 0.2)
+            sphere.firstMaterial?.diffuse.contents = PlatformColor.systemBlue
+            sphere.firstMaterial?.specular.contents = PlatformColor.white
+            
+            let sphereNode = SCNNode(geometry: sphere)
+            sphereNode.position = SCNVector3(0, yPosition, 0)
+            containerNode.addChildNode(sphereNode)
+            
+            // Create connecting stick (except for the last element)
+            if i < sequenceLength - 1 {
+                let stick = SCNBox(width: 0.1, height: spacing, length: 0.1, chamferRadius: 0.05)
+                stick.firstMaterial?.diffuse.contents = PlatformColor.systemBlue
+                
+                let stickNode = SCNNode(geometry: stick)
+                stickNode.position = SCNVector3(0, yPosition + spacing/2, 0)
+                containerNode.addChildNode(stickNode)
+            }
         }
         
-        return node
+        return containerNode
     }
-    #else
-    private func createBond(from: SCNVector3, to: SCNVector3, color: UIColor) -> SCNNode {
-        let vector = SCNVector3(
-            to.x - from.x,
-            to.y - from.y,
-            to.z - from.z
-        )
+    
+    private func createBasePair(base: Character, yPosition: Double, colorScheme: DNAColorScheme, index: Int, totalLength: Int) -> SCNNode {
+        let containerNode = SCNNode()
+        containerNode.position = SCNVector3(0, yPosition, 0)
         
-        let distance = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+        // Create connecting stick between backbones
+        let stick = SCNBox(width: width, height: 0.1, length: 0.1, chamferRadius: 0.05)
+        stick.firstMaterial?.diffuse.contents = PlatformColor.systemGray
         
-        let cylinder = SCNCylinder(radius: 0.08, height: CGFloat(distance))
-        cylinder.firstMaterial?.diffuse.contents = color
+        let stickNode = SCNNode(geometry: stick)
+        containerNode.addChildNode(stickNode)
         
-        let node = SCNNode(geometry: cylinder)
-        node.position = SCNVector3(
-            (from.x + to.x) / 2,
-            (from.y + to.y) / 2,
-            (from.z + to.z) / 2
-        )
+        // Create left base (ball with label)
+        let leftBase = createBaseWithLabel(base: base, x: -width/2, colorScheme: colorScheme, index: index, totalLength: totalLength)
+        containerNode.addChildNode(leftBase)
         
-        if distance > 0 {
-            node.eulerAngles = SCNVector3(
-                .pi / 2,
-                acos(vector.y / distance),
-                atan2(vector.x, vector.z)
-            )
+        // Create right base (complementary base)
+        let rightBase = getComplementaryBase(base)
+        let rightBaseNode = createBaseWithLabel(base: rightBase, x: width/2, colorScheme: colorScheme, index: index, totalLength: totalLength)
+        containerNode.addChildNode(rightBaseNode)
+        
+        return containerNode
+    }
+    
+    private func createBaseWithLabel(base: Character, x: Double, colorScheme: DNAColorScheme, index: Int, totalLength: Int) -> SCNNode {
+        let containerNode = SCNNode()
+        containerNode.position = SCNVector3(x, 0, 0)
+        
+        // Create base sphere
+        let sphere = SCNSphere(radius: 0.5)
+        let color = DNASceneManager.colorForBase(base, scheme: colorScheme, position: index, totalLength: totalLength)
+        sphere.firstMaterial?.diffuse.contents = color
+        sphere.firstMaterial?.specular.contents = PlatformColor.white
+        
+        let sphereNode = SCNNode(geometry: sphere)
+        containerNode.addChildNode(sphereNode)
+        
+        // Add large, clear text label
+        let textGeometry = SCNText(string: String(base), extrusionDepth: 0.3)
+        #if os(macOS)
+        textGeometry.font = NSFont.systemFont(ofSize: 3.0, weight: .bold)
+        #else
+        textGeometry.font = UIFont.systemFont(ofSize: 3.0, weight: .bold)
+        #endif
+        textGeometry.flatness = 0.01
+        textGeometry.firstMaterial?.diffuse.contents = PlatformColor.white
+        textGeometry.firstMaterial?.emission.contents = PlatformColor(white: 1.0, alpha: 1.0)  // Bright white emission
+        textGeometry.firstMaterial?.lightingModel = .constant
+        textGeometry.firstMaterial?.isDoubleSided = true
+        
+        let textNode = SCNNode(geometry: textGeometry)
+        // Center the text on the sphere
+        let (min, max) = textGeometry.boundingBox
+        let textWidth = max.x - min.x
+        let textHeight = max.y - min.y
+        textNode.position = SCNVector3(-textWidth / 2, -textHeight / 2, 0.7)  // In front of sphere
+        textNode.scale = SCNVector3(1.0, 1.0, 1.0)
+        textNode.renderingOrder = 1000  // Render on top
+        
+        containerNode.addChildNode(textNode)
+        
+        return containerNode
+    }
+    
+    private func getComplementaryBase(_ base: Character) -> Character {
+        switch base {
+        case "A": return "T"
+        case "T": return "A"
+        case "G": return "C"
+        case "C": return "G"
+        default: return base
         }
-        
-        return node
     }
-    #endif
 }
-

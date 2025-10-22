@@ -6,6 +6,11 @@
 //
 
 import SwiftUI
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 
 struct SequenceBar: View {
     let sequence: String
@@ -121,14 +126,26 @@ struct SequenceBar: View {
                 HStack(spacing: 2) {
                     ForEach(Array(currentGroupSequence.enumerated()), id: \.offset) { localIndex, base in
                         let globalIndex = sceneManager.displayStart + localIndex
-                        
+
+                        // Compute color using current color scheme
+                        let platformColor = DNASceneManager.colorForBase(base,
+                                                                         scheme: sceneManager.colorScheme,
+                                                                         position: localIndex,
+                                                                         totalLength: max(1, currentGroupSequence.count))
+                        #if os(macOS)
+                        let baseColor = Color(platformColor)
+                        #else
+                        let baseColor = Color(platformColor)
+                        #endif
+
                         // Base cell
                         BaseCell(
                             base: base,
                             index: globalIndex,
                             isSelected: isSelected(globalIndex),
-                            isInCurrentGroup: true,  // All bases in current group are in current group
-                            isCutSite: isCutSite(globalIndex)
+                            isInCurrentGroup: true,
+                            isCutSite: isCutSite(globalIndex),
+                            baseColor: baseColor
                         )
                         .onTapGesture {
                             print("👉 BaseCell tapped at global index: \(globalIndex), local index: \(localIndex), base: \(base)")
@@ -174,6 +191,7 @@ struct BaseCell: View {
     let isSelected: Bool
     let isInCurrentGroup: Bool
     let isCutSite: Bool
+    let baseColor: Color
     
     var body: some View {
         VStack(spacing: 2) {
@@ -196,7 +214,7 @@ struct BaseCell: View {
                 .font(.system(size: 14, weight: .bold, design: .monospaced))
                 .foregroundColor(.white)
                 .frame(width: 20, height: 24)
-                .background(colorForBase(base))
+                .background(baseColor)
                 .cornerRadius(4)
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
@@ -229,16 +247,7 @@ struct BaseCell: View {
         }
     }
     
-    private func colorForBase(_ base: Character) -> Color {
-        let colorSettings = ColorSettings.shared
-        switch base {
-        case "A": return colorSettings.adenineColor
-        case "T": return colorSettings.thymineColor
-        case "G": return colorSettings.guanineColor
-        case "C": return colorSettings.cytosineColor
-        default: return .gray
-        }
-    }
+    // Base color is provided by caller (according to current scheme)
 }
 
 struct GroupButton: View {

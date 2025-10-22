@@ -86,9 +86,9 @@ struct BottomMenuButton: View {
     
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 4) {
+            VStack(spacing: 1) {  // Minimal spacing
                 Image(systemName: icon)
-                    .font(.system(size: 20, weight: .medium))
+                    .font(.system(size: 14, weight: .medium))  // Even smaller icon
                     .foregroundColor(.primary)
                 
                 Text(title)
@@ -97,7 +97,7 @@ struct BottomMenuButton: View {
                     .foregroundColor(.primary)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
+            .padding(.vertical, 2)  // Minimal padding for maximum 3D view space
         }
         .buttonStyle(PlainButtonStyle())
     }

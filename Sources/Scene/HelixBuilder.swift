@@ -7,7 +7,6 @@
 
 import Foundation
 import SceneKit
-import simd
 
 // MARK: - SCNVector3 Extensions
 extension SCNVector3 {
@@ -54,19 +53,19 @@ import UIKit
 
 class HelixBuilder {
     
-    // DNA helix parameters (B-DNA)
+    // DNA helix parameters (B-DNA) - flattened for full screen
     private let basesPerTurn: Double = 10.5
-    private let risePerBase: Double = 0.17  // nm (reduced by half for shorter height)
-    private let helixRadius: Double = 0.3    // nm (reduced for flatter appearance)
-    private let scale: Double = 12.0         // Scale factor for visualization (increased to compensate for smaller radius)
-    private let backboneRadius: CGFloat = 0.55
-    private let baseHalfThickness: CGFloat = 0.16  // Reduced by half for shorter base pairs
-    private let baseHalfDepth: CGFloat = 0.42
-    private let baseChamfer: CGFloat = 0.18
-    private let hydrogenGap: Float = 0.3
-    private let hydrogenBondRadius: CGFloat = 0.12  // Increased for better visibility
-    private let baseLabelOutset: Float = 1.2
-    private let baseLabelScale: Float = 0.8
+    private let risePerBase: Double = 0.15  // Even shorter for full screen
+    private let helixRadius: Double = 0.4    // 2배 증가: 0.2 -> 0.4 (더 넓은 나선)
+    private let scale: Double = 15.0         // Increased scale for full screen
+    private let backboneRadius: CGFloat = 0.4  // Smaller backbone
+    private let baseHalfThickness: CGFloat = 0.12  // Even thinner for 2D look
+    private let baseHalfDepth: CGFloat = 0.25  // Much shallower
+    private let baseChamfer: CGFloat = 0.12
+    private let hydrogenGap: Float = 0.2
+    private let hydrogenBondRadius: CGFloat = 0.08  // Smaller hydrogen bonds
+    private let baseLabelOutset: Float = 1.0
+    private let baseLabelScale: Float = 1.0  // Larger labels for full screen
     
     func buildHelix(sequence: String, colorScheme: DNAColorScheme, startPosition: Int) -> [SCNNode] {
         var nodes: [SCNNode] = []
@@ -187,8 +186,8 @@ class HelixBuilder {
         let basePairNode = SCNNode()
         basePairNode.name = "basePair_\(position)"
         
-        let color1 = DNASceneManager.colorForBase(base1, scheme: colorScheme, gcContent: gcContent)
-        let color2 = DNASceneManager.colorForBase(base2, scheme: colorScheme, gcContent: gcContent)
+        let color1 = DNASceneManager.colorForBase(base1, scheme: colorScheme, position: index, totalLength: 100)
+        let color2 = DNASceneManager.colorForBase(base2, scheme: colorScheme, position: index, totalLength: 100)
         
         let p1 = position1.simd
         let p2 = position2.simd

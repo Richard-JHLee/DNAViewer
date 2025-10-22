@@ -191,8 +191,8 @@ struct ViewerView: View {
                     )
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 12)
+                .padding(.horizontal, 2)
+                .padding(.vertical, 3)  // Even smaller vertical padding
                 .background(.ultraThinMaterial)
                 .padding(.bottom, 0)
             }  // End VStack (Main content)
