@@ -340,13 +340,15 @@ struct DNALadderView: View {
                 }
                 return p
             }
-            ctx.stroke(strandPath(isLeft: true),  with: .color(.orange), style: StrokeStyle(lineWidth: 3, lineJoin: .round))
-            ctx.stroke(strandPath(isLeft: false), with: .color(.blue),   style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+            // 보라색 백본 (rgb: 0.64, 0.59, 0.93)
+            let backboneColor = Color(red: 0.64, green: 0.59, blue: 0.93)
+            ctx.stroke(strandPath(isLeft: true),  with: .color(backboneColor), style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+            ctx.stroke(strandPath(isLeft: false), with: .color(backboneColor), style: StrokeStyle(lineWidth: 3, lineJoin: .round))
             
-            // 노드 점
+            // 노드 점 (검은색 원형, 3.5pt)
             for y in yNodes {
                 let nodeX = xLeft(y)
-                let r: CGFloat = 3.2
+                let r: CGFloat = 3.5
                 let rect = CGRect(x: nodeX - r, y: y - r, width: r*2, height: r*2)
                 ctx.fill(Path(ellipseIn: rect), with: .color(.black))
             }
@@ -370,17 +372,35 @@ struct DNALadderView: View {
                     let base = p.left
                     let comp = complement(base)
                     
-                    // 염기쌍 막대
-                    var rung = Path()
-                    rung.move(to: CGPoint(x: xl, y: y))
-                    rung.addLine(to: CGPoint(x: xr, y: y))
-                    ctx.stroke(rung, with: .color(.primary), style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                    // 중심점 계산
+                    let xCenter = (xl + xr) / 2
+                    
+                    // 왼쪽 염기 막대 (염기 색깔)
+                    var leftBar = Path()
+                    leftBar.move(to: CGPoint(x: xl, y: y))
+                    leftBar.addLine(to: CGPoint(x: xCenter - 5, y: y))
+                    ctx.stroke(leftBar, with: .color(baseColor(base)), 
+                              style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                    
+                    // 오른쪽 염기 막대 (상보 염기 색깔)
+                    var rightBar = Path()
+                    rightBar.move(to: CGPoint(x: xCenter + 5, y: y))
+                    rightBar.addLine(to: CGPoint(x: xr, y: y))
+                    ctx.stroke(rightBar, with: .color(baseColor(comp)), 
+                              style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                    
+                    // 가운데 수소 결합 (흰색 점선)
+                    var hydrogenBond = Path()
+                    hydrogenBond.move(to: CGPoint(x: xCenter - 5, y: y))
+                    hydrogenBond.addLine(to: CGPoint(x: xCenter + 5, y: y))
+                    ctx.stroke(hydrogenBond, with: .color(.white), 
+                              style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [2, 2]))
                     
                     // 염기 라벨
                     let leftLabel  = Text(String(base)).font(.caption).bold().foregroundColor(baseColor(base))
                     let rightLabel = Text(String(comp)).font(.caption).bold().foregroundColor(baseColor(comp))
-                    ctx.draw(leftLabel,  at: CGPoint(x: xl - 10, y: y - 10))
-                    ctx.draw(rightLabel, at: CGPoint(x: xr + 10, y: y - 10))
+                    ctx.draw(leftLabel,  at: CGPoint(x: xl - 10, y: y))
+                    ctx.draw(rightLabel, at: CGPoint(x: xr + 10, y: y))
                     
                     globalIndex += 1
                 }
