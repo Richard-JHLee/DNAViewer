@@ -91,23 +91,30 @@ struct DNALadderView: View {
                 yTop + (CGFloat(j) / CGFloat(K + 1)) * height
             }
             
-            // ===== 구간별 염기쌍 개수 분배 (끝단 0.5 가중치) =====
-            var weights = [0.5] + Array(repeating: 1.0, count: max(0, K-1)) + [0.5]
-            let sumW = weights.reduce(0, +)
-            let ideals = weights.map { $0 / sumW * Double(N) }
-            var counts = ideals.map { Int(floor($0)) }
-            var R = N - counts.reduce(0, +)
-            
-            // 소수부 큰 구간부터 +1
-            let order = ideals.enumerated()
-                .sorted { ($0.element - floor($0.element)) > ($1.element - floor($1.element)) }
-                .map { $0.offset }
-            var idx = 0
-            while R > 0 {
-                counts[order[idx % counts.count]] += 1
-                R -= 1
-                idx += 1
-            }
+           // ===== 구간별 염기쌍 개수 분배 (끝단 0.5 가중치) =====
+           let weights = [0.5] + Array(repeating: 1.0, count: max(0, K-1)) + [0.5]
+           let sumW = weights.reduce(0, +)  // W = K
+           let ideals = weights.map { $0 / sumW * Double(N) }  // ŷ_j = w_j/W * N
+           var counts = ideals.map { Int(floor($0)) }  // n_j = ⌊ŷ_j⌋
+           var R = N - counts.reduce(0, +)  // 잔여 R개
+           
+           // 소수부 큰 구간부터 +1씩 배정
+           let order = ideals.enumerated()
+               .sorted { ($0.element - floor($0.element)) > ($1.element - floor($1.element)) }
+               .map { $0.offset }
+           var idx = 0
+           while R > 0 {
+               counts[order[idx % counts.count]] += 1
+               R -= 1
+               idx += 1
+           }
+           
+           // 디버깅: 분배 결과 출력
+           print("🧬 K=\(K) segments, N=\(N) base pairs")
+           print("📊 Weights: \(weights)")
+           print("🎯 Ideals: \(ideals)")
+           print("📈 Final counts: \(counts)")
+           print("✅ Total: \(counts.reduce(0, +))")
             
             // ===== 백본(가닥) 곡선 그리기 =====
             func strandPath(isLeft: Bool) -> Path {
@@ -136,22 +143,22 @@ struct DNALadderView: View {
                 ctx.fill(Path(ellipseIn: rect), with: .color(.black))
             }
             
-            // ===== 각 구간 내부에 염기쌍 균일 배치 (half-step) =====
-            var globalIndex = 0
-            for seg in 0..<(K+1) {
-                let yStart = yNodes[seg]
-                let yEnd = yNodes[seg + 1]
-                let n = counts[seg]
-                guard n > 0 else { continue }
-                let dy = (yEnd - yStart) / CGFloat(n)
-                
-                for k in 0..<n {
-                    guard globalIndex < currentGroupPairs.count else { break }
-                    let p = currentGroupPairs[globalIndex]
-                    
-                    let y = yStart + (CGFloat(k) + 0.5) * dy
-                    let xl = xLeft(y)
-                    let xr = xRight(y)
+           // ===== 각 구간 내부에 염기쌍 균일 배치 (half-step 오프셋) =====
+           var globalIndex = 0
+           for seg in 0..<(K+1) {
+               let yStart = yNodes[seg]  // z_j
+               let yEnd = yNodes[seg + 1]  // z_{j+1}
+               let n = counts[seg]  // n_j
+               guard n > 0 else { continue }
+               
+               // z_{j,k} = z_j + (k - 1/2) * (z_{j+1} - z_j) / n_j
+               for k in 1...n {
+                   guard globalIndex < currentGroupPairs.count else { break }
+                   let p = currentGroupPairs[globalIndex]
+                   
+                   let y = yStart + (CGFloat(k) - 0.5) * (yEnd - yStart) / CGFloat(n)
+                   let xl = xLeft(y)
+                   let xr = xRight(y)
                     
                     // 염기쌍 색상 결정
                     let leftColor = Color(DNASceneManager.colorForBase(p.left, scheme: sceneManager.colorScheme, 
