@@ -70,70 +70,120 @@ struct DNALadderView: View {
     
     @ViewBuilder
     private func ladderContent(width W: CGFloat, height H: CGFloat) -> some View {
-        let usableH = H * 0.9
-        let spacing = max(usableH / CGFloat(max(currentGroupPairs.count, 1)), 10)
-        let radius = min(W, H) * 0.18
-        let backboneWidth: CGFloat = max(6, radius * 0.10)
-        let centerX = W * 0.50  // 화면 중앙으로 이동
-            
         Canvas { ctx, size in
-            // 배경 그리기
-            ctx.fill(Path(CGRect(origin: .zero, size: size)), with: .color(Color(.systemBackground)))
+            // ===== 좌표/스케일 설정 =====
+            let margin: CGFloat = 16
+            let xCenter = W * 0.50
+            let xAmp = W * 0.33
+            let yTop = margin
+            let yBottom = H - margin
+            let height = yBottom - yTop
             
-            let purple = Color(red: 0.64, green: 0.59, blue: 0.93)
-            var left = Path(); var right = Path()
-            let topY = (H - usableH) / 2
-            let usable = usableH
-            let turns = CGFloat.pi * 2.0 / 9.0
+            let N = currentGroupPairs.count
+            let K = 4  // 교차(만남) 지점 수
+            let omega = CGFloat(K + 1) * .pi / height
             
-            // Backbone 경로 생성
-            left.move(to: CGPoint(x: centerX - radius, y: topY))
-            right.move(to: CGPoint(x: centerX + radius, y: topY))
-            let steps = max(currentGroupPairs.count, 2)
-            for i in 1...steps {
-                let t = CGFloat(i) / CGFloat(steps)
-                let y = topY + t * usable
-                let angle = t * turns * CGFloat(steps) * 0.18
-                let lx = centerX - radius * cos(angle)
-                let rx = centerX + radius * cos(angle)
-                left.addLine(to: CGPoint(x: lx, y: y))
-                right.addLine(to: CGPoint(x: rx, y: y))
+            func xLeft(_ y: CGFloat) -> CGFloat  { xCenter - xAmp * sin(omega * (y - yTop)) }
+            func xRight(_ y: CGFloat) -> CGFloat { xCenter + xAmp * sin(omega * (y - yTop)) }
+            
+            // ===== 노드(만나는 지점) 계산 =====
+            let yNodes: [CGFloat] = (0...(K+1)).map { j in
+                yTop + (CGFloat(j) / CGFloat(K + 1)) * height
             }
-            ctx.stroke(left, with: .color(purple), lineWidth: backboneWidth)
-            ctx.stroke(right, with: .color(purple), lineWidth: backboneWidth)
             
-            // Base pairs 그리기
-            for (i, p) in currentGroupPairs.enumerated() {
-                let ty = topY + CGFloat(i) * spacing + spacing * 0.5
-                let angle = CGFloat(i) * 0.20
-                let lx = centerX - radius * cos(angle)
-                let rx = centerX + radius * cos(angle)
+            // ===== 구간별 염기쌍 개수 분배 (끝단 0.5 가중치) =====
+            var weights = [0.5] + Array(repeating: 1.0, count: max(0, K-1)) + [0.5]
+            let sumW = weights.reduce(0, +)
+            let ideals = weights.map { $0 / sumW * Double(N) }
+            var counts = ideals.map { Int(floor($0)) }
+            var R = N - counts.reduce(0, +)
+            
+            // 소수부 큰 구간부터 +1
+            let order = ideals.enumerated()
+                .sorted { ($0.element - floor($0.element)) > ($1.element - floor($1.element)) }
+                .map { $0.offset }
+            var idx = 0
+            while R > 0 {
+                counts[order[idx % counts.count]] += 1
+                R -= 1
+                idx += 1
+            }
+            
+            // ===== 백본(가닥) 곡선 그리기 =====
+            func strandPath(isLeft: Bool) -> Path {
+                var p = Path()
+                let steps = 800
+                for t in 0...steps {
+                    let y = yTop + CGFloat(t) / CGFloat(steps) * height
+                    let x = isLeft ? xLeft(y) : xRight(y)
+                    if t == 0 { p.move(to: CGPoint(x: x, y: y)) }
+                    else { p.addLine(to: CGPoint(x: x, y: y)) }
+                }
+                return p
+            }
+            
+            let backboneColor = Color(red: 0.64, green: 0.59, blue: 0.93)
+            ctx.stroke(strandPath(isLeft: true), with: .color(backboneColor), 
+                      style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+            ctx.stroke(strandPath(isLeft: false), with: .color(backboneColor), 
+                      style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+            
+            // ===== 노드 표시 =====
+            for y in yNodes {
+                let nodeX = xLeft(y)
+                let r: CGFloat = 3.5
+                let rect = CGRect(x: nodeX - r, y: y - r, width: r*2, height: r*2)
+                ctx.fill(Path(ellipseIn: rect), with: .color(.black))
+            }
+            
+            // ===== 각 구간 내부에 염기쌍 균일 배치 (half-step) =====
+            var globalIndex = 0
+            for seg in 0..<(K+1) {
+                let yStart = yNodes[seg]
+                let yEnd = yNodes[seg + 1]
+                let n = counts[seg]
+                guard n > 0 else { continue }
+                let dy = (yEnd - yStart) / CGFloat(n)
                 
-                let gap: CGFloat = 18
-                let barH: CGFloat = max(8, spacing * 0.35)
-                let leftRect = CGRect(x: lx + backboneWidth * 0.5,
-                                      y: ty - barH/2,
-                                      width: (centerX - gap/2) - (lx + backboneWidth * 0.5),
-                                      height: barH)
-                let rightRect = CGRect(x: centerX + gap/2,
-                                       y: ty - barH/2,
-                                       width: (rx - backboneWidth * 0.5) - (centerX + gap/2),
-                                       height: barH)
-                
-                // sceneManager의 colorScheme에 따라 색상 결정
-                let globalIndex = p.id
-                let leftColor = Color(DNASceneManager.colorForBase(p.left, scheme: sceneManager.colorScheme, position: globalIndex, totalLength: sequence.length))
-                let rightColor = Color(DNASceneManager.colorForBase(p.right, scheme: sceneManager.colorScheme, position: globalIndex, totalLength: sequence.length))
-                
-                ctx.fill(Path(roundedRect: leftRect, cornerRadius: barH/2), with: .color(leftColor))
-                ctx.fill(Path(roundedRect: rightRect, cornerRadius: barH/2), with: .color(rightColor))
-                
-                let bondRect = CGRect(x: centerX - gap/2, y: ty - barH*0.15, width: gap, height: barH*0.3)
-                ctx.fill(Path(roundedRect: bondRect, cornerRadius: barH*0.15), with: .color(.white))
-                
-                let font = Font.system(size: barH * 0.7, weight: .bold, design: .rounded)
-                ctx.draw(Text(String(p.left)).font(font).foregroundColor(.white), at: CGPoint(x: leftRect.midX, y: leftRect.midY))
-                ctx.draw(Text(String(p.right)).font(font).foregroundColor(.white), at: CGPoint(x: rightRect.midX, y: rightRect.midY))
+                for k in 0..<n {
+                    guard globalIndex < currentGroupPairs.count else { break }
+                    let p = currentGroupPairs[globalIndex]
+                    
+                    let y = yStart + (CGFloat(k) + 0.5) * dy
+                    let xl = xLeft(y)
+                    let xr = xRight(y)
+                    
+                    // 염기쌍 색상 결정
+                    let leftColor = Color(DNASceneManager.colorForBase(p.left, scheme: sceneManager.colorScheme, 
+                                                                       position: p.id, totalLength: sequence.length))
+                    let rightColor = Color(DNASceneManager.colorForBase(p.right, scheme: sceneManager.colorScheme, 
+                                                                        position: p.id, totalLength: sequence.length))
+                    
+                    // 염기쌍 막대 그리기
+                    let gap: CGFloat = 18
+                    let barH: CGFloat = 8
+                    let leftRect = CGRect(x: xl + 2, y: y - barH/2, 
+                                         width: (xCenter - gap/2) - (xl + 2), height: barH)
+                    let rightRect = CGRect(x: xCenter + gap/2, y: y - barH/2, 
+                                          width: (xr - 2) - (xCenter + gap/2), height: barH)
+                    
+                    ctx.fill(Path(roundedRect: leftRect, cornerRadius: barH/2), with: .color(leftColor))
+                    ctx.fill(Path(roundedRect: rightRect, cornerRadius: barH/2), with: .color(rightColor))
+                    
+                    // 수소 결합
+                    let bondRect = CGRect(x: xCenter - gap/2, y: y - barH*0.15, width: gap, height: barH*0.3)
+                    ctx.fill(Path(roundedRect: bondRect, cornerRadius: barH*0.15), with: .color(.white))
+                    
+                    // 염기 라벨
+                    let fontSize: CGFloat = 10
+                    let font = Font.system(size: fontSize, weight: .bold, design: .rounded)
+                    ctx.draw(Text(String(p.left)).font(font).foregroundColor(.white), 
+                            at: CGPoint(x: leftRect.midX, y: leftRect.midY))
+                    ctx.draw(Text(String(p.right)).font(font).foregroundColor(.white), 
+                            at: CGPoint(x: rightRect.midX, y: rightRect.midY))
+                    
+                    globalIndex += 1
+                }
             }
         }
         .scaleEffect(scale)
