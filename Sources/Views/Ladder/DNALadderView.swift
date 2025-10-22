@@ -292,6 +292,7 @@ struct DNALadderView: View {
  ctx,
  size in
             let N = currentGroupPairs.count  // 현재 그룹의 총 염기쌍 수
+            print("🎯 Canvas Debug - N (base pairs): \(N)")
             let K = 4  // 교차(만남) 지점 수
             // 위아래 끝부분에서 만나지 않도록 범위 조정
             let extendedHeight = height * 1.2 // 20% 확장된 높이
@@ -400,10 +401,15 @@ struct DNALadderView: View {
         print("🔍 Debug - sequenceString.count: \(sequenceString.count)")
         print("🔍 Debug - sceneManager.currentGroup: \(sceneManager.currentGroup)")
         
-        // 20개로 제한 (이미지처럼)
-        let maxPairs = min(20, sequenceString.count)
+        // 그룹별 시작 위치 계산 (각 그룹당 20개씩)
+        let groupSize = 20
+        let startIndex = (sceneManager.currentGroup - 1) * groupSize
+        let endIndex = min(startIndex + groupSize, sequenceString.count)
         
-        for i in 0..<maxPairs {
+        print("🔍 Debug - startIndex: \(startIndex), endIndex: \(endIndex)")
+        
+        // 현재 그룹의 20개 염기만 가져오기
+        for i in startIndex..<endIndex {
             if i < sequenceString.count {
                 let index = sequenceString.index(sequenceString.startIndex, offsetBy: i)
                 let base = sequenceString[index]

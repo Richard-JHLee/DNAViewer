@@ -281,7 +281,12 @@ class DNASceneManager: ObservableObject {
         // UI 업데이트 강제
         objectWillChange.send()
         
-        rebuildScene()
+        // ladder2D 모드가 아닐 때만 3D scene 업데이트
+        if currentRepresentation != .ladder2D {
+            rebuildScene()
+        } else {
+            print("🎯 Ladder2D mode: Skipping 3D scene rebuild")
+        }
         
         print("✅ loadSequence completed: totalGroups=\(totalGroups), currentGroup=\(currentGroup), displayStart=\(displayStart), displayLength=\(displayLength)")
     }
@@ -372,12 +377,17 @@ class DNASceneManager: ObservableObject {
         print("✅ currentGroup updated to: \(self.currentGroup)")
         
         // Scene 재구성은 비동기로 (메인 스레드에서만)
-        if Thread.isMainThread {
-            rebuildScene()
-        } else {
-            DispatchQueue.main.async { [weak self] in
-                self?.rebuildScene()
+        // ladder2D 모드가 아닐 때만 3D scene 업데이트
+        if currentRepresentation != .ladder2D {
+            if Thread.isMainThread {
+                rebuildScene()
+            } else {
+                DispatchQueue.main.async { [weak self] in
+                    self?.rebuildScene()
+                }
             }
+        } else {
+            print("🎯 Ladder2D mode: Skipping 3D scene rebuild in loadGroup")
         }
     }
     
