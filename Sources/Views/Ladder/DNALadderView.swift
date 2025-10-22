@@ -79,9 +79,7 @@ struct DNALadderView: View {
             let yBottom = H - margin
             let height = yBottom - yTop
             
-           let totalPairs = currentGroupPairs.count  // 현재 그룹의 총 염기쌍 수
-           let leftCount = totalPairs / 2  // 왼쪽 가닥 염기 수
-           let rightCount = totalPairs - leftCount  // 오른쪽 가닥 염기 수
+           let N = currentGroupPairs.count  // 현재 그룹의 총 염기쌍 수 (G1에서는 20개)
            let K = 4  // 교차(만남) 지점 수
            let omega = CGFloat(K + 1) * .pi / height
             
@@ -93,44 +91,30 @@ struct DNALadderView: View {
                 yTop + (CGFloat(j) / CGFloat(K + 1)) * height
             }
             
-           // ===== 왼쪽 가닥 구간별 염기 개수 분배 (끝단 0.5 가중치) =====
+           // ===== 구간별 염기쌍 개수 분배 (끝단 0.5 가중치) =====
            let weights = [0.5] + Array(repeating: 1.0, count: max(0, K-1)) + [0.5]
            let sumW = weights.reduce(0, +)  // W = K
-           let leftIdeals = weights.map { $0 / sumW * Double(leftCount) }  // 왼쪽 가닥 분배
-           var leftCounts = leftIdeals.map { Int(floor($0)) }
-           var leftR = leftCount - leftCounts.reduce(0, +)
+           let ideals = weights.map { $0 / sumW * Double(N) }  // ŷ_j = w_j/W * N
+           var counts = ideals.map { Int(floor($0)) }  // n_j = ⌊ŷ_j⌋
+           var R = N - counts.reduce(0, +)  // 잔여 R개
            
-           // 왼쪽 가닥 잔여 염기 배정
-           let leftOrder = leftIdeals.enumerated()
+           // 소수부 큰 구간부터 +1씩 배정
+           let order = ideals.enumerated()
                .sorted { ($0.element - floor($0.element)) > ($1.element - floor($1.element)) }
                .map { $0.offset }
-           var leftIdx = 0
-           while leftR > 0 {
-               leftCounts[leftOrder[leftIdx % leftCounts.count]] += 1
-               leftR -= 1
-               leftIdx += 1
-           }
-           
-           // ===== 오른쪽 가닥 구간별 염기 개수 분배 (끝단 0.5 가중치) =====
-           let rightIdeals = weights.map { $0 / sumW * Double(rightCount) }  // 오른쪽 가닥 분배
-           var rightCounts = rightIdeals.map { Int(floor($0)) }
-           var rightR = rightCount - rightCounts.reduce(0, +)
-           
-           // 오른쪽 가닥 잔여 염기 배정
-           let rightOrder = rightIdeals.enumerated()
-               .sorted { ($0.element - floor($0.element)) > ($1.element - floor($1.element)) }
-               .map { $0.offset }
-           var rightIdx = 0
-           while rightR > 0 {
-               rightCounts[rightOrder[rightIdx % rightCounts.count]] += 1
-               rightR -= 1
-               rightIdx += 1
+           var idx = 0
+           while R > 0 {
+               counts[order[idx % counts.count]] += 1
+               R -= 1
+               idx += 1
            }
            
            // 디버깅: 분배 결과 출력
-           print("🧬 Group \(sceneManager.currentGroup): Left=\(leftCount), Right=\(rightCount) bases")
-           print("📊 Left counts: \(leftCounts) (total: \(leftCounts.reduce(0, +)))")
-           print("📊 Right counts: \(rightCounts) (total: \(rightCounts.reduce(0, +)))")
+           print("🧬 Group \(sceneManager.currentGroup): N=\(N) base pairs")
+           print("📊 Weights: \(weights)")
+           print("🎯 Ideals: \(ideals)")
+           print("📈 Final counts: \(counts)")
+           print("✅ Total: \(counts.reduce(0, +))")
             
             // ===== 백본(가닥) 곡선 그리기 =====
             func strandPath(isLeft: Bool) -> Path {
@@ -160,99 +144,52 @@ struct DNALadderView: View {
             }
             
            // ===== 각 구간 내부에 염기쌍 균일 배치 (half-step 오프셋) =====
-           var leftIndex = 0
-           var rightIndex = 0
-           
+           var globalIndex = 0
            for seg in 0..<(K+1) {
                let yStart = yNodes[seg]  // z_j
                let yEnd = yNodes[seg + 1]  // z_{j+1}
-               let leftN = leftCounts[seg]  // 왼쪽 가닥 염기 수
-               let rightN = rightCounts[seg]  // 오른쪽 가닥 염기 수
+               let n = counts[seg]  // n_j
+               guard n > 0 else { continue }
                
-               // 왼쪽 가닥 염기 배치
-               if leftN > 0 {
-                   for k in 1...leftN {
-                       guard leftIndex < leftCount else { break }
-                       let p = currentGroupPairs[leftIndex]
-                       
-                       let y = yStart + (CGFloat(k) - 0.5) * (yEnd - yStart) / CGFloat(leftN)
-                       let xl = xLeft(y)
-                       let xr = xRight(y)
-                       
-                       // 염기쌍 색상 결정
-                       let leftColor = Color(DNASceneManager.colorForBase(p.left, scheme: sceneManager.colorScheme, 
-                                                                          position: p.id, totalLength: sequence.length))
-                       let rightColor = Color(DNASceneManager.colorForBase(p.right, scheme: sceneManager.colorScheme, 
-                                                                         position: p.id, totalLength: sequence.length))
-                       
-                       // 염기쌍 막대 그리기
-                       let gap: CGFloat = 18
-                       let barH: CGFloat = 8
-                       let leftRect = CGRect(x: xl + 2, y: y - barH/2, 
-                                             width: (xCenter - gap/2) - (xl + 2), height: barH)
-                       let rightRect = CGRect(x: xCenter + gap/2, y: y - barH/2, 
-                                             width: (xr - 2) - (xCenter + gap/2), height: barH)
-                       
-                       ctx.fill(Path(roundedRect: leftRect, cornerRadius: barH/2), with: .color(leftColor))
-                       ctx.fill(Path(roundedRect: rightRect, cornerRadius: barH/2), with: .color(rightColor))
-                       
-                       // 수소 결합
-                       let bondRect = CGRect(x: xCenter - gap/2, y: y - barH*0.15, width: gap, height: barH*0.3)
-                       ctx.fill(Path(roundedRect: bondRect, cornerRadius: barH*0.15), with: .color(.white))
-                       
-                       // 염기 라벨
-                       let fontSize: CGFloat = 10
-                       let font = Font.system(size: fontSize, weight: .bold, design: .rounded)
-                       ctx.draw(Text(String(p.left)).font(font).foregroundColor(.white), 
-                               at: CGPoint(x: leftRect.midX, y: leftRect.midY))
-                       ctx.draw(Text(String(p.right)).font(font).foregroundColor(.white), 
-                               at: CGPoint(x: rightRect.midX, y: rightRect.midY))
-                       
-                       leftIndex += 1
-                   }
-               }
-               
-               // 오른쪽 가닥 염기 배치
-               if rightN > 0 {
-                   for k in 1...rightN {
-                       guard rightIndex < rightCount else { break }
-                       let p = currentGroupPairs[leftCount + rightIndex]
-                       
-                       let y = yStart + (CGFloat(k) - 0.5) * (yEnd - yStart) / CGFloat(rightN)
-                       let xl = xLeft(y)
-                       let xr = xRight(y)
-                       
-                       // 염기쌍 색상 결정
-                       let leftColor = Color(DNASceneManager.colorForBase(p.left, scheme: sceneManager.colorScheme, 
-                                                                          position: p.id, totalLength: sequence.length))
-                       let rightColor = Color(DNASceneManager.colorForBase(p.right, scheme: sceneManager.colorScheme, 
-                                                                         position: p.id, totalLength: sequence.length))
-                       
-                       // 염기쌍 막대 그리기
-                       let gap: CGFloat = 18
-                       let barH: CGFloat = 8
-                       let leftRect = CGRect(x: xl + 2, y: y - barH/2, 
-                                             width: (xCenter - gap/2) - (xl + 2), height: barH)
-                       let rightRect = CGRect(x: xCenter + gap/2, y: y - barH/2, 
-                                             width: (xr - 2) - (xCenter + gap/2), height: barH)
-                       
-                       ctx.fill(Path(roundedRect: leftRect, cornerRadius: barH/2), with: .color(leftColor))
-                       ctx.fill(Path(roundedRect: rightRect, cornerRadius: barH/2), with: .color(rightColor))
-                       
-                       // 수소 결합
-                       let bondRect = CGRect(x: xCenter - gap/2, y: y - barH*0.15, width: gap, height: barH*0.3)
-                       ctx.fill(Path(roundedRect: bondRect, cornerRadius: barH*0.15), with: .color(.white))
-                       
-                       // 염기 라벨
-                       let fontSize: CGFloat = 10
-                       let font = Font.system(size: fontSize, weight: .bold, design: .rounded)
-                       ctx.draw(Text(String(p.left)).font(font).foregroundColor(.white), 
-                               at: CGPoint(x: leftRect.midX, y: leftRect.midY))
-                       ctx.draw(Text(String(p.right)).font(font).foregroundColor(.white), 
-                               at: CGPoint(x: rightRect.midX, y: rightRect.midY))
-                       
-                       rightIndex += 1
-                   }
+               // z_{j,k} = z_j + (k - 1/2) * (z_{j+1} - z_j) / n_j
+               for k in 1...n {
+                   guard globalIndex < currentGroupPairs.count else { break }
+                   let p = currentGroupPairs[globalIndex]
+                   
+                   let y = yStart + (CGFloat(k) - 0.5) * (yEnd - yStart) / CGFloat(n)
+                   let xl = xLeft(y)
+                   let xr = xRight(y)
+                   
+                   // 염기쌍 색상 결정
+                   let leftColor = Color(DNASceneManager.colorForBase(p.left, scheme: sceneManager.colorScheme, 
+                                                                      position: p.id, totalLength: sequence.length))
+                   let rightColor = Color(DNASceneManager.colorForBase(p.right, scheme: sceneManager.colorScheme, 
+                                                                     position: p.id, totalLength: sequence.length))
+                   
+                   // 염기쌍 막대 그리기
+                   let gap: CGFloat = 18
+                   let barH: CGFloat = 8
+                   let leftRect = CGRect(x: xl + 2, y: y - barH/2, 
+                                         width: (xCenter - gap/2) - (xl + 2), height: barH)
+                   let rightRect = CGRect(x: xCenter + gap/2, y: y - barH/2, 
+                                         width: (xr - 2) - (xCenter + gap/2), height: barH)
+                   
+                   ctx.fill(Path(roundedRect: leftRect, cornerRadius: barH/2), with: .color(leftColor))
+                   ctx.fill(Path(roundedRect: rightRect, cornerRadius: barH/2), with: .color(rightColor))
+                   
+                   // 수소 결합
+                   let bondRect = CGRect(x: xCenter - gap/2, y: y - barH*0.15, width: gap, height: barH*0.3)
+                   ctx.fill(Path(roundedRect: bondRect, cornerRadius: barH*0.15), with: .color(.white))
+                   
+                   // 염기 라벨
+                   let fontSize: CGFloat = 10
+                   let font = Font.system(size: fontSize, weight: .bold, design: .rounded)
+                   ctx.draw(Text(String(p.left)).font(font).foregroundColor(.white), 
+                           at: CGPoint(x: leftRect.midX, y: leftRect.midY))
+                   ctx.draw(Text(String(p.right)).font(font).foregroundColor(.white), 
+                           at: CGPoint(x: rightRect.midX, y: rightRect.midY))
+                   
+                   globalIndex += 1
                }
            }
         }
