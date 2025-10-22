@@ -398,17 +398,12 @@ struct DNALadderView: View {
         var pairs: [BasePair] = []
         let sequenceString = sequence.sequence
         
-        print("🔍 Debug - sequenceString.count: \(sequenceString.count)")
-        print("🔍 Debug - sceneManager.currentGroup: \(sceneManager.currentGroup)")
-        
-        // 그룹별 시작 위치 계산 (각 그룹당 20개씩)
-        let groupSize = 20
+        // 그룹별 시작 위치 계산 (sceneManager의 groupSize 사용)
+        let groupSize = sceneManager.groupSize
         let startIndex = (sceneManager.currentGroup - 1) * groupSize
         let endIndex = min(startIndex + groupSize, sequenceString.count)
         
-        print("🔍 Debug - startIndex: \(startIndex), endIndex: \(endIndex)")
-        
-        // 현재 그룹의 20개 염기만 가져오기
+        // 현재 그룹의 염기만 가져오기
         for i in startIndex..<endIndex {
             if i < sequenceString.count {
                 let index = sequenceString.index(sequenceString.startIndex, offsetBy: i)
@@ -421,7 +416,6 @@ struct DNALadderView: View {
             }
         }
         
-        print("🔍 Debug - final pairs.count: \(pairs.count)")
         return pairs
     }
 }

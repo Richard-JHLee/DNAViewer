@@ -128,7 +128,7 @@ class DNASceneManager: ObservableObject {
     var displayLength: Int = 100 // Show only subset for performance
     var currentGroup: Int = 1
     var totalGroups: Int = 1
-    var groupSize: Int = 100  // Increased for better visualization
+    var groupSize: Int = 20  // Ladder2D view uses 20 base pairs per group
     
     // 실제 표시되는 염기서열 수 (화면 높이 기반 동적 계산)
     var actualDisplayLength: Int {
@@ -298,8 +298,8 @@ class DNASceneManager: ObservableObject {
         print("🔍 Sequence length: \(sequence.length)")
         
         // 모든 시퀀스에 대해 일관된 그룹 크기 설정
-        groupSize = 100  // 모든 시퀀스를 100개씩 표시
-        print("✅ Setting groupSize to 100 for consistent display")
+        groupSize = 20  // 모든 시퀀스를 20개씩 표시 (Ladder2D 최적화)
+        print("✅ Setting groupSize to 20 for Ladder2D display")
         
         // 그룹 수 계산 (첫 번째 그룹으로 초기화)
         if sequence.length <= groupSize {
