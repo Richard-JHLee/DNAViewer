@@ -12,13 +12,24 @@ fileprivate func complement(_ b: Character) -> Character {
 }
 
 fileprivate func baseColor(_ b: Character) -> Color {
+    // SequenceBar와 동일한 색상 사용
+    #if os(macOS)
     switch b {
-    case "A": return Color(red: 0.8, green: 0.2, blue: 0.2) // 진한 빨강
-    case "T": return Color(red: 0.2, green: 0.4, blue: 0.8) // 진한 파랑
-    case "G": return Color(red: 0.2, green: 0.7, blue: 0.2) // 진한 초록
-    case "C": return Color(red: 0.9, green: 0.8, blue: 0.1) // 진한 노랑
-    default:  return .gray
+    case "A": return Color(NSColor.systemOrange)   // Orange
+    case "T": return Color(NSColor.systemGreen)    // Green  
+    case "G": return Color(NSColor.systemRed)      // Red
+    case "C": return Color(NSColor.systemYellow)   // Yellow
+    default: return Color(NSColor.gray)
     }
+    #else
+    switch b {
+    case "A": return Color(UIColor.systemOrange)   // Orange
+    case "T": return Color(UIColor.systemGreen)    // Green
+    case "G": return Color(UIColor.systemRed)      // Red
+    case "C": return Color(UIColor.systemYellow)   // Yellow
+    default: return Color(UIColor.gray)
+    }
+    #endif
 }
 
 // MARK: - Interactive View
@@ -419,11 +430,22 @@ struct DNALadderView: View {
                         ctx.draw(scissorText, at: CGPoint(x: xCenter, y: y - 25))
                     }
                     
-                    // 염기 라벨 (막대 위쪽에 배치)
-                    let leftLabel  = Text(String(base)).font(.system(size: 10, weight: .bold)).foregroundColor(baseColor(base))
-                    let rightLabel = Text(String(comp)).font(.system(size: 10, weight: .bold)).foregroundColor(baseColor(comp))
-                    ctx.draw(leftLabel,  at: CGPoint(x: xl - 12, y: y - 12))
-                    ctx.draw(rightLabel, at: CGPoint(x: xr + 12, y: y - 12))
+                    // 염기 라벨 (정렬된 위치에 배치)
+                    let labelFont = Font.system(size: 10, weight: .bold, design: .monospaced)
+                    let leftLabel = Text(String(base)).font(labelFont).foregroundColor(baseColor(base))
+                    let rightLabel = Text(String(comp)).font(labelFont).foregroundColor(baseColor(comp))
+                    
+                    // 고정된 라벨 위치 (열 정렬)
+                    let labelMargin: CGFloat = 16
+                    let labelY = round((y - 12) * 2) / 2  // 픽셀 스냅으로 수직 정렬
+                    
+                    // 왼쪽 라벨: 오른쪽 가장자리를 xl - labelMargin에 맞춤
+                    let leftLabelX = xl - labelMargin
+                    ctx.draw(leftLabel, at: CGPoint(x: leftLabelX, y: labelY), anchor: .trailing)
+                    
+                    // 오른쪽 라벨: 왼쪽 가장자리를 xr + labelMargin에 맞춤  
+                    let rightLabelX = xr + labelMargin
+                    ctx.draw(rightLabel, at: CGPoint(x: rightLabelX, y: labelY), anchor: .leading)
                     
                     globalIndex += 1
                 }
