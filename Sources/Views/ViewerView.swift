@@ -43,167 +43,9 @@ struct ViewerView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            // Top Bar (full width, below status bar)
-            DNAViewerTopBar(
-                sequenceName: extractFullName(from: sequence.name),
-                sequenceId: extractGeneId(from: sequence.name),
-                onDismiss: { 
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        showSidebar = true
-                    }
-                },
-                onLibrary: { showLibrary = true },
-                onToggleControls: {
-                    withAnimation {
-                        showStyleAndColor.toggle()
-                    }
-                },
-                showStyleAndColor: showStyleAndColor
-            )
-            
-            // Main content area with 3D Scene and bottom controls
-            VStack(spacing: 0) {
-                // Main rendering switch: 3D vs 2D Ladder/Map
-                ZStack {
-                    switch sceneManager.currentRepresentation {
-                    case .ladder2D:
-                        DNALadderView(sequence: sequence, sceneManager: sceneManager)
-                    case .genomeMap:
-                        GenomeMapView(length: viewModel.sequenceLength, genes: viewModel.genomeMarks, title: "Chr17")
-                    default:
-                        SceneView(
-                            scene: sceneManager.scene,
-                            pointOfView: nil,
-                            options: [.autoenablesDefaultLighting]
-                        )
-                        .background(Color(red: 0.03, green: 0.08, blue: 0.15))
-                        .gesture(
-                            DragGesture()
-                                .onChanged { value in
-                                    sceneManager.handleDrag(translation: value.translation)
-                                }
-                        )
-                        .simultaneousGesture(
-                            MagnificationGesture()
-                                .onChanged { value in
-                                    sceneManager.handleZoom(scale: value)
-                                }
-                        )
-                    }
-                    
-                    // Floating Digest button - only show when cut sites are highlighted
-                    if !sceneManager.highlightedCutSites.isEmpty {
-                        VStack {
-                            Spacer()
-                            HStack {
-                                Spacer()
-                                
-                                Button(action: { showDigestionResult = true }) {
-                                    VStack(spacing: 4) {
-                                        Image(systemName: "scissors.badge.ellipsis")
-                                            .font(.system(size: 24, weight: .semibold))
-                                            .foregroundColor(.white)
-                                        Text("Digest")
-                                            .font(.caption)
-                                            .fontWeight(.semibold)
-                                            .foregroundColor(.white)
-                                        
-                                        // Badge showing cut site count
-                                        Text("\(sceneManager.highlightedCutSites.count) sites")
-                                            .font(.system(size: 10))
-                                            .foregroundColor(.white.opacity(0.9))
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 12)
-                                    .background(
-                                        LinearGradient(
-                                            gradient: Gradient(colors: [Color.orange, Color.red]),
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        )
-                                        .opacity(0.95) // 약간 투명하게 하여 뒤의 3D가 살짝 보이도록
-                                    )
-                                    .cornerRadius(16)
-                                    .shadow(color: .orange.opacity(0.5), radius: 12, x: 0, y: 4)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 16)
-                                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
-                                    )
-                                }
-                                .buttonStyle(ScaleButtonStyle())
-                                .padding(.trailing, 16)
-                                .padding(.bottom, 16)
-                                .transition(.scale.combined(with: .opacity))
-                            }
-                        }
-                        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: sceneManager.highlightedCutSites.count)
-                        .allowsHitTesting(true) // 버튼만 터치 가능, 나머지는 3D view로 전달
-                    }
-                    
-                }  // End ZStack (Scene)
-                .frame(maxWidth: .infinity, maxHeight: .infinity) // 가능한 모든 공간 사용
-                
-                // Sequence Bar (full width, at bottom)
-                if showSequenceBar {
-                    SequenceBar(
-                        sequence: sequence.sequence,
-                        selectedRange: $sceneManager.selectedRange,
-                        sceneManager: sceneManager
-                    )
-                    .frame(height: 120)
-                }
-                
-                // Bottom Menu
-                HStack(spacing: 0) {
-                    // Sequence button
-                    BottomMenuButton(
-                        icon: "textformat.abc",
-                        title: "Sequence",
-                        action: { showSequenceBar.toggle() }
-                    )
-                    
-                    // Rotation button
-                    BottomMenuButton(
-                        icon: "arrow.clockwise",
-                        title: "Rotation",
-                        action: { sceneManager.animateRotation() }
-                    )
-                    
-                    // Scissor button
-                    BottomMenuButton(
-                        icon: "scissors",
-                        title: "Scissor",
-                        action: { showRestrictionEnzyme = true }
-                    )
-                    
-                    // Cloning button
-                    BottomMenuButton(
-                        icon: "arrow.triangle.branch",
-                        title: "Cloning",
-                        action: { showVirtualCloning = true }
-                    )
-                    
-                    // Analysis button
-                    BottomMenuButton(
-                        icon: "chart.bar.fill",
-                        title: "Analysis",
-                        action: { showAnalysis = true }
-                    )
-                    
-                    // Reload button
-                    BottomMenuButton(
-                        icon: "arrow.counterclockwise.circle.fill",
-                        title: "Reload",
-                        action: { sceneManager.resetView() }
-                    )
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 2)
-                .padding(.vertical, 3)  // Even smaller vertical padding
-                .background(.ultraThinMaterial)
-                .padding(.bottom, 0)
-            }  // End VStack (Main content)
-        }  // End VStack (Top Bar + Main content)
+            topBar
+            mainContentArea
+        }
         .onChange(of: sceneManager.colorSettings.adenineColor) { _ in
             sceneManager.rebuildScene()
         }
@@ -433,6 +275,183 @@ struct ViewerView: View {
             viewModel.sequenceLength = sequence.length
         }
     }
+    
+    // MARK: - View Components
+    
+    @ViewBuilder
+    private var topBar: some View {
+        DNAViewerTopBar(
+            sequenceName: extractFullName(from: sequence.name),
+            sequenceId: extractGeneId(from: sequence.name),
+            onDismiss: { 
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    showSidebar = true
+                }
+            },
+            onLibrary: { showLibrary = true },
+            onToggleControls: {
+                withAnimation {
+                    showStyleAndColor.toggle()
+                }
+            },
+            showStyleAndColor: showStyleAndColor
+        )
+    }
+    
+    @ViewBuilder
+    private var mainContentArea: some View {
+        VStack(spacing: 0) {
+            sceneView
+            
+            if showSequenceBar {
+                SequenceBar(
+                    sequence: sequence.sequence,
+                    selectedRange: $sceneManager.selectedRange,
+                    sceneManager: sceneManager
+                )
+                .frame(height: 120)
+            }
+            
+            bottomMenu
+        }
+    }
+    
+    @ViewBuilder
+    private var sceneView: some View {
+        ZStack {
+            renderingView
+            digestButton
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    @ViewBuilder
+    private var renderingView: some View {
+        switch sceneManager.currentRepresentation {
+        case .ladder2D:
+            DNALadderView(sequence: sequence)
+                .environmentObject(sceneManager)
+        case .genomeMap:
+            GenomeMapView(length: viewModel.sequenceLength, genes: viewModel.genomeMarks, title: "Chr17")
+        default:
+            SceneView(
+                scene: sceneManager.scene,
+                pointOfView: nil,
+                options: [.autoenablesDefaultLighting]
+            )
+            .background(Color(red: 0.03, green: 0.08, blue: 0.15))
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        sceneManager.handleDrag(translation: value.translation)
+                    }
+            )
+            .simultaneousGesture(
+                MagnificationGesture()
+                    .onChanged { value in
+                        sceneManager.handleZoom(scale: value)
+                    }
+            )
+        }
+    }
+    
+    @ViewBuilder
+    private var digestButton: some View {
+        if !sceneManager.highlightedCutSites.isEmpty {
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    
+                    Button(action: { showDigestionResult = true }) {
+                        VStack(spacing: 4) {
+                            Image(systemName: "scissors.badge.ellipsis")
+                                .font(.system(size: 24, weight: .semibold))
+                                .foregroundColor(.white)
+                            Text("Digest")
+                                .font(.caption)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
+                            
+                            Text("\(sceneManager.highlightedCutSites.count) sites")
+                                .font(.system(size: 10))
+                                .foregroundColor(.white.opacity(0.9))
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 12)
+                        .background(
+                            LinearGradient(
+                                gradient: Gradient(colors: [Color.orange, Color.red]),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                            .opacity(0.95)
+                        )
+                        .cornerRadius(16)
+                        .shadow(color: .orange.opacity(0.5), radius: 12, x: 0, y: 4)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(ScaleButtonStyle())
+                    .padding(.trailing, 16)
+                    .padding(.bottom, 16)
+                    .transition(.scale.combined(with: .opacity))
+                }
+            }
+            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: sceneManager.highlightedCutSites.count)
+            .allowsHitTesting(true)
+        }
+    }
+    
+    @ViewBuilder
+    private var bottomMenu: some View {
+        HStack(spacing: 0) {
+            BottomMenuButton(
+                icon: "textformat.abc",
+                title: "Sequence",
+                action: { showSequenceBar.toggle() }
+            )
+            
+            BottomMenuButton(
+                icon: "arrow.clockwise",
+                title: "Rotation",
+                action: { sceneManager.animateRotation() }
+            )
+            
+            BottomMenuButton(
+                icon: "scissors",
+                title: "Scissor",
+                action: { showRestrictionEnzyme = true }
+            )
+            
+            BottomMenuButton(
+                icon: "arrow.triangle.branch",
+                title: "Cloning",
+                action: { showVirtualCloning = true }
+            )
+            
+            BottomMenuButton(
+                icon: "chart.bar.fill",
+                title: "Analysis",
+                action: { showAnalysis = true }
+            )
+            
+            BottomMenuButton(
+                icon: "arrow.counterclockwise.circle.fill",
+                title: "Reload",
+                action: { sceneManager.resetView() }
+            )
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 2)
+        .padding(.vertical, 3)
+        .background(.ultraThinMaterial)
+        .padding(.bottom, 0)
+    }
+    
+    // MARK: - Helper Methods
     
     // Extract gene ID from name (e.g., "BRCA1 - Breast Cancer 1" -> "BRCA1")
     private func extractGeneId(from name: String) -> String {
