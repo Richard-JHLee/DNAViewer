@@ -46,7 +46,9 @@ struct DNALadderView: View {
         let yBottom = H - margin
         let height = yBottom - yTop
         
-        return Canvas { ctx, size in
+        return Canvas {
+ ctx,
+ size in
             let N = currentGroupPairs.count  // 현재 그룹의 총 염기쌍 수
             let K = 4  // 교차(만남) 지점 수
             let omega = CGFloat(K + 1) * .pi / height
@@ -58,7 +60,7 @@ struct DNALadderView: View {
             let yNodes: [CGFloat] = (0...(K+1)).map { j in yTop + (CGFloat(j) / CGFloat(K + 1)) * height }
             
             // 가중치 분배 (끝 0.5, 가운데 1.0)
-            var weights = [0.5] + Array(repeating: 1.0, count: max(0, K-1)) + [0.5]
+            let weights = [0.5] + Array(repeating: 1.0, count: max(0, K-1)) + [0.5]
             let sumW = weights.reduce(0, +)
             let ideals = weights.map { $0 / sumW * Double(N) }
             var counts = ideals.map { Int(floor($0)) }
