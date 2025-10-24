@@ -116,30 +116,32 @@ struct GenomeMapView: View {
     
     // MARK: - Main Content
     private var mainContentView: some View {
-        VStack(spacing: 0) {
-            // Chromosome Ideogram (Image) - At the top
-            ChromosomeIdeogramView(
-                selectedGene: viewModel.selectedGene,
-                neighboringGenes: viewModel.neighboringGenes,
-                onGeneSelected: { gene in
-                    Task {
-                        await viewModel.selectGene(gene)
+        ScrollView {
+            VStack(spacing: 0) {
+                // Chromosome Ideogram (Image) - At the top
+                ChromosomeIdeogramView(
+                    selectedGene: viewModel.selectedGene,
+                    neighboringGenes: viewModel.neighboringGenes,
+                    onGeneSelected: { gene in
+                        Task {
+                            await viewModel.selectGene(gene)
+                        }
                     }
+                )
+                .frame(height: 180)
+                
+                // Group Indicator with Exon Information
+                groupIndicatorView
+                
+                // Gene Structure Visualization (Expandable)
+                GeneStructureView(viewModel: viewModel, sceneManager: sceneManager, currentSequence: currentSequence)
+                
+                Divider()
+                
+                // Gene Information - Below image with proper spacing
+                if viewModel.selectedGene != nil {
+                    SequenceDetailView(viewModel: viewModel, currentSequence: currentSequence)
                 }
-            )
-            .frame(height: 180)
-            
-            // Group Indicator with Exon Information
-            groupIndicatorView
-            
-            // Gene Structure Visualization (Expandable)
-            GeneStructureView(viewModel: viewModel, sceneManager: sceneManager, currentSequence: currentSequence)
-            
-            Divider()
-            
-            // Gene Information - Below image with proper spacing
-            if viewModel.selectedGene != nil {
-                SequenceDetailView(viewModel: viewModel, currentSequence: currentSequence)
             }
         }
     }

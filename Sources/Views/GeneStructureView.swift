@@ -11,7 +11,7 @@ struct GeneStructureView: View {
     @ObservedObject var viewModel: GeneViewModel
     @ObservedObject var sceneManager: DNASceneManager
     let currentSequence: DNASequence?
-    @State private var isExpanded: Bool = false
+    @State private var isExpanded: Bool = true
     @State private var isBlinking: Bool = false
     
     var body: some View {
@@ -115,7 +115,6 @@ struct GeneStructureView: View {
             }
             .padding(.vertical, 4)
         }
-        .frame(maxHeight: 800)
         .background(Color(.systemBackground))
     }
     
