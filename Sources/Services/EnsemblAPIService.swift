@@ -23,10 +23,10 @@ class EnsemblAPIService: ObservableObject {
     }
     
     // MARK: - Gene Lookup
-    func lookupSymbol(_ symbol: String) async throws -> GeneModel {
-        print("🔍 Looking up gene: \(symbol)")
+    func lookupSymbol(_ symbol: String, species: String = "homo_sapiens") async throws -> GeneModel {
+        print("🔍 Looking up gene: \(symbol) in species: \(species)")
         
-        let urlString = "\(baseURL)/lookup/symbol/homo_sapiens/\(symbol)"
+        let urlString = "\(baseURL)/lookup/symbol/\(species)/\(symbol)"
         guard let url = URL(string: urlString) else {
             print("❌ Invalid URL: \(urlString)")
             throw APIError.invalidURL

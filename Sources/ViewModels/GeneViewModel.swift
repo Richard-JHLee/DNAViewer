@@ -233,15 +233,15 @@ class GeneViewModel: ObservableObject {
     private let processor = SequenceProcessor.shared
     
     // MARK: - Public Methods
-    func searchGene(_ symbol: String) async {
+    func searchGene(_ symbol: String, species: String = "homo_sapiens") async {
         guard !symbol.isEmpty else { return }
         
         isLoading = true
         errorMessage = nil
         
         do {
-            print("🔍 Step 1: Looking up gene \(symbol)...")
-            let gene = try await apiService.lookupSymbol(symbol)
+            print("🔍 Step 1: Looking up gene \(symbol) in \(species)...")
+            let gene = try await apiService.lookupSymbol(symbol, species: species)
             selectedGene = gene
             print("✅ Gene found: \(gene.display_name)")
             

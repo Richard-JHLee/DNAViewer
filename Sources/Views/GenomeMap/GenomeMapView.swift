@@ -7,6 +7,19 @@
 
 import SwiftUI
 
+// Helper function to convert organism name to Ensembl species format
+private func convertToEnsemblSpecies(_ organism: String) -> String {
+    // Convert "Homo sapiens" → "homo_sapiens"
+    // Convert "Mus musculus" → "mus_musculus"
+    // Convert "Drosophila melanogaster" → "drosophila_melanogaster"
+    
+    let lowercased = organism.lowercased()
+    let ensemblSpecies = lowercased.replacingOccurrences(of: " ", with: "_")
+    
+    print("🔄 Converting organism '\(organism)' → '\(ensemblSpecies)'")
+    return ensemblSpecies
+}
+
 struct GenomeMapView: View {
     @StateObject private var viewModel = GeneViewModel()
     let currentSequence: DNASequence?
@@ -88,7 +101,8 @@ struct GenomeMapView: View {
                 
                 if isValid {
                     print("🔍 Searching for gene symbol: '\(geneSymbol)' from sequence name: '\(sequence.name)'")
-                    await viewModel.searchGene(geneSymbol)
+                    let species = convertToEnsemblSpecies(sequence.organism)
+                    await viewModel.searchGene(geneSymbol, species: species)
                 } else {
                     print("⚠️ Invalid or generic gene symbol: '\(geneSymbol)', skipping GenomeMap lookup")
                     print("   Original sequence name: '\(sequence.name)'")
@@ -96,7 +110,7 @@ struct GenomeMapView: View {
                 }
             } else {
                 // Default to BRCA1 if no sequence provided
-                await viewModel.searchGene("BRCA1")
+                await viewModel.searchGene("BRCA1", species: "homo_sapiens")
             }
         }
         .onChange(of: currentSequence?.name) { newName in
@@ -112,7 +126,12 @@ struct GenomeMapView: View {
                 
                 Task {
                     if isValid {
-                        await viewModel.searchGene(geneSymbol)
+                        if let sequence = currentSequence {
+                            let species = convertToEnsemblSpecies(sequence.organism)
+                            await viewModel.searchGene(geneSymbol, species: species)
+                        } else {
+                            await viewModel.searchGene(geneSymbol)
+                        }
                     } else {
                         print("⚠️ Invalid gene symbol on sequence change: '\(geneSymbol)', skipping search")
                     }
@@ -255,7 +274,13 @@ struct GenomeMapView: View {
             
             Button("Retry") {
                 Task {
-                    await viewModel.searchGene("BRCA1")
+                    if let sequence = currentSequence {
+                        let geneSymbol = extractGeneSymbol(from: sequence.name)
+                        let species = convertToEnsemblSpecies(sequence.organism)
+                        await viewModel.searchGene(geneSymbol, species: species)
+                    } else {
+                        await viewModel.searchGene("BRCA1", species: "homo_sapiens")
+                    }
                 }
             }
             .buttonStyle(.bordered)
