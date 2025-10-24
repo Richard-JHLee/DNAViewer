@@ -403,7 +403,7 @@ struct LibraryView: View {
                 await MainActor.run {
                     // DNASequence 생성
                     let dnaSequence = DNASequence(
-                        name: gene.symbol.isEmpty ? gene.name : gene.symbol,
+                        name: gene.symbol,
                         sequence: sequence,
                         chromosome: gene.chromosome,
                         organism: gene.organism,
@@ -439,7 +439,7 @@ struct LibraryView: View {
                 await MainActor.run {
                     let sampleSequence = generateSampleSequence(length: 1000)
                     let dnaSequence = DNASequence(
-                        name: gene.symbol.isEmpty ? gene.name : gene.symbol,
+                        name: gene.symbol,
                         sequence: sampleSequence,
                         chromosome: gene.chromosome,
                         organism: gene.organism,

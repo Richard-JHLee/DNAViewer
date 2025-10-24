@@ -79,7 +79,15 @@ struct GenomeMapView: View {
             if let sequence = currentSequence {
                 // Extract gene symbol from sequence name
                 let geneSymbol = extractGeneSymbol(from: sequence.name)
-                await viewModel.searchGene(geneSymbol)
+                
+                // Validate symbol (must be at least 2 characters)
+                if geneSymbol.count >= 2 {
+                    print("🔍 Searching for gene symbol: '\(geneSymbol)' from sequence name: '\(sequence.name)'")
+                    await viewModel.searchGene(geneSymbol)
+                } else {
+                    print("⚠️ Invalid gene symbol: '\(geneSymbol)', using default BRCA1")
+                    await viewModel.searchGene("BRCA1")
+                }
             } else {
                 // Default to BRCA1 if no sequence provided
                 await viewModel.searchGene("BRCA1")
@@ -101,17 +109,21 @@ struct GenomeMapView: View {
         // Try to extract gene symbol (e.g., "BRCA1 (Breast Cancer Gene 1)" -> "BRCA1")
         if let openParen = name.firstIndex(of: "(") {
             let beforeParen = name[..<openParen].trimmingCharacters(in: .whitespaces)
-            return beforeParen
+            if !beforeParen.isEmpty {
+                return beforeParen
+            }
         }
         
-        // Try to extract before dash
-        if let dashIndex = name.firstIndex(of: "-") {
-            let beforeDash = name[..<dashIndex].trimmingCharacters(in: .whitespaces)
-            return beforeDash
-        }
+        // Extract first word (space-separated)
+        // This handles cases like "sonic hedgehog signaling molecule" -> "sonic"
+        // or "cyclin-dependent kinase" -> "cyclin-dependent"
+        let firstWord = name.components(separatedBy: .whitespacesAndNewlines)
+            .first?
+            .trimmingCharacters(in: .whitespaces) ?? name
         
-        // Return as is
-        return name.trimmingCharacters(in: .whitespaces)
+        // Return cleaned symbol
+        let cleaned = firstWord.trimmingCharacters(in: .whitespaces)
+        return cleaned.isEmpty ? name : cleaned
     }
     
     // MARK: - Main Content

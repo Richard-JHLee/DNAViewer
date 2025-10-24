@@ -155,7 +155,7 @@ struct ControlBar: View {
                                     VStack(spacing: 6) {
                                         // Color preview
                                         HStack(spacing: 3) {
-                                            ForEach(scheme.previewColors, id: \.self) { color in
+                                            ForEach(Array(scheme.previewColors.enumerated()), id: \.offset) { index, color in
                                                 RoundedRectangle(cornerRadius: 4)
                                                     .fill(color)
                                                     .frame(width: 16, height: 20)
