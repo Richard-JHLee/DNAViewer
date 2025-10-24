@@ -101,7 +101,7 @@ struct GeneStructureView: View {
                             .padding(.horizontal, 4)
                         
                     detailDiagram
-                        .frame(height: 300)
+                        .frame(height: 200)
                     }
                     
                     // Legend
@@ -407,7 +407,7 @@ struct GeneStructureView: View {
                 let genomicEnd = gene.start + currentEnd
                 
                 let trackHeight: CGFloat = 120
-                let trackY: CGFloat = 60
+                let trackY: CGFloat = 20
                 
                 // Draw background
                 let bgRect = CGRect(x: 0, y: trackY, width: size.width, height: trackHeight)
