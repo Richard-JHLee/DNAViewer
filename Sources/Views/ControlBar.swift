@@ -13,6 +13,30 @@ struct ControlBar: View {
     
     var body: some View {
         VStack(spacing: 16) {
+            // Header with close button
+            HStack {
+                Image(systemName: "slider.horizontal.3")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                Text("Controls")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Button(action: {
+                    withAnimation {
+                        showStyleAndColor = false
+                    }
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2)
+                        .foregroundColor(.white.opacity(0.7))
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            .padding(.bottom, 4)
             
             // Representation Controls (collapsible)
             if showStyleAndColor {
