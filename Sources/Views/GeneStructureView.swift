@@ -138,49 +138,51 @@ struct GeneStructureView: View {
             guard let gene = viewModel.selectedGene else { return }
             
             let geneLength = gene.end - gene.start + 1
-            let scale = size.width / CGFloat(geneLength)
+            let geneScale = size.width / CGFloat(geneLength)  // For drawing exons based on gene coordinates
+            let sequenceLength = currentSequence?.sequence.count ?? geneLength
+            let positionScale = size.width / CGFloat(sequenceLength)  // For current position indicator
             let trackHeight: CGFloat = 120
             let trackY = size.height / 2 - trackHeight / 2
             
             // Draw full gene region including promoter and downstream
             // Promoter region (1kb upstream)
             let promoterLength: CGFloat = 1000
-            let promoterStart: CGFloat = -promoterLength * scale
+            let promoterStart: CGFloat = -promoterLength * geneScale
             if promoterStart > -size.width {
-                let promoterRect = CGRect(x: max(promoterStart, 0), y: trackY + 15, width: min(promoterLength * scale, size.width), height: trackHeight - 30)
+                let promoterRect = CGRect(x: max(promoterStart, 0), y: trackY + 15, width: min(promoterLength * geneScale, size.width), height: trackHeight - 30)
                 context.fill(Path(roundedRect: promoterRect, cornerRadius: 3), with: .color(.pink.opacity(0.4)))
                 
-                if promoterLength * scale > 30 {
+                if promoterLength * geneScale > 30 {
                     let promoterLabel = Text("Promoter")
                         .font(.system(size: 10, weight: .semibold))
                         .foregroundColor(.pink)
-                    context.draw(promoterLabel, at: CGPoint(x: max(promoterStart, 0) + min(promoterLength * scale, size.width) / 2, y: trackY + trackHeight / 2), anchor: .center)
+                    context.draw(promoterLabel, at: CGPoint(x: max(promoterStart, 0) + min(promoterLength * geneScale, size.width) / 2, y: trackY + trackHeight / 2), anchor: .center)
                 }
             }
             
             // Downstream region (1kb downstream)
             let downstreamStart = size.width
             let downstreamLength: CGFloat = 1000
-            let downstreamRect = CGRect(x: downstreamStart, y: trackY + 15, width: downstreamLength * scale, height: trackHeight - 30)
+            let downstreamRect = CGRect(x: downstreamStart, y: trackY + 15, width: downstreamLength * geneScale, height: trackHeight - 30)
             context.fill(Path(roundedRect: downstreamRect, cornerRadius: 3), with: .color(.brown.opacity(0.4)))
             
-            if downstreamLength * scale > 30 {
+            if downstreamLength * geneScale > 30 {
                 let downstreamLabel = Text("Downstream")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundColor(.brown)
-                context.draw(downstreamLabel, at: CGPoint(x: downstreamStart + downstreamLength * scale / 2, y: trackY + trackHeight / 2), anchor: .center)
+                context.draw(downstreamLabel, at: CGPoint(x: downstreamStart + downstreamLength * geneScale / 2, y: trackY + trackHeight / 2), anchor: .center)
             }
             
             // Draw baseline (intron line)
             var baselinePath = Path()
             baselinePath.move(to: CGPoint(x: max(promoterStart, 0), y: trackY + trackHeight / 2))
-            baselinePath.addLine(to: CGPoint(x: downstreamStart + downstreamLength * scale, y: trackY + trackHeight / 2))
+            baselinePath.addLine(to: CGPoint(x: downstreamStart + downstreamLength * geneScale, y: trackY + trackHeight / 2))
             context.stroke(baselinePath, with: .color(.orange.opacity(0.5)), lineWidth: 3)
             
             // Draw exons with appropriate colors
             for exon in viewModel.availableExons {
-                let exonStart = CGFloat(exon.start - gene.start) * scale
-                let exonWidth = CGFloat(exon.length) * scale
+                let exonStart = CGFloat(exon.start - gene.start) * geneScale
+                let exonWidth = CGFloat(exon.length) * geneScale
                 
                 // Determine color based on region type
                 let color = getExonColor(exon)
@@ -212,11 +214,32 @@ struct GeneStructureView: View {
                 }
             }
             
-            // Draw current position indicator with blinking effect
+            // Draw current position indicator with blinking effect (use positionScale!)
             let currentStart = sceneManager.displayStart
             let currentEnd = currentStart + sceneManager.displayLength
-            let currentPosStart = CGFloat(currentStart) * scale
-            let currentPosWidth = CGFloat(sceneManager.displayLength) * scale
+            let currentPosStart = CGFloat(currentStart) * positionScale  // Use sequence-based scale!
+            let currentPosWidth = CGFloat(sceneManager.displayLength) * positionScale
+            
+            // Debug logging
+            print("🎯 ========== Gene Structure Position Debug ==========")
+            print("🎯 Gene: \(gene.display_name)")
+            print("🎯 Gene length (genomic): \(geneLength) bp")
+            print("🎯 Gene start-end: \(gene.start) - \(gene.end)")
+            print("🎯 Sequence length: \(sequenceLength) bp")
+            if let seq = currentSequence?.sequence {
+                print("🎯 Actual sequence length: \(seq.count) bp")
+            }
+            print("🎯 Current group: \(sceneManager.currentGroup) / \(sceneManager.totalGroups)")
+            print("🎯 Display start: \(currentStart)")
+            print("🎯 Display length: \(sceneManager.displayLength)")
+            print("🎯 Display end: \(currentEnd)")
+            print("🎯 Canvas size: \(size.width) x \(size.height)")
+            print("🎯 Gene scale: \(geneScale) (for drawing exons)")
+            print("🎯 Position scale: \(positionScale) (for current position)")
+            print("🎯 Calculated position X: \(currentPosStart) px")
+            print("🎯 Calculated width: \(currentPosWidth) px")
+            print("🎯 Position %: \(Double(currentStart) / Double(sequenceLength) * 100)%")
+            print("🎯 =============================================\n")
             
             // Blinking highlight box
             let highlightRect = CGRect(
@@ -248,14 +271,16 @@ struct GeneStructureView: View {
             arrowPath.closeSubpath()
             context.fill(arrowPath, with: .color(.red))
             
-            // "You are here" label
-            let labelText = Text("You are here")
+            // "You are here" label with group info
+            let groupInfo = "Group \(sceneManager.currentGroup)/\(sceneManager.totalGroups)"
+            let labelText = Text("📍 \(groupInfo)")
                 .font(.system(size: 11, weight: .bold))
                 .foregroundColor(.red)
             context.draw(labelText, at: CGPoint(x: currentPosStart + currentPosWidth / 2, y: arrowY + 8), anchor: .top)
             
-            // Current position bp range
-            let rangeText = Text("\(currentStart)-\(currentEnd-1)bp")
+            // Current position bp range and percentage
+            let percentage = String(format: "%.1f", Double(currentStart) / Double(sequenceLength) * 100)
+            let rangeText = Text("\(currentStart)-\(currentEnd-1)bp (\(percentage)%)")
                 .font(.system(size: 8, weight: .semibold))
                 .foregroundColor(.red)
             context.draw(rangeText, at: CGPoint(x: currentPosStart + currentPosWidth / 2, y: size.height - 5), anchor: .bottom)
@@ -287,8 +312,8 @@ struct GeneStructureView: View {
                 let currentExon = sortedExons[i]
                 let nextExon = sortedExons[i + 1]
                 
-                let intronStart = CGFloat(currentExon.end - gene.start) * scale
-                let intronEnd = CGFloat(nextExon.start - gene.start) * scale
+                let intronStart = CGFloat(currentExon.end - gene.start) * geneScale
+                let intronEnd = CGFloat(nextExon.start - gene.start) * geneScale
                 let intronWidth = intronEnd - intronStart
                 
                 // Draw intron label if space is sufficient
@@ -461,12 +486,12 @@ struct GeneStructureView: View {
                     .foregroundColor(.white.opacity(0.9))
                 context.draw(bpRange, at: CGPoint(x: size.width / 2, y: trackY + trackHeight / 2 + 10), anchor: .center)
                 
-                // Draw sequence if available
-                if let fullSeq = viewModel.fullSequence, currentStart < fullSeq.count {
-                    let endIdx = min(currentEnd, fullSeq.count)
-                    let startIndex = fullSeq.index(fullSeq.startIndex, offsetBy: currentStart)
-                    let endIndex = fullSeq.index(fullSeq.startIndex, offsetBy: endIdx)
-                    let currentSeq = String(fullSeq[startIndex..<endIndex])
+                // Draw sequence if available - use currentSequence which matches SequenceBar
+                if let sequence = currentSequence?.sequence, currentStart < sequence.count {
+                    let endIdx = min(currentEnd, sequence.count)
+                    let startIndex = sequence.index(sequence.startIndex, offsetBy: currentStart)
+                    let endIndex = sequence.index(sequence.startIndex, offsetBy: endIdx)
+                    let currentSeq = String(sequence[startIndex..<endIndex])
                     
                     // Draw sequence below
                     let seqText = Text(currentSeq)
