@@ -7,6 +7,43 @@
 
 import SwiftUI
 
+// Chromosome data structure with real genomic information
+struct ChromosomeData {
+    let length: Int  // in base pairs
+    let centromerePosition: Double  // as fraction (0.0-1.0)
+    
+    static func getData(for chromosome: String) -> ChromosomeData {
+        // Real chromosome data from GRCh38/hg38 assembly
+        switch chromosome {
+        case "1": return ChromosomeData(length: 248956422, centromerePosition: 0.48)
+        case "2": return ChromosomeData(length: 242193529, centromerePosition: 0.38)
+        case "3": return ChromosomeData(length: 198295559, centromerePosition: 0.45)
+        case "4": return ChromosomeData(length: 190214555, centromerePosition: 0.26)
+        case "5": return ChromosomeData(length: 181538259, centromerePosition: 0.27)
+        case "6": return ChromosomeData(length: 170805979, centromerePosition: 0.35)
+        case "7": return ChromosomeData(length: 159345973, centromerePosition: 0.36)
+        case "8": return ChromosomeData(length: 145138636, centromerePosition: 0.28)
+        case "9": return ChromosomeData(length: 138394717, centromerePosition: 0.33)
+        case "10": return ChromosomeData(length: 133797422, centromerePosition: 0.25)
+        case "11": return ChromosomeData(length: 135086622, centromerePosition: 0.40)
+        case "12": return ChromosomeData(length: 133275309, centromerePosition: 0.27)
+        case "13": return ChromosomeData(length: 114364328, centromerePosition: 0.15)
+        case "14": return ChromosomeData(length: 107043718, centromerePosition: 0.16)
+        case "15": return ChromosomeData(length: 101991189, centromerePosition: 0.20)
+        case "16": return ChromosomeData(length: 90338345, centromerePosition: 0.38)
+        case "17": return ChromosomeData(length: 83257441, centromerePosition: 0.24)
+        case "18": return ChromosomeData(length: 80373285, centromerePosition: 0.21)
+        case "19": return ChromosomeData(length: 58617616, centromerePosition: 0.47)
+        case "20": return ChromosomeData(length: 64444167, centromerePosition: 0.44)
+        case "21": return ChromosomeData(length: 46709983, centromerePosition: 0.28)
+        case "22": return ChromosomeData(length: 50818468, centromerePosition: 0.30)
+        case "X": return ChromosomeData(length: 156040895, centromerePosition: 0.38)
+        case "Y": return ChromosomeData(length: 57227415, centromerePosition: 0.21)
+        default: return ChromosomeData(length: 100000000, centromerePosition: 0.35)
+        }
+    }
+}
+
 struct ChromosomeIdeogramView: View {
     let selectedGene: GeneModel?
     let neighboringGenes: [GeneModel]
@@ -16,6 +53,14 @@ struct ChromosomeIdeogramView: View {
     @State private var scale: CGFloat = 1.0
     @State private var showGeneInfo: Bool = false
     @State private var selectedGeneForInfo: GeneModel?
+    
+    // Get chromosome data for the selected gene
+    private var chromosomeData: ChromosomeData {
+        guard let chromosome = selectedGene?.chromosome else {
+            return ChromosomeData.getData(for: "?")
+        }
+        return ChromosomeData.getData(for: chromosome)
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -136,13 +181,14 @@ struct ChromosomeIdeogramView: View {
         
         // Draw chromosome label with better visibility
         let fontSize: CGFloat = max(14, size.width * 0.04) // Responsive font size
-        let labelText = Text("Chr17")
+        let chromosomeLabel = "Chr\(selectedGene?.chromosome ?? "?")"
+        let labelText = Text(chromosomeLabel)
             .font(.system(size: fontSize, weight: .bold, design: .rounded))
             .foregroundColor(.white)
         context.draw(labelText, at: CGPoint(x: chromosomeRect.minX + 20, y: chromosomeRect.midY), anchor: .leading)
         
-        // Draw centromere with better positioning
-        let centromereX = chromosomeRect.minX + chromosomeRect.width * 0.35
+        // Draw centromere with real position data
+        let centromereX = chromosomeRect.minX + chromosomeRect.width * chromosomeData.centromerePosition
         let centromereWidth: CGFloat = max(15, chromosomeWidth * 0.08)
         let centromereRect = CGRect(
             x: centromereX,
@@ -188,7 +234,9 @@ struct ChromosomeIdeogramView: View {
         context.draw(scaleText, at: CGPoint(x: size.width - 15, y: 25), anchor: .trailing)
         
         // Add chromosome information - positioned at top left to avoid overlap
-        let infoText = Text("Chr17 • Human Genome")
+        let speciesName = selectedGene?.speciesDisplayName ?? "Unknown Genome"
+        let chromosomeInfo = "Chr\(selectedGene?.chromosome ?? "?") • \(speciesName)"
+        let infoText = Text(chromosomeInfo)
             .font(.system(size: 9, weight: .medium))
             .foregroundColor(.secondary)
         context.draw(infoText, at: CGPoint(x: 15, y: 25), anchor: .leading)
@@ -199,22 +247,25 @@ struct ChromosomeIdeogramView: View {
         let chromosomeHeight: CGFloat = min(120, size.height * 0.5)
         let chromosomeY = (size.height - chromosomeHeight) / 2
         
-        // Position markers for educational purposes - positioned below chromosome with more space
-        let positions: [CGFloat] = [0.1, 0.3, 0.5, 0.7, 0.9]
-        let positionLabels = ["10kb", "30kb", "50kb", "70kb", "90kb"]
+        // Position markers with real chromosome length
+        let positions: [CGFloat] = [0.0, 0.25, 0.5, 0.75, 1.0]
         
-        for (index, position) in positions.enumerated() {
+        for position in positions {
             let x = margin + chromosomeWidth * position
-            let y = chromosomeY + chromosomeHeight + 5 // Tick marks right below chromosome box
+            let y = chromosomeY + chromosomeHeight + 5
             
-            // Draw tick mark - longer and more visible
+            // Draw tick mark
             var tickPath = Path()
             tickPath.move(to: CGPoint(x: x, y: y))
             tickPath.addLine(to: CGPoint(x: x, y: y + 8))
             context.stroke(tickPath, with: .color(.gray), style: StrokeStyle(lineWidth: 2))
             
-            // Draw position label below tick mark
-            let positionText = Text(positionLabels[index])
+            // Calculate actual position in Mb
+            let positionBp = Int(Double(chromosomeData.length) * Double(position))
+            let positionMb = Double(positionBp) / 1_000_000.0
+            let label = String(format: "%.1fMb", positionMb)
+            
+            let positionText = Text(label)
                 .font(.system(size: 9, weight: .medium))
                 .foregroundColor(.gray)
             context.draw(positionText, at: CGPoint(x: x, y: y + 18), anchor: .center)
@@ -258,10 +309,10 @@ struct ChromosomeIdeogramView: View {
         chromosomeHeight: CGFloat,
         isSelected: Bool
     ) {
-        // Calculate position based on gene location
+        // Calculate position based on real gene location
         let chromosomeWidth = chromosomeEnd - chromosomeStart
-        let genePosition = CGFloat(gene.start) / 100000.0 // Scale down for demo
-        let markerX = chromosomeStart + (genePosition * chromosomeWidth * 0.8)
+        let genePositionFraction = Double(gene.start) / Double(chromosomeData.length)
+        let markerX = chromosomeStart + CGFloat(genePositionFraction) * chromosomeWidth
         
         // Alternate above/below positioning for better visibility
         let isAbove = index % 2 == 0
@@ -274,8 +325,8 @@ struct ChromosomeIdeogramView: View {
         trianglePath.addLine(to: CGPoint(x: markerX + 10, y: markerY + 15))
         trianglePath.closeSubpath()
         
-        // Fill triangle with gene-specific color
-        let markerColor: Color = isSelected ? .red : (gene.display_name == "BRCA1" ? .blue : .green)
+        // Fill triangle with gene-specific color (selected = red, others = blue/green alternating)
+        let markerColor: Color = isSelected ? .red : (index % 2 == 0 ? .blue : .green)
         context.fill(trianglePath, with: .color(markerColor))
         context.stroke(trianglePath, with: .color(.white), style: StrokeStyle(lineWidth: 1))
         
@@ -373,11 +424,12 @@ extension CGSize {
             start: 43044295,
             end: 43125483,
             strand: -1,
-            description: "BRCA1 DNA repair associated [Source:HGNC Symbol;Acc:HGNC:1100]"
+            description: "BRCA1 DNA repair associated [Source:HGNC Symbol;Acc:HGNC:1100]",
+            species: "homo_sapiens"
         ),
         neighboringGenes: [
-            GeneModel(id: "ENSG00000012048", display_name: "BRCA1", seq_region_name: "17", start: 43044295, end: 43125483, strand: -1, description: nil),
-            GeneModel(id: "ENSG00000141510", display_name: "TP53", seq_region_name: "17", start: 7668421, end: 7687490, strand: 1, description: nil)
+            GeneModel(id: "ENSG00000012048", display_name: "BRCA1", seq_region_name: "17", start: 43044295, end: 43125483, strand: -1, description: nil, species: "homo_sapiens"),
+            GeneModel(id: "ENSG00000141510", display_name: "TP53", seq_region_name: "17", start: 7668421, end: 7687490, strand: 1, description: nil, species: "homo_sapiens")
         ],
         onGeneSelected: { _ in }
     )

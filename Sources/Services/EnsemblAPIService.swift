@@ -82,7 +82,8 @@ class EnsemblAPIService: ObservableObject {
                     start: 43044295,
                     end: 43170245,
                     strand: -1,
-                    description: "BRCA1 DNA repair associated [FALLBACK DATA]"
+                    description: "BRCA1 DNA repair associated [FALLBACK DATA]",
+                    species: "homo_sapiens"
                 )
             }
             
@@ -146,8 +147,8 @@ class EnsemblAPIService: ObservableObject {
                 print("⚠️ This is NOT live data from Ensembl API")
                 print("⚠️ ========================================")
                 return [
-                    GeneModel(id: "ENSG00000141510", display_name: "TP53", seq_region_name: "17", start: 7661779, end: 7687550, strand: -1, description: "Tumor suppressor [FALLBACK DATA]"),
-                    GeneModel(id: "ENSG00000108953", display_name: "YWHAE", seq_region_name: "17", start: 1232000, end: 1233000, strand: 1, description: "Protein binding [FALLBACK DATA]")
+                    GeneModel(id: "ENSG00000141510", display_name: "TP53", seq_region_name: "17", start: 7661779, end: 7687550, strand: -1, description: "Tumor suppressor [FALLBACK DATA]", species: "homo_sapiens"),
+                    GeneModel(id: "ENSG00000108953", display_name: "YWHAE", seq_region_name: "17", start: 1232000, end: 1233000, strand: 1, description: "Protein binding [FALLBACK DATA]", species: "homo_sapiens")
                 ]
             }
             
