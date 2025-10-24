@@ -372,11 +372,12 @@ extension CGSize {
             seq_region_name: "17",
             start: 43044295,
             end: 43125483,
-            strand: -1
+            strand: -1,
+            description: "BRCA1 DNA repair associated [Source:HGNC Symbol;Acc:HGNC:1100]"
         ),
         neighboringGenes: [
-            GeneModel(id: "ENSG00000012048", display_name: "BRCA1", seq_region_name: "17", start: 43044295, end: 43125483, strand: -1),
-            GeneModel(id: "ENSG00000141510", display_name: "TP53", seq_region_name: "17", start: 7668421, end: 7687490, strand: 1)
+            GeneModel(id: "ENSG00000012048", display_name: "BRCA1", seq_region_name: "17", start: 43044295, end: 43125483, strand: -1, description: nil),
+            GeneModel(id: "ENSG00000141510", display_name: "TP53", seq_region_name: "17", start: 7668421, end: 7687490, strand: 1, description: nil)
         ],
         onGeneSelected: { _ in }
     )

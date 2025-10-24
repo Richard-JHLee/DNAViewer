@@ -69,14 +69,20 @@ class EnsemblAPIService: ObservableObject {
             
             // Fallback for BRCA1 when network fails
             if symbol.uppercased() == "BRCA1" {
-                print("🔄 Using fallback data for BRCA1")
+                print("⚠️ ========================================")
+                print("⚠️ WARNING: API ERROR - Using fallback data!")
+                print("⚠️ Gene: BRCA1")
+                print("⚠️ Error: \(urlError.localizedDescription)")
+                print("⚠️ This is NOT live data from Ensembl API")
+                print("⚠️ ========================================")
                 return GeneModel(
                     id: "ENSG00000012048",
                     display_name: "BRCA1",
                     seq_region_name: "17",
                     start: 43044295,
                     end: 43170245,
-                    strand: -1
+                    strand: -1,
+                    description: "BRCA1 DNA repair associated [FALLBACK DATA]"
                 )
             }
             
@@ -133,10 +139,15 @@ class EnsemblAPIService: ObservableObject {
             
             // Return fallback data for BRCA1
             if gene.display_name == "BRCA1" {
-                print("🔄 Using fallback neighboring genes for BRCA1")
+                print("⚠️ ========================================")
+                print("⚠️ WARNING: API ERROR - Using fallback neighboring genes!")
+                print("⚠️ Gene: BRCA1")
+                print("⚠️ Error: \(urlError.localizedDescription)")
+                print("⚠️ This is NOT live data from Ensembl API")
+                print("⚠️ ========================================")
                 return [
-                    GeneModel(id: "ENSG00000141510", display_name: "TP53", seq_region_name: "17", start: 7661779, end: 7687550, strand: -1),
-                    GeneModel(id: "ENSG00000108953", display_name: "YWHAE", seq_region_name: "17", start: 1232000, end: 1233000, strand: 1)
+                    GeneModel(id: "ENSG00000141510", display_name: "TP53", seq_region_name: "17", start: 7661779, end: 7687550, strand: -1, description: "Tumor suppressor [FALLBACK DATA]"),
+                    GeneModel(id: "ENSG00000108953", display_name: "YWHAE", seq_region_name: "17", start: 1232000, end: 1233000, strand: 1, description: "Protein binding [FALLBACK DATA]")
                 ]
             }
             

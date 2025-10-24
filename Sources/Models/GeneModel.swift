@@ -14,6 +14,7 @@ struct GeneModel: Codable, Identifiable, Hashable {
     let start: Int
     let end: Int
     let strand: Int
+    let description: String?
     
     var chromosome: String {
         return seq_region_name
@@ -51,7 +52,8 @@ struct EnsemblLookupResponse: Codable {
             seq_region_name: seq_region_name,
             start: start,
             end: end,
-            strand: strand
+            strand: strand,
+            description: description
         )
     }
 }
@@ -75,7 +77,8 @@ struct EnsemblOverlapResponse: Codable {
             seq_region_name: seq_region_name,
             start: start,
             end: end,
-            strand: strand
+            strand: strand,
+            description: nil // Overlap API doesn't provide description
         )
     }
 }
