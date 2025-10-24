@@ -16,12 +16,23 @@ struct LibraryView: View {
     @State private var selectedGeneForDetail: Gene? // sheet(item:)용으로 변경
     @State private var genes: [Gene] = []
     @State private var useMockData = false // 실제 API 데이터 사용
+    @State private var searchText: String = ""
+    @State private var searchTask: Task<Void, Never>? // For debouncing
+    @State private var isSearching: Bool = false
+    @State private var originalGenes: [Gene] = [] // Backup for restoring after search
+    
+    // No need for local filtering - we'll use API search
     
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
                 // Header
                 headerView
+                
+                // Search Bar (shown when gene list is visible)
+                if selectedSubCategory != nil {
+                    searchBar
+                }
                 
                 // Content
                 if selectedCategory == nil {
@@ -35,6 +46,19 @@ struct LibraryView: View {
             .navigationTitle("Gene Library")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
+            .onChange(of: searchText) { newValue in
+                // Cancel previous search task
+                searchTask?.cancel()
+                
+                // Debounce: wait 0.5 seconds before searching
+                searchTask = Task {
+                    try? await Task.sleep(nanoseconds: 500_000_000)
+                    
+                    guard !Task.isCancelled else { return }
+                    
+                    await performSearch(newValue)
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
@@ -47,6 +71,9 @@ struct LibraryView: View {
                         Button("Back") {
                             if selectedSubCategory != nil {
                                 selectedSubCategory = nil
+                                searchText = ""  // Clear search when going back
+                                originalGenes = []  // Clear backup
+                                searchTask?.cancel()  // Cancel any pending search
                             } else {
                                 selectedCategory = nil
                             }
@@ -163,6 +190,73 @@ struct LibraryView: View {
             }
         }
     }
+    // MARK: - Search Logic
+    private func performSearch(_ searchTerm: String) async {
+        guard let category = selectedCategory,
+              let subCategory = selectedSubCategory else { return }
+        
+        // Save original genes on first search
+        if originalGenes.isEmpty && !genes.isEmpty {
+            originalGenes = genes
+        }
+        
+        if searchTerm.isEmpty {
+            // Restore original genes when search is cleared
+            genes = originalGenes
+            isSearching = false
+            return
+        }
+        
+        // Perform API search
+        isSearching = true
+        
+        do {
+            print("🔍 Performing API search: '\(searchTerm)' in \(subCategory.rawValue)")
+            let searchResults = try await geneImporter.searchGenes(
+                category: category,
+                subCategory: subCategory,
+                userSearchTerm: searchTerm
+            )
+            
+            await MainActor.run {
+                genes = searchResults
+                isSearching = false
+                print("✅ Search complete: found \(searchResults.count) genes")
+            }
+        } catch {
+            await MainActor.run {
+                isSearching = false
+                print("❌ Search failed: \(error)")
+            }
+        }
+    }
+    
+    // MARK: - Search Bar
+    private var searchBar: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.gray)
+            
+            TextField("Search genes by name, symbol, or chromosome...", text: $searchText)
+                .textFieldStyle(PlainTextFieldStyle())
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+            
+            if !searchText.isEmpty {
+                Button(action: {
+                    searchText = ""
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.gray)
+                }
+            }
+        }
+        .padding(10)
+        .background(Color(.systemGray6))
+        .cornerRadius(10)
+        .padding(.horizontal)
+        .padding(.vertical, 8)
+    }
     
     private var headerView: some View {
         VStack(spacing: 8) {
@@ -248,6 +342,26 @@ struct LibraryView: View {
             } else {
                 ScrollView {
                     LazyVStack(spacing: 12) {
+                        // Show search status
+                        if isSearching {
+                            HStack {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle())
+                                Text("Searching...")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            .padding()
+                        } else if !searchText.isEmpty {
+                            HStack {
+                                Text("Found \(genes.count) gene(s)")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                        }
+                        
                         ForEach(genes) { gene in
                             GeneCard(gene: gene, onInfoTap: {
                                 selectedGeneForDetail = gene
@@ -256,8 +370,8 @@ struct LibraryView: View {
                             })
                         }
                         
-                        // Load More 버튼
-                        if geneImporter.hasMore {
+                        // Load More 버튼 (검색 중이 아닐 때만 표시)
+                        if geneImporter.hasMore && searchText.isEmpty {
                             Button {
                                 Task {
                                     do {
@@ -371,6 +485,8 @@ struct LibraryView: View {
             do {
                 // 새로운 검색이므로 기존 genes 초기화
                 genes = []
+                originalGenes = []  // Clear backup when loading new category
+                searchText = ""  // Clear search
                 geneImporter.resetPagination()
                 
                 if useMockData {

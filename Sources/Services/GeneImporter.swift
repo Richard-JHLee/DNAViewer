@@ -253,9 +253,9 @@ class GeneImporter: ObservableObject {
     
     // MARK: - Public Methods
     
-    func searchGenes(category: GeneCategory, subCategory: GeneSubCategory) async throws -> [Gene] {
-        // 새로운 검색이면 offset 초기화
-        if currentCategory != category || currentSubCategory != subCategory {
+    func searchGenes(category: GeneCategory, subCategory: GeneSubCategory, userSearchTerm: String? = nil) async throws -> [Gene] {
+        // 새로운 검색이거나 검색어가 변경되면 offset 초기화
+        if currentCategory != category || currentSubCategory != subCategory || userSearchTerm != nil {
             currentCategory = category
             currentSubCategory = subCategory
             currentOffset = 0
@@ -269,7 +269,13 @@ class GeneImporter: ObservableObject {
         }
         
         do {
-            let searchTerm = buildSearchTerm(category: category, subCategory: subCategory)
+            var searchTerm = buildSearchTerm(category: category, subCategory: subCategory)
+            
+            // User search term이 있으면 추가
+            if let userTerm = userSearchTerm, !userTerm.isEmpty {
+                searchTerm = searchTerm.isEmpty ? userTerm : "\(searchTerm) AND \(userTerm)"
+                print("🔍 User search term added: '\(userTerm)'")
+            }
             
             // Organism을 검색어에 포함
             let organism = getOrganism(for: category, subCategory: subCategory)
