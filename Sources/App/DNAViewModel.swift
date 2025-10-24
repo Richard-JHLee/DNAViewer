@@ -24,45 +24,30 @@ class DNAViewModel: ObservableObject {
         print("🧬 DNAViewModel initialized")
     }
     
-    // 기본 DNA 시퀀스 로드 (샘플 데이터)
+    // 기본 DNA 시퀀스 로드 (실제 BRCA1 유전자 데이터)
     func loadDefaultSequence() {
-        print("🧬 Loading default DNA sequence...")
+        print("🧬 Loading REAL BRCA1 gene sequence from Ensembl API...")
         isLoading = true
-        loadingProgress = "Loading sample gene..."
+        loadingProgress = "Loading BRCA1 gene from Ensembl..."
         error = nil
         
         Task {
             do {
-                // BRCA1 유전자 샘플 (유방암 관련)
-                let sampleSequence = """
-                ATGGATTTATCTGCTCTTCGCGTTGAAGAAGTACAAAATGTCATTAATGCTATGCAGAAAATCTTAGAGTGTCCCATCTGTCTGGAGTTG
-                ATCAAGGAACCTGTCTCCACAAAGTGTGACCACATATTTTGCAAATTTTGCATGCTGAAACTTCTCAACCAGAAGAAAGGGCCTTCACA
-                GTGTCCTTTATGTAAGAATGATATAACCAAAAGGAGCCTACAAGAAAGTACGAGATTTAGTCAACTTGTTGAAGAGCTATTGAAAATCA
-                TTTGTGCTTTTCAGCTTGACACAGGTTTGGAGTATGCAAACAGCTATAATTTTGCAAAAAAGGAAAATAACTCTCCTGAACATCTAAAA
-                GATGAAGTTTCTATCATCCAAAGTATGGGCTACAGAAACCGTGCCAAAAGACTTCTACAGAGTGAACCCGAAAATCCTTCCTTGCAGGA
-                AACCAGTCTCAGTGTCCAACTCTCTAACCTTGGAACTGTGAGAACTCTGAGGACAAAGCAGCGGATACAACCTCAAAAGACGTCTGTCT
-                ACATTGAATTGGGATCTGATTCTTCTGAAGATACCGTTAATAAGGCAACTTATTGCAGTGTGGGAGATCAAGAATTGTTACAAATCACC
-                CCTCAAGGAACCAGGGATGAAATCAGTTTGGATTCTGCAAAAAAGGCTGCTTGTGAATTTTCTGAGACGGATGTAACAAATACTGAACA
-                TTAGTCCACGCAGTGCACTGCTCAGTCTAATTGTTGCAGCCTCTCCCCTTGGCTGATGCCATGCAGCACCTGTATTACGATAACCAGAA
-                CCAGTCCAGTGTTTAATGAGCTCTTCAAATAATGGCTAAGGCAGGGATGCCAGGCCTGGCCAATGAGCTGTTGCATCCTGCCAGGTAAA
-                """
-                
-                let cleanedSequence = sampleSequence.replacingOccurrences(of: "\n", with: "")
-                    .replacingOccurrences(of: " ", with: "")
-                    .uppercased()
+                // 실제 BRCA1 유전자 데이터를 Ensembl API에서 가져오기
+                let realBRCA1Sequence = try await fetchRealBRCA1Sequence()
                 
                 // DNASequence 객체 생성
                 let dnaSequence = DNASequence(
                     name: "BRCA1 (Breast Cancer Gene 1)",
-                    sequence: cleanedSequence,
+                    sequence: realBRCA1Sequence,
                     chromosome: "17",
                     organism: "Homo sapiens",
                     features: [
                         GeneFeature(
                             type: .exon,
                             startIndex: 0,
-                            endIndex: cleanedSequence.count - 1,
-                            description: "Exon region"
+                            endIndex: realBRCA1Sequence.count - 1,
+                            description: "BRCA1 gene region"
                         )
                     ],
                     mutations: [
@@ -105,98 +90,149 @@ class DNAViewModel: ObservableObject {
         }
     }
     
-    // 선택된 유전자 로드
+    // 실제 BRCA1 유전자 시퀀스를 Ensembl API에서 가져오기
+    private func fetchRealBRCA1Sequence() async throws -> String {
+        print("🌐 Fetching REAL BRCA1 gene sequence from Ensembl API...")
+        
+        // Ensembl REST API를 통해 BRCA1 유전자 시퀀스 가져오기
+        let urlString = "https://rest.ensembl.org/sequence/id/ENSG00000012048"
+        guard let url = URL(string: urlString) else {
+            throw NSError(domain: "DNAViewModel", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("text/plain", forHTTPHeaderField: "Accept")
+        request.timeoutInterval = 30
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw NSError(domain: "DNAViewModel", code: -1, userInfo: [NSLocalizedDescriptionKey: "API request failed"])
+        }
+        
+        guard let sequence = String(data: data, encoding: .utf8) else {
+            throw NSError(domain: "DNAViewModel", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode sequence"])
+        }
+        
+        let cleanedSequence = sequence.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
+        print("✅ Successfully fetched REAL BRCA1 sequence: \(cleanedSequence.count) bp")
+        print("✅ Sequence preview: \(cleanedSequence.prefix(20))...")
+        
+        return cleanedSequence
+    }
+    
+    // 선택된 유전자 로드 (실제 API 사용)
     func loadSelectedGene(_ geneName: String) {
-        print("🧬 Loading selected gene: \(geneName)")
+        print("🧬 Loading selected gene from Ensembl API: \(geneName)")
         isLoading = true
-        loadingProgress = "Loading \(geneName)..."
+        loadingProgress = "Loading \(geneName) from Ensembl..."
         error = nil
         
         Task {
             do {
-                // 샘플 유전자 데이터 맵
-                let geneSequences = getSampleGeneSequences()
-                
-                guard let geneData = geneSequences[geneName] else {
-                    throw NSError(domain: "DNAViewModel", code: 404, userInfo: [NSLocalizedDescriptionKey: "Gene not found"])
-                }
-                
-                try await Task.sleep(nanoseconds: 1_500_000_000) // 1.5초 딜레이
+                // 실제 유전자 데이터를 Ensembl API에서 가져오기
+                let realSequence = try await fetchRealGeneSequence(geneName)
                 
                 await MainActor.run {
-                    self.currentSequence = geneData
-                    self.currentSequenceName = geneData.name
+                    self.currentSequence = realSequence
+                    self.currentSequenceName = realSequence.name
                     self.isLoading = false
                     self.loadingProgress = ""
-                    self.ladderPairs = geneData.basePairs
-                    self.genomeMarks = geneData.geneMarks
-                    self.sequenceLength = geneData.length
-                    print("✅ Gene loaded: \(geneData.name)")
+                    self.ladderPairs = realSequence.basePairs
+                    self.genomeMarks = realSequence.geneMarks
+                    self.sequenceLength = realSequence.length
+                    print("✅ Gene loaded from API: \(realSequence.name)")
                 }
             } catch {
                 await MainActor.run {
                     self.error = "Failed to load gene: \(error.localizedDescription)"
                     self.isLoading = false
                     self.loadingProgress = ""
-                    print("❌ Failed to load gene: \(error)")
+                    print("❌ Failed to load gene from API: \(error)")
                 }
             }
         }
     }
     
-    // 샘플 유전자 데이터 가져오기
-    private func getSampleGeneSequences() -> [String: DNASequence] {
-        var sequences: [String: DNASequence] = [:]
+    // 실제 유전자 시퀀스를 Ensembl API에서 가져오기
+    private func fetchRealGeneSequence(_ geneSymbol: String) async throws -> DNASequence {
+        print("🌐 Fetching gene sequence for \(geneSymbol) from Ensembl API...")
         
-        // BRCA1
-        let brca1Seq = """
-        ATGGATTTATCTGCTCTTCGCGTTGAAGAAGTACAAAATGTCATTAATGCTATGCAGAAAATCTTAGAGTGTCCCATCTGTCTGGAGTTG
-        ATCAAGGAACCTGTCTCCACAAAGTGTGACCACATATTTTGCAAATTTTGCATGCTGAAACTTCTCAACCAGAAGAAAGGGCCTTCACA
-        GTGTCCTTTATGTAAGAATGATATAACCAAAAGGAGCCTACAAGAAAGTACGAGATTTAGTCAACTTGTTGAAGAGCTATTGAAAATCA
-        """.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: " ", with: "")
+        // Gene symbol을 Ensembl ID로 변환
+        let geneMap: [String: String] = [
+            "BRCA1": "ENSG00000012048",
+            "TP53": "ENSG00000141510",
+            "CFTR": "ENSG00000001626",
+            "APOE": "ENSG00000130203"
+        ]
         
-        sequences["BRCA1"] = DNASequence(
-            name: "BRCA1 (Breast Cancer Gene 1)",
-            sequence: brca1Seq,
-            chromosome: "17",
+        guard let ensemblID = geneMap[geneSymbol.uppercased()] else {
+            throw NSError(domain: "DNAViewModel", code: -1, userInfo: [NSLocalizedDescriptionKey: "Gene \(geneSymbol) not supported yet"])
+        }
+        
+        let urlString = "https://rest.ensembl.org/sequence/id/\(ensemblID)"
+        guard let url = URL(string: urlString) else {
+            throw NSError(domain: "DNAViewModel", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("text/plain", forHTTPHeaderField: "Accept")
+        request.timeoutInterval = 30
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw NSError(domain: "DNAViewModel", code: -1, userInfo: [NSLocalizedDescriptionKey: "API request failed"])
+        }
+        
+        guard let sequence = String(data: data, encoding: .utf8) else {
+            throw NSError(domain: "DNAViewModel", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode sequence"])
+        }
+        
+        let cleanedSequence = sequence.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
+        // Gene-specific metadata
+        let geneInfo = getGeneMetadata(for: geneSymbol)
+        
+        let dnaSequence = DNASequence(
+            name: "\(geneSymbol) (\(geneInfo.fullName))",
+            sequence: cleanedSequence,
+            chromosome: geneInfo.chromosome,
             organism: "Homo sapiens",
-            summary: "DNA repair and tumor suppressor gene",
-            diseaseLinks: ["Breast cancer", "Ovarian cancer"]
+            features: [
+                GeneFeature(
+                    type: .exon,
+                    startIndex: 0,
+                    endIndex: cleanedSequence.count - 1,
+                    description: "\(geneSymbol) gene region"
+                )
+            ],
+            summary: geneInfo.summary,
+            diseaseLinks: geneInfo.diseaseLinks
         )
         
-        // TP53
-        let tp53Seq = """
-        ATGGAGGAGCCGCAGTCAGATCCTAGCGTCGAGCCCCCTCTGAGTCAGGAAACATTTTCAGACCTATGGAAACTACTTCCTGAAAACAAC
-        GTTCTGTCCCCCTTGCCGTCCCAAGCAATGGATGATTTGATGCTGTCCCCGGACGATATTGAACAATGGTTCACTGAAGACCCAGGTCCA
-        GATGAAGCTCCCAGAATGCCAGAGGCTGCTCCCCCCGTGGCCCCTGCACCAGCAGCTCCTACACCGGCGGCCCCTGCACCAGCCCCCTCC
-        """.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: " ", with: "")
-        
-        sequences["TP53"] = DNASequence(
-            name: "TP53 (Tumor Protein P53)",
-            sequence: tp53Seq,
-            chromosome: "17",
-            organism: "Homo sapiens",
-            summary: "Tumor suppressor and cell cycle regulation gene",
-            diseaseLinks: ["Various cancers", "Li-Fraumeni syndrome"]
-        )
-        
-        // CFTR
-        let cftrSeq = """
-        ATGCAGAGGTCGCCTTAGCAAGTTGGCCGATTCAAGTTTGCAGAAGAAGCAAAGCATGTCCATCTCAGAGCCCATTGTGAGAGCCTATGT
-        TGATCAATACTTGTCCAGAGAGCAGCTTTATGGAGTGGACAGGCTCACCGCGCTCCTCAGTGCCATTGCCGCCAAGATGCAGAAGGAGGC
-        TGAGAAGATTTTCCGAGGCAGACTACTGCGACAGCAACTTGCAAGTGCCTGATGGGCCGTTGATCTTTGGGCTGTGTGGATTGCTATGAC
-        """.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: " ", with: "")
-        
-        sequences["CFTR"] = DNASequence(
-            name: "CFTR (Cystic Fibrosis Gene)",
-            sequence: cftrSeq,
-            chromosome: "7",
-            organism: "Homo sapiens",
-            summary: "Chloride channel protein",
-            diseaseLinks: ["Cystic fibrosis"]
-        )
-        
-        return sequences
+        print("✅ Successfully fetched real gene sequence: \(cleanedSequence.count) bp")
+        return dnaSequence
     }
+    
+    // Get gene metadata
+    private func getGeneMetadata(for symbol: String) -> (fullName: String, chromosome: String, summary: String, diseaseLinks: [String]) {
+        switch symbol.uppercased() {
+        case "BRCA1":
+            return ("Breast Cancer Gene 1", "17", "DNA repair and tumor suppressor gene", ["Breast cancer", "Ovarian cancer"])
+        case "TP53":
+            return ("Tumor Protein P53", "17", "Tumor suppressor and cell cycle regulation gene", ["Various cancers", "Li-Fraumeni syndrome"])
+        case "CFTR":
+            return ("Cystic Fibrosis Gene", "7", "Chloride channel protein", ["Cystic fibrosis"])
+        case "APOE":
+            return ("Apolipoprotein E", "19", "Lipid metabolism and neurological function", ["Alzheimer's disease"])
+        default:
+            return (symbol, "Unknown", "Gene function", [])
+        }
+    }
+    
 }
 

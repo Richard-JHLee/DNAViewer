@@ -138,5 +138,94 @@ NOTES (Implementation details):
 
 AFTER COMPLETION:
 - 생성/수정 파일 목록과 주요 함수 요약
-- “BRCA1”로 실행한 스크린샷 설명(Chr17 마커 + Group 전환에 따른 0–20bp 변환 사례)
+- "BRCA1"로 실행한 스크린샷 설명(Chr17 마커 + Group 전환에 따른 0–20bp 변환 사례)
 - 간단 부하 테스트(N=20, Group 전환 50회) 후 메모리 누수 징후 여부 보고
+
+---
+
+## Genome Map Input Expectations (구현 가이드)
+
+### 입력 데이터 요구사항
+
+**Sequence span (시퀀스 범위):**
+- 전체 길이(bp) 또는 표시 범위가 필수
+- 화면 너비 계산과 스케일링의 기준이 되므로 `Int length` 값이 필요
+- 예: `start`, `end` 좌표로부터 전체 길이 계산
+
+**Gene/feature marks (유전자/특징 마커):**
+- 최소 필수 정보: `symbol`, `start`, `end`, `color` (또는 `type`)
+- 시작·종료 좌표는 1-based 인덱스 사용
+- 조건: `start ≤ end` 이어야 하며 전체 길이를 넘지 않아야 함
+- 각 마커는 길이 비율에 따라 막대 길이를 계산하므로 빠짐없이 제공 필요
+
+**보조 트랙 (선택사항):**
+- 변이(variants), CpG islands, 커버리지 등 추가 데이터 시리즈
+- `type/layer`를 구분할 수 있는 메타데이터와 좌표(또는 구간) 값 필요
+
+**레이블 데이터:**
+- 툴팁이나 팝오버에 표시할 정보
+- Gene 설명, accession, 임상 정보 등
+- 함께 전달하면 사용자 경험 향상
+
+### 화면 표현 방식
+
+**1. 기본 바 (Base Bar):**
+- 크로모좀을 상징하는 긴 라운드 직사각형을 가로로 배치
+- 길이는 뷰 너비 또는 스케일된 전체 bp 값을 따라 설정
+- 은은한 회색 계열로 채우기
+- 현재 구현: `ChromosomeIdeogramView`의 `drawChromosome()` 메서드
+
+**2. 마커 렌더링 (Marker Rendering):**
+- 각 GeneMark를 `start/end` 비율로 변환해 바 위에 표시
+- 작은 라운드 박스 또는 핀(▲) 형태
+- 길이가 짧으면 최소 폭을 유지해 시각적으로 보이게 함
+- 텍스트 라벨(유전자 기호)을 마커 위/아래에 배치
+- 현재 구현: `ChromosomeIdeogramView`의 `drawGeneMarker()` 메서드
+
+**3. 스크롤/줌 (Scroll/Zoom):**
+- 긴 염색체를 다루기 위한 수평 스크롤 제공
+- `ScrollView(.horizontal)`과 확대 버튼(또는 제스처) 사용
+- 세부 영역 확대 기능으로 상세 정보 탐색
+- TODO: 현재 구현에 추가 필요
+
+**4. 툴팁/하이라이트 (Tooltip/Highlight):**
+- 마커 탭 시 팝오버, callout, 또는 overlay 카드 표시
+- 유전자 이름, 좌표, 설명 등 추가 정보 제공
+- 선택된 마커는 색을 짙게 하거나 외곽선 추가로 강조
+- 현재 구현: 마커 선택 시 색상 변경 (`isSelected` 플래그 사용)
+
+**5. 추가 트랙 (Additional Tracks):**
+- 변이, CpG 등 다른 레이어는 메인 바 위/아래에 얇은 트랙으로 병렬 배치
+- 각각 다른 색상/아이콘으로 구분
+- Swift Charts를 이용한 GC-content 라인, 커버리지 히트맵 등
+- 한 화면에서 여러 시각화 동시 확인 가능
+- TODO: 추가 트랙 구현 필요
+
+**6. 전체 맥락 표시 (Context Display):**
+- 화면 좌측 또는 상단에 염색체명(예: Chr17) 표시
+- 현재 범위를 텍스트로 표시하여 맥락 제공
+- 선택사항: 미니맵(overview bar)으로 현재 확대 영역 표시
+- 현재 구현: `GenomeMapView`의 `navigationTitle`에서 염색체 정보 표시
+
+### 좌표 계산 공식
+
+```swift
+// 정규화된 위치 계산
+let xRatio = (geneMid - chrStart) / (chrEnd - chrStart)
+let displayX = viewWidth * xRatio
+
+// 마커 길이 계산
+let geneLength = geneEnd - geneStart
+let lengthRatio = geneLength / totalLength
+let markerWidth = max(minWidth, viewWidth * lengthRatio)
+```
+
+### 데이터 처리 흐름
+
+1. 데이터 입력 → 좌표 유효성 검사 (1-based, start ≤ end)
+2. 좌표를 비율로 환산 → 화면 픽셀 좌표로 변환
+3. 도형(마커, 라벨) 배치 → Canvas/GeometryReader로 렌더링
+4. 인터랙션 처리 → 스크롤, 줌, 탭 제스처
+5. 상태 업데이트 → 선택된 마커 하이라이트, 상세 정보 표시
+
+이 구조를 토대로 데이터가 들어오면 `GenomeMapView`는 좌표를 비율로 환산해 도형과 텍스트를 배치하고, 인터랙션 요소(스크롤·줌·툴팁)로 사용자가 직관적으로 탐색할 수 있게 구현됩니다.

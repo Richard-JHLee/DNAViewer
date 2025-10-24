@@ -58,18 +58,20 @@ struct EnsemblLookupResponse: Codable {
 
 struct EnsemblOverlapResponse: Codable {
     let id: String
-    let display_name: String
+    let external_name: String?
+    let display_name: String?
     let seq_region_name: String
     let start: Int
     let end: Int
     let strand: Int
-    let object_type: String
+    let feature_type: String // Changed from object_type to feature_type
     let biotype: String
     
     func toGeneModel() -> GeneModel {
+        let name = external_name ?? display_name ?? id // Prioritize external_name first
         return GeneModel(
             id: id,
-            display_name: display_name,
+            display_name: name,
             seq_region_name: seq_region_name,
             start: start,
             end: end,

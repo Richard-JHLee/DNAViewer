@@ -172,7 +172,7 @@ class LadderBuilder {
         node.rotation = SCNVector4(axis.x, axis.y, axis.z, angle)
         return node
     }
-
+    
     private func normalize(_ v: SCNVector3) -> SCNVector3 {
         let l = sqrt(Double(v.x*v.x + v.y*v.y + v.z*v.z))
         if l == 0 { return SCNVector3(0, 1, 0) }

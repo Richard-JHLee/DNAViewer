@@ -77,6 +77,18 @@
 		7981B50D2EA48C2D00D02BA7 /* RestrictionMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7981B5092EA48C2D00D02BA7 /* RestrictionMap.swift */; };
 		7981B5112EA4D3BC00D02BA7 /* GeneImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7981B50E2EA4D3BC00D02BA7 /* GeneImporter.swift */; };
 		7981B5132EA4D3BC00D02BA7 /* GeneImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7981B50E2EA4D3BC00D02BA7 /* GeneImporter.swift */; };
+		79C8B70C2EAA5B5A00605232 /* GeneStructureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C8B70B2EAA5B5A00605232 /* GeneStructureView.swift */; };
+		79C8B70D2EAA5B5A00605232 /* GeneStructureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C8B70B2EAA5B5A00605232 /* GeneStructureView.swift */; };
+		79C8B7132EAA5BD100605232 /* GenomeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C8B7112EAA5BD100605232 /* GenomeMapView.swift */; };
+		79C8B7142EAA5BD100605232 /* GenomeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C8B7112EAA5BD100605232 /* GenomeMapView.swift */; };
+		79EAE7992EA9032E00B5D95C /* GeneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAE7972EA9032E00B5D95C /* GeneViewModel.swift */; };
+		79EAE79A2EA9032E00B5D95C /* GeneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAE7972EA9032E00B5D95C /* GeneViewModel.swift */; };
+		79EAE79C2EA903BC00B5D95C /* ChromosomeIdeogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAE79B2EA903BC00B5D95C /* ChromosomeIdeogramView.swift */; };
+		79EAE79D2EA903BC00B5D95C /* ChromosomeIdeogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAE79B2EA903BC00B5D95C /* ChromosomeIdeogramView.swift */; };
+		79EAE79F2EA903CF00B5D95C /* SequenceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAE79E2EA903CF00B5D95C /* SequenceDetailView.swift */; };
+		79EAE7A02EA903CF00B5D95C /* SequenceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAE79E2EA903CF00B5D95C /* SequenceDetailView.swift */; };
+		79EAE7A22EA9041C00B5D95C /* SequenceBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAE7A12EA9041C00B5D95C /* SequenceBoxView.swift */; };
+		79EAE7A32EA9041C00B5D95C /* SequenceBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EAE7A12EA9041C00B5D95C /* SequenceBoxView.swift */; };
 		7BB490E25768CC91B5B11D60 /* Codon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D009E29E5A7E85E5E87D474 /* Codon.swift */; };
 		7C36B970951DCD32E26A7B96 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28319BD6515EE4C2ACFAC43E /* SceneKit.framework */; };
 		7C8079EC5B3B5E0958AAA270 /* QuizData.json in Resources */ = {isa = PBXBuildFile; fileRef = F96361928E842CA4E6A5913C /* QuizData.json */; };
@@ -182,6 +194,12 @@
 		7981B5082EA48C2D00D02BA7 /* DNAFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNAFragment.swift; sourceTree = "<group>"; };
 		7981B5092EA48C2D00D02BA7 /* RestrictionMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionMap.swift; sourceTree = "<group>"; };
 		7981B50E2EA4D3BC00D02BA7 /* GeneImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneImporter.swift; sourceTree = "<group>"; };
+		79C8B70B2EAA5B5A00605232 /* GeneStructureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneStructureView.swift; sourceTree = "<group>"; };
+		79C8B7112EAA5BD100605232 /* GenomeMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenomeMapView.swift; sourceTree = "<group>"; };
+		79EAE7972EA9032E00B5D95C /* GeneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneViewModel.swift; sourceTree = "<group>"; };
+		79EAE79B2EA903BC00B5D95C /* ChromosomeIdeogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromosomeIdeogramView.swift; sourceTree = "<group>"; };
+		79EAE79E2EA903CF00B5D95C /* SequenceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceDetailView.swift; sourceTree = "<group>"; };
+		79EAE7A12EA9041C00B5D95C /* SequenceBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceBoxView.swift; sourceTree = "<group>"; };
 		7F071C072744C6294B834B29 /* ControlBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBar.swift; sourceTree = "<group>"; };
 		828A016B73E89ACACABA0737 /* AnalysisSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisSheet.swift; sourceTree = "<group>"; };
 		89A29CACC152D5D9773D8012 /* GeneFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneFeature.swift; sourceTree = "<group>"; };
@@ -324,6 +342,22 @@
 			path = ko.lproj;
 			sourceTree = "<group>";
 		};
+		79C8B7122EAA5BD100605232 /* GenomeMap */ = {
+			isa = PBXGroup;
+			children = (
+				79C8B7112EAA5BD100605232 /* GenomeMapView.swift */,
+			);
+			path = GenomeMap;
+			sourceTree = "<group>";
+		};
+		79EAE7982EA9032E00B5D95C /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				79EAE7972EA9032E00B5D95C /* GeneViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		839650E6E2BB151DB60F390B /* Scene */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,6 +395,7 @@
 		A841992A9C407C6A08FE9063 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				79EAE7982EA9032E00B5D95C /* ViewModels */,
 				5819A33CD39269180D46DCD2 /* DNAViewer.entitlements */,
 				65B8A4AD2F9C33F51C5870D9 /* Info.plist */,
 				0A01615EFA9B78CB64BFB180 /* App */,
@@ -385,6 +420,11 @@
 				7981B4F72EA3D1E700D02BA7 /* VirtualCloningView.swift */,
 				7981B4FC2EA48BE700D02BA7 /* CloningVisualizationView.swift */,
 				7981B4FD2EA48BE700D02BA7 /* GelElectrophoresisView.swift */,
+				79EAE79B2EA903BC00B5D95C /* ChromosomeIdeogramView.swift */,
+				79EAE79E2EA903CF00B5D95C /* SequenceDetailView.swift */,
+				79C8B70B2EAA5B5A00605232 /* GeneStructureView.swift */,
+				79C8B7122EAA5BD100605232 /* GenomeMap */,
+				79EAE7A12EA9041C00B5D95C /* SequenceBoxView.swift */,
 				7981B5022EA48BF800D02BA7 /* TransformationAnimationView.swift */,
 				7981B5032EA48BF800D02BA7 /* VerificationGuideView.swift */,
 				7F071C072744C6294B834B29 /* ControlBar.swift */,
@@ -562,6 +602,7 @@
 				793611A02EA60434002217E5 /* LanguageHelper.swift in Sources */,
 				7BB490E25768CC91B5B11D60 /* Codon.swift in Sources */,
 				6A66D44EB0746A857D352B77 /* ColorSettings.swift in Sources */,
+				79EAE7A02EA903CF00B5D95C /* SequenceDetailView.swift in Sources */,
 				49ED7795548935F2D3838D5B /* ContentView.swift in Sources */,
 				0E3B597C91F9004788BAA13E /* ControlBar.swift in Sources */,
 				A2B6D3D8FB914BBC30D75F29 /* DNAApp.swift in Sources */,
@@ -580,12 +621,15 @@
 				7981B4FF2EA48BE700D02BA7 /* GelElectrophoresisView.swift in Sources */,
 				0121B14E5A0F71963BC17F86 /* HelixBuilder.swift in Sources */,
 				CF398146A66A3A0C7C080354 /* HomeView.swift in Sources */,
+				79EAE7A22EA9041C00B5D95C /* SequenceBoxView.swift in Sources */,
 				F297202E6A4F21AC0A302A38 /* InfoSheet.swift in Sources */,
 				BD98CA735664A1F4FB7D8112 /* LadderBuilder.swift in Sources */,
 				A091B012E79D1DE0F4C9BB06 /* LibraryView.swift in Sources */,
 				8C0ED9186B01D4AC2E0E96E2 /* Mutation.swift in Sources */,
+				79EAE79C2EA903BC00B5D95C /* ChromosomeIdeogramView.swift in Sources */,
 				7981B5112EA4D3BC00D02BA7 /* GeneImporter.swift in Sources */,
 				E959E349AB1467DCE30B309C /* MutationSheet.swift in Sources */,
+				79C8B7142EAA5BD100605232 /* GenomeMapView.swift in Sources */,
 				7981B50C2EA48C2D00D02BA7 /* DNAFragment.swift in Sources */,
 				7981B50D2EA48C2D00D02BA7 /* RestrictionMap.swift in Sources */,
 				6E419D245A3959A6FE5F8A64 /* MutationSimulator.swift in Sources */,
@@ -599,10 +643,12 @@
 				7981B5072EA48BF800D02BA7 /* VerificationGuideView.swift in Sources */,
 				17EC5917B00909022185D6CB /* SequenceBar.swift in Sources */,
 				E542A9425274A3E997E45324 /* SettingsView.swift in Sources */,
+				79EAE79A2EA9032E00B5D95C /* GeneViewModel.swift in Sources */,
 				BA5DEA9ABE044ED8D2CA4B20 /* SidebarMenu.swift in Sources */,
 				7931F56A2EA8E59900AFA908 /* TranscriptModel.swift in Sources */,
 				4581269345B9FF02BD34A3E8 /* TranslationSheet.swift in Sources */,
 				7981B4FA2EA3D1E700D02BA7 /* VirtualCloningView.swift in Sources */,
+				79C8B70C2EAA5B5A00605232 /* GeneStructureView.swift in Sources */,
 				7981B4FB2EA3D1E700D02BA7 /* RestrictionEnzymeView.swift in Sources */,
 				9FCCD305596BD4EA98E85671 /* ViewerView.swift in Sources */,
 			);
@@ -620,6 +666,7 @@
 				793611A12EA60434002217E5 /* LanguageHelper.swift in Sources */,
 				68CA1C5E3A25C8C53EFC06C7 /* Codon.swift in Sources */,
 				CE4B20AD19E9D4B04218EE43 /* ColorSettings.swift in Sources */,
+				79EAE79F2EA903CF00B5D95C /* SequenceDetailView.swift in Sources */,
 				8D6F578C277C8DB6668612BB /* ContentView.swift in Sources */,
 				A680BBF6C033AE71A736BD24 /* ControlBar.swift in Sources */,
 				EF328673E2D1D19151031BBF /* DNAApp.swift in Sources */,
@@ -638,12 +685,15 @@
 				7981B5012EA48BE700D02BA7 /* GelElectrophoresisView.swift in Sources */,
 				D970833C33052D6435AE0FD7 /* HelixBuilder.swift in Sources */,
 				CE58C160B184BA5060881972 /* HomeView.swift in Sources */,
+				79EAE7A32EA9041C00B5D95C /* SequenceBoxView.swift in Sources */,
 				133CEBC79FC9C5927B2DAE5D /* InfoSheet.swift in Sources */,
 				BB9D29D3B10E7F403B63903C /* LadderBuilder.swift in Sources */,
 				9BD5E3520A38911640FC9542 /* LibraryView.swift in Sources */,
 				8612F5CD17164B2C3C5EAF94 /* Mutation.swift in Sources */,
+				79EAE79D2EA903BC00B5D95C /* ChromosomeIdeogramView.swift in Sources */,
 				7981B5132EA4D3BC00D02BA7 /* GeneImporter.swift in Sources */,
 				7E8337DF6A829B0D3E6F711C /* MutationSheet.swift in Sources */,
+				79C8B7132EAA5BD100605232 /* GenomeMapView.swift in Sources */,
 				7981B50A2EA48C2D00D02BA7 /* DNAFragment.swift in Sources */,
 				7981B50B2EA48C2D00D02BA7 /* RestrictionMap.swift in Sources */,
 				6167B5A8530EDB5BB77CFC41 /* MutationSimulator.swift in Sources */,
@@ -657,10 +707,12 @@
 				7981B5052EA48BF800D02BA7 /* VerificationGuideView.swift in Sources */,
 				5ADB196E52A85B8B01A3BBA8 /* SequenceBar.swift in Sources */,
 				16F66A5D6EB2E22262DE080E /* SettingsView.swift in Sources */,
+				79EAE7992EA9032E00B5D95C /* GeneViewModel.swift in Sources */,
 				40995E6E9A488D5E21DF2149 /* SidebarMenu.swift in Sources */,
 				7931F5692EA8E59900AFA908 /* TranscriptModel.swift in Sources */,
 				2A455DFE61AEEFB15BC0A7E6 /* TranslationSheet.swift in Sources */,
 				7981B4F82EA3D1E700D02BA7 /* VirtualCloningView.swift in Sources */,
+				79C8B70D2EAA5B5A00605232 /* GeneStructureView.swift in Sources */,
 				7981B4F92EA3D1E700D02BA7 /* RestrictionEnzymeView.swift in Sources */,
 				D1138289E9A51171E15EC608 /* ViewerView.swift in Sources */,
 			);

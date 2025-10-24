@@ -26,7 +26,7 @@ enum GroupType: String, CaseIterable, Identifiable, Codable {
 }
 
 struct GroupMeta: Codable, Identifiable {
-    let id = UUID()
+    var id = UUID()
     let type: GroupType
     let transcriptID: String?
     let exonIndex: Int?

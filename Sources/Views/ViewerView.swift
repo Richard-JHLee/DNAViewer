@@ -332,7 +332,10 @@ struct ViewerView: View {
             DNALadderView(sequence: sequence)
                 .environmentObject(sceneManager)
         case .genomeMap:
-            GenomeMapView(length: viewModel.sequenceLength, genes: viewModel.genomeMarks, title: "Chr17")
+            NavigationView {
+                GenomeMapView(currentSequence: sequence, sceneManager: sceneManager)
+            }
+            .navigationViewStyle(StackNavigationViewStyle())
         default:
             SceneView(
                 scene: sceneManager.scene,

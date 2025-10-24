@@ -98,14 +98,21 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
-			<key>rcsb.org</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<false/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-			</dict>
+		<key>rcsb.org</key>
+		<dict>
+			<key>NSExceptionAllowsInsecureHTTPLoads</key>
+			<false/>
+			<key>NSIncludesSubdomains</key>
+			<true/>
 		</dict>
+		<key>rest.ensembl.org</key>
+		<dict>
+			<key>NSExceptionAllowsInsecureHTTPLoads</key>
+			<false/>
+			<key>NSIncludesSubdomains</key>
+			<true/>
+		</dict>
+	</dict>
 	</dict>
 	<key>UIFileSharingEnabled</key>
 	<true/>
