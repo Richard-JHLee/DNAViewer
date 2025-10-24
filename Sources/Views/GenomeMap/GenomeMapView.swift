@@ -80,13 +80,19 @@ struct GenomeMapView: View {
                 // Extract gene symbol from sequence name
                 let geneSymbol = extractGeneSymbol(from: sequence.name)
                 
-                // Validate symbol (must be at least 2 characters)
-                if geneSymbol.count >= 2 {
+                // Validate symbol (must be at least 2 characters and not too generic)
+                let invalidSymbols = ["gene", "protein", "interleukin", "cyclin", "receptor", "kinase"]
+                let isValid = geneSymbol.count >= 2 && 
+                              geneSymbol.count <= 20 && 
+                              !invalidSymbols.contains(geneSymbol.lowercased())
+                
+                if isValid {
                     print("🔍 Searching for gene symbol: '\(geneSymbol)' from sequence name: '\(sequence.name)'")
                     await viewModel.searchGene(geneSymbol)
                 } else {
-                    print("⚠️ Invalid gene symbol: '\(geneSymbol)', using default BRCA1")
-                    await viewModel.searchGene("BRCA1")
+                    print("⚠️ Invalid or generic gene symbol: '\(geneSymbol)', skipping GenomeMap lookup")
+                    print("   Original sequence name: '\(sequence.name)'")
+                    // Don't search - just show empty state or use local data only
                 }
             } else {
                 // Default to BRCA1 if no sequence provided
@@ -97,8 +103,19 @@ struct GenomeMapView: View {
             // Reload gene when sequence changes
             if let newName = newName {
                 let geneSymbol = extractGeneSymbol(from: newName)
+                
+                // Validate symbol
+                let invalidSymbols = ["gene", "protein", "interleukin", "cyclin", "receptor", "kinase"]
+                let isValid = geneSymbol.count >= 2 && 
+                              geneSymbol.count <= 20 && 
+                              !invalidSymbols.contains(geneSymbol.lowercased())
+                
                 Task {
-                    await viewModel.searchGene(geneSymbol)
+                    if isValid {
+                        await viewModel.searchGene(geneSymbol)
+                    } else {
+                        print("⚠️ Invalid gene symbol on sequence change: '\(geneSymbol)', skipping search")
+                    }
                 }
             }
         }

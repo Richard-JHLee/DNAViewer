@@ -119,6 +119,7 @@ struct GeneDoc: Decodable {
     let maplocation: String?
     let status: String?
     let nomenclaturename: String?
+    let nomenclaturesymbol: String?
     let nomenclaturestatus: String?
     let genetype: String?
     let organism: Organism?
@@ -349,10 +350,18 @@ class GeneImporter: ObservableObject {
             return nil
         }
         
-        // 심볼 추출 (nomenclaturename 또는 name에서 첫 번째 단어)
-        let symbol = doc.nomenclaturename?.components(separatedBy: .whitespaces).first ?? 
-                    name.components(separatedBy: .whitespaces).first ?? 
-                    "GENE\(uid)"
+        // 심볼 추출: nomenclaturesymbol 우선, 없으면 name의 첫 단어
+        let symbol: String
+        if let nomenclatureSymbol = doc.nomenclaturesymbol, !nomenclatureSymbol.isEmpty {
+            // Use official gene symbol (e.g., "Shh", "Il2", "Cdkn1a")
+            symbol = nomenclatureSymbol
+        } else if let nomenclatureName = doc.nomenclaturename, !nomenclatureName.isEmpty {
+            // Fallback: extract first word from nomenclature name
+            symbol = nomenclatureName.components(separatedBy: .whitespaces).first ?? "GENE\(uid)"
+        } else {
+            // Last resort: first word from description
+            symbol = name.components(separatedBy: .whitespaces).first ?? "GENE\(uid)"
+        }
         
         let gene = Gene(
             geneId: uid,

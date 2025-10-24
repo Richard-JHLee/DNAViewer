@@ -401,9 +401,18 @@ struct LibraryView: View {
                 let sequence = try await fetchGeneSequence(geneId: gene.geneId)
                 
                 await MainActor.run {
+                    // Use symbol, fallback to first word of name if symbol is empty
+                    let geneName: String
+                    if !gene.symbol.isEmpty && gene.symbol != "GENE\(gene.geneId)" {
+                        geneName = gene.symbol
+                    } else {
+                        // Extract first meaningful word from name
+                        geneName = gene.name.components(separatedBy: .whitespaces).first ?? "Gene\(gene.geneId)"
+                    }
+                    
                     // DNASequence 생성
                     let dnaSequence = DNASequence(
-                        name: gene.symbol,
+                        name: geneName,
                         sequence: sequence,
                         chromosome: gene.chromosome,
                         organism: gene.organism,
@@ -411,7 +420,9 @@ struct LibraryView: View {
                     )
                     
                     print("📦 Created DNASequence:")
-                    print("   Name: \(dnaSequence.name)")
+                    print("   Gene Symbol: \(gene.symbol)")
+                    print("   Gene Name (full): \(gene.name)")
+                    print("   DNASequence Name: \(dnaSequence.name)")
                     print("   ID: \(dnaSequence.id)")
                     print("   Length: \(dnaSequence.length) bp")
                     
@@ -437,9 +448,18 @@ struct LibraryView: View {
                 
                 // 샘플 시퀀스로 대체
                 await MainActor.run {
+                    // Use symbol, fallback to first word of name if symbol is empty
+                    let geneName: String
+                    if !gene.symbol.isEmpty && gene.symbol != "GENE\(gene.geneId)" {
+                        geneName = gene.symbol
+                    } else {
+                        // Extract first meaningful word from name
+                        geneName = gene.name.components(separatedBy: .whitespaces).first ?? "Gene\(gene.geneId)"
+                    }
+                    
                     let sampleSequence = generateSampleSequence(length: 1000)
                     let dnaSequence = DNASequence(
-                        name: gene.symbol,
+                        name: geneName,
                         sequence: sampleSequence,
                         chromosome: gene.chromosome,
                         organism: gene.organism,
@@ -447,7 +467,8 @@ struct LibraryView: View {
                     )
                     
                     print("📦 Created sample DNASequence:")
-                    print("   Name: \(dnaSequence.name)")
+                    print("   Gene Symbol: \(gene.symbol)")
+                    print("   DNASequence Name: \(dnaSequence.name)")
                     print("   Length: \(dnaSequence.length) bp")
                     
                     viewModel.currentSequence = dnaSequence
