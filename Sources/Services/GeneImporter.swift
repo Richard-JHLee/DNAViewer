@@ -7,6 +7,39 @@
 
 import Foundation
 
+// Helper function to extract gene symbol from text
+private func extractGeneSymbol(from text: String, fallback: String) -> String {
+    // Try to find proper gene symbol patterns
+    // Priority: uppercase letters with optional numbers (CRB1, IL2, BRCA1)
+    
+    let words = text.components(separatedBy: .whitespacesAndNewlines)
+        .map { $0.trimmingCharacters(in: .punctuationCharacters) }
+        .filter { !$0.isEmpty }
+    
+    // Look for uppercase gene symbols (CRB1, IL2, TNF, etc)
+    for word in words {
+        // Check if word is mostly uppercase and contains letters
+        let uppercaseCount = word.filter { $0.isUppercase }.count
+        let letterCount = word.filter { $0.isLetter }.count
+        
+        // Gene symbols are usually:
+        // - Mostly uppercase (at least 50%)
+        // - Between 2-10 characters
+        // - May contain numbers (CRB1, IL2)
+        if letterCount >= 2 && letterCount <= 10 &&
+           uppercaseCount >= letterCount / 2 {
+            return word
+        }
+    }
+    
+    // Fallback: first meaningful word
+    if let firstWord = words.first, firstWord.count >= 2 {
+        return firstWord
+    }
+    
+    return fallback
+}
+
 // MARK: - Gene Models (임시 정의)
 
 struct Gene: Identifiable, Codable, Hashable {
@@ -350,17 +383,17 @@ class GeneImporter: ObservableObject {
             return nil
         }
         
-        // 심볼 추출: nomenclaturesymbol 우선, 없으면 name의 첫 단어
+        // 심볼 추출: nomenclaturesymbol 우선, 없으면 더 똑똑하게 추출
         let symbol: String
         if let nomenclatureSymbol = doc.nomenclaturesymbol, !nomenclatureSymbol.isEmpty {
-            // Use official gene symbol (e.g., "Shh", "Il2", "Cdkn1a")
+            // Use official gene symbol (e.g., "Shh", "Il2", "Cdkn1a", "CRB1")
             symbol = nomenclatureSymbol
         } else if let nomenclatureName = doc.nomenclaturename, !nomenclatureName.isEmpty {
-            // Fallback: extract first word from nomenclature name
-            symbol = nomenclatureName.components(separatedBy: .whitespaces).first ?? "GENE\(uid)"
+            // Try to extract proper gene symbol from nomenclature name
+            symbol = extractGeneSymbol(from: nomenclatureName, fallback: "GENE\(uid)")
         } else {
-            // Last resort: first word from description
-            symbol = name.components(separatedBy: .whitespaces).first ?? "GENE\(uid)"
+            // Try to extract from description
+            symbol = extractGeneSymbol(from: name, fallback: "GENE\(uid)")
         }
         
         let gene = Gene(
